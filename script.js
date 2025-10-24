@@ -1,4 +1,4 @@
-// ===== SCRIPT.JS (FINAL CORRECTED VERSION) =====
+// ===== SCRIPT.JS (FINAL CORRECTED VERSION v2) =====
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Elements ---
     const screens = {
@@ -92,10 +92,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const showScreen = (screenId) => {
         Object.values(screens).forEach(screen => screen.classList.remove('active'));
-        screens[screenId].classList.add('active');
+        if (screens[screenId]) {
+            screens[screenId].classList.add('active');
+        }
     };
 
     const renderMath = () => {
+        // This function will be called once the KaTeX script is loaded
         if (window.renderMathInElement) {
             renderMathInElement(document.body, {
                 delimiters: [
@@ -121,10 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentSetId = e.target.getAttribute('data-set-id');
                 document.getElementById('test-title').textContent = examSets[currentSetId][currentLang].name;
                 showScreen('test');
-                setTimeout(() => {
-                    renderProblems();
-                    startTimer();
-                }, 50);
+                renderProblems();
+                startTimer();
             });
         });
         renderMath();
@@ -159,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const submitTest = () => {
-        if(!currentSetId) return; // safety check
+        if(!currentSetId) return;
         clearInterval(timerInterval);
         
         const username = loginStuff.usernameInput.value.trim();
@@ -204,6 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const setLanguage = (lang) => {
         currentLang = lang;
+        // Update all static text based on language
         document.getElementById('login-title').textContent = lang === 'en' ? 'Mathematics Exam' : 'แบบทดสอบคณิตศาสตร์';
         loginStuff.usernameInput.placeholder = lang === 'en' ? 'Username' : 'ชื่อผู้ใช้';
         loginStuff.passwordInput.placeholder = lang === 'en' ? 'Password' : 'รหัสผ่าน';
@@ -214,6 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('solution-title').textContent = lang === 'en' ? 'Results & Solutions' : 'ผลลัพธ์และเฉลย';
         document.getElementById('back-to-login-btn').textContent = lang === 'en' ? 'Back to Login' : 'กลับไปหน้าล็อคอิน';
         
+        // Re-render dynamic content
         if (screens.selection.classList.contains('active')) renderSelectionScreen();
         if (screens.test.classList.contains('active')) {
             document.getElementById('test-title').textContent = examSets[currentSetId][currentLang].name;
@@ -233,25 +236,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (credentials[username] && credentials[username] === password) {
             loginStuff.errorMsg.textContent = '';
             
-            // Special case for JJ - always allow retake
             if (username === 'JJ') {
                  renderSelectionScreen();
                  showScreen('selection');
                  return;
             }
 
-            // Check if any test was completed
             let hasCompletedTest = false;
             for (const setId in examSets) {
                 if (localStorage.getItem(`test_completed_${username}_${setId}`)) {
                     hasCompletedTest = true;
-                    currentSetId = setId; // Show the last completed test solutions
+                    currentSetId = setId;
                     break;
                 }
             }
 
             if (hasCompletedTest) {
-                renderSolutions(); // This will use the stored currentSetId
+                renderSolutions();
                 showScreen('solution');
             } else {
                 renderSelectionScreen();
@@ -276,5 +277,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     langToggles.forEach(btn => btn.addEventListener('click', () => setLanguage(currentLang === 'en' ? 'th' : 'en')));
     
-    setLanguage('en');
+    // --- Initial Setup ---
+    // This will run after the main DOM is loaded, but it waits for the KaTeX script to be ready
+    const kaTeXScript = document.querySelector('script[src*="auto-render.min.js"]');
+    kaTeXScript.onload = () => {
+        setLanguage('en'); // Set initial language and render math
+    };
+    if (document.readyState === "complete") {
+       kaTeXScript.onload();
+    }
 });
