@@ -121,7 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ]
     };
 
-    // Note: The answer key is always based on the English version's index.
     const solutions = {
         en: [
             { title: "Solution 1", answer: "1/4", steps: "Let the integer roots be $m, n$. By Vieta's formulas... The sum is $1/4$." },
@@ -148,6 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { title: "เฉลยข้อที่ 10", answer: "2", steps: "เราต้องการหาค่าของ $X = \\frac{1000!}{10^{249}} \\pmod{10}$ ซึ่งต้องแก้ระบบ $X \\equiv 0 \\pmod 2$ และ $X \\equiv \\frac{1000!}{5^{249}} (2^{-1})^{249} \\pmod 5$ จากทฤษฎีบทวิลสันรูปแบบทั่วไปได้ว่า $\\frac{1000!}{5^{249}} \\equiv 4 \\pmod 5$ และ $(2^{-1})^{249} \\equiv 3 \\pmod 5$ ดังนั้น $X \\equiv 4 \\cdot 3 \\equiv 2 \\pmod 5$ เลขโดดคู่เดียวที่สอดคล้องคือ 2" }
         ]
     };
+
 
     // --- Functions ---
     const showScreen = (screenId) => {
@@ -255,17 +255,16 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const setLanguage = (lang) => {
         currentLang = lang;
-        // Update login screen text
-        document.getElementById('login-title').textContent = lang === 'en' ? 'Number Theory Set 1' : 'แบบทดสอบทฤษฎีจำนวน ชุดที่ 1';
+        document.getElementById('login-title').textContent = lang === 'en' ? 'Mathematics Exam' : 'แบบทดสอบคณิตศาสตร์';
         document.getElementById('login-subtitle').textContent = lang === 'en' ? 'Mock Test' : 'ข้อสอบจำลอง';
         loginStuff.usernameInput.placeholder = lang === 'en' ? 'Username' : 'ชื่อผู้ใช้';
         loginStuff.passwordInput.placeholder = lang === 'en' ? 'Password' : 'รหัสผ่าน';
         loginStuff.loginBtn.textContent = lang === 'en' ? 'Login' : 'เข้าสู่ระบบ';
-        // Update test screen text
-        document.getElementById('test-title').textContent = lang === 'en' ? 'Number Theory Set 1' : 'แบบทดสอบทฤษฎีจำนวน ชุดที่ 1';
+        
+        document.getElementById('test-title').textContent = lang === 'en' ? 'Mathematics Exam' : 'แบบทดสอบคณิตศาสตร์';
         document.getElementById('timer-label').textContent = lang === 'en' ? 'Time Left:' : 'เวลาที่เหลือ:';
         document.getElementById('submit-btn').textContent = lang === 'en' ? 'Submit' : 'ส่งคำตอบ';
-        // Update solution screen text
+        
         document.getElementById('solution-title').textContent = lang === 'en' ? 'Results & Solutions' : 'ผลลัพธ์และเฉลย';
         document.getElementById('back-to-login-btn').textContent = lang === 'en' ? 'Back to Login' : 'กลับไปหน้าล็อคอิน';
         
@@ -299,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 startTimer();
             }
         } else {
-            loginStuff.errorMsg.textContent = currentLang === 'en' ? 'Invalid username or password.' : 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
+            loginStuff.errorMsg.textContent = currentLang === 'en' ? 'Invalid username or password. Note: It is case-sensitive.' : 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง (โปรดระวังตัวพิมพ์เล็ก-ใหญ่)';
         }
     });
 
