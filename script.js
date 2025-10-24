@@ -1,4 +1,4 @@
-// ===== SCRIPT.JS (FINAL VERSION WITH FULL SOLUTIONS) =====
+// ===== SCRIPT.JS (FINAL VERSION) =====
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Elements ---
     const screens = {
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 { title: "โจทย์ข้อที่ 2", statement: "เป็นที่ทราบกันว่าผลเฉลยจำนวนเต็มของ $n | (2^n+1)$ คือ $3^k$ เท่านั้น จงหาจำนวนเต็ม $n>1$ ที่ไม่ใช่กำลังของ 3 ที่มีค่าน้อยที่สุดเป็นอันดับที่สอง ที่สอดคล้องกับ $n$ หาร $2^n+2$ ลงตัว" },
                 { title: "โจทย์ข้อที่ 3", statement: "สมการ $x^2+y^2+z^2=3xyz$ คือสมการมาร์คอฟ จงหาผลบวกขององค์ประกอบของผลเฉลยจำนวนเต็มบวก $(x,y,z)$ ที่ไม่ใช่ผลเฉลยชัดแจ้งเพียงชุดเดียวที่สอดคล้องกับ $x \\le y \\le z$ และ $z < 10$" },
                 { title: "โจทย์ข้อที่ 4", statement: "ให้ลำดับ $a_n$ สำหรับ $n \\ge 1$ นิยามโดย $a_n = n + \\lfloor \\sqrt{n} + \\frac{1}{2} \\rfloor$ จงหาจำนวนของจำนวนเต็มบวกที่ $\\le 2025$ ที่ไม่อยู่ในเซต $\\{a_n | n \\in \\mathbb{Z}^+\\}$" },
-                { title: "โจทย์ข้อที่ 5", statement: "ให้ $p=2027$ (จำนวนเฉพาะ) และ $\\omega = e^{2\\pi i/p}$... จงคำนวณค่าของผลคูณ $P = \\prod_{k=1}^{p-1} (1-\\omega^k)^{(\\frac{k}{p})}$..." },
+                { title: "โจทย์ข้อที่ 5", statement: "ให้ $p=2027$ (จำนวนเฉพาะ) และให้ $\\omega = e^{2\\pi i/p}$... จงคำนวณค่าของผลคูณ $P = \\prod_{k=1}^{p-1} (1-\\omega^k)^{(\\frac{k}{p})}$..." },
                 { title: "โจทย์ข้อที่ 6", statement: "จงหาจำนวนเต็ม $n$ ที่มากที่สุดที่น้อยกว่า 1000 ซึ่งมีคู่ของจำนวนเต็มบวก $(x,y)$ ที่สอดคล้องกับสมการ $x^2 - (n^2+1)y^2 = -1$" },
                 { title: "โจทย์ข้อที่ 7", statement: "ให้ $p=43$ จงหาค่าของผลบวก $\\sum_{g} g \\pmod{p}$ โดยที่ผลบวกนี้กระทำบนทุกรากปฐมฐาน $g$ ในช่วง $1 \\le g < p$" },
                 { title: "โจทย์ข้อที่ 8", statement: "ให้ $\\sigma(n)$ แทนผลบวกของตัวหารที่เป็นบวกของ $n$ จงหาจำนวนเต็ม $n > 2$ ที่น้อยที่สุดที่สอดคล้องกับ $\\sigma(n) \\equiv 2 \\pmod{n}$" },
@@ -77,8 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'nt1': {
             en: [
                 { answer: "1/4", steps: "Let the integer roots be $m, n$. Let $S=m+n$ and $P=mn$. From Vieta's formulas, we derive $r = \\frac{P+2S}{P+S}$. Substituting this into the relation $r^2(S+P)=-1$ gives a quadratic equation for $P$: $P^2+P(4S+1)+(4S^2+S)=0$. For $P$ to be an integer, the discriminant $D_P = 4S+1$ must be a perfect square, say $k^2$. This implies $S=j(j+1)$ for some integer $j$. For the roots $m,n$ to be integers, the discriminant of $x^2-Sx+P=0$, which is $S^2-4P$, must also be a perfect square. Testing integer values for $j$ yields valid pairs $(S,P)$ for $j=0,1,3$ (and their negative counterparts). These pairs correspond to $r=1, -1, 1/4$. The sum is $1 + (-1) + 1/4 = 1/4$." },
-                { answer: "6", steps: "We need $n | 2^n+2$. If $n$ is odd and not a power of 3, small values do not work. If $n$ is even, let $n=2k$. The condition becomes $k | (2^{2k-1}+1)$. For this to hold, $k$ must be odd (unless $k=1$). We test small odd values for $k$. For $k=1$, $1|2^1+1$ is true, giving $n=2(1)=2$. This is the smallest solution not a power of 3. For $k=3$, $3|2^5+1=33$ is true, giving $n=2(3)=6$. This is the second smallest solution not a power of 3. Further analysis shows the next solution is $n=66$ (from $k=33$). So 6 is indeed the second smallest." },
-                { answer: "8", steps: "This is the Markov equation. We find solutions using Vieta Jumping. Start with the base solution $(1,1,1)$. Fix two variables, say $(x,y)=(1,1)$, and solve the resulting quadratic $t^2 - 3xyt + (x^2+y^2)=0$ for the third, $t$. This gives $t^2-3t+2=0$, with roots $t=1,2$, generating the new solution $(1,1,2)$. Next, starting with $(1,2)$, the quadratic is $t^2 - 6t+5=0$, with roots $t=1,5$, generating $(1,2,5)$. Continuing this process, the next solution generated is $(1,5,13)$, where $z=13 \\ge 10$. The solutions satisfying $x \\le y \\le z$ and $z<10$ are $(1,1,1), (1,1,2), (1,2,5)$. The problem asks for the unique non-trivial solution. The largest and only one with distinct components is $(1,2,5)$. The sum is $1+2+5=8$." },
+                { answer: "6", steps: "We need $n | 2^n+2$. If $n$ is even, let $n=2k$. The condition becomes $k | (2^{2k-1}+1)$. For this to hold, $k$ must be odd (unless $k=1$). We test small odd values for $k$. For $k=1$, $1|2^1+1$ is true, giving $n=2(1)=2$. This is the smallest solution not a power of 3. For $k=3$, $3|2^5+1=33$ is true, giving $n=2(3)=6$. This is the second smallest solution not a power of 3. Further analysis shows the next solution is $n=66$ (from $k=33$). So 6 is indeed the second smallest." },
+                { answer: "8", steps: "This is the Markov equation. We find solutions using Vieta Jumping. Start with the base solution $(1,1,1)$. Fix two variables, say $(x,y)=(1,1)$, and solve the resulting quadratic $t^2 - 3xyt + (x^2+y^2)=0$ for the third, $t$. This gives $t^2-3t+2=0$, with roots $t=1,2$, generating the new solution $(1,1,2)$. Next, starting with $(1,2)$, the quadratic is $t^2 - 6t+5=0$, with roots $t=1,5$, generating $(1,2,5)$. The next solution generated is $(1,5,13)$, where $z \\ge 10$. The solutions satisfying $x \\le y \\le z$ and $z<10$ are $(1,1,1), (1,1,2), (1,2,5)$. The problem asks for the unique non-trivial solution. The largest and only one with distinct components is $(1,2,5)$. The sum is $1+2+5=8$." },
                 { answer: "45", steps: "The expression $\\lfloor \\sqrt{n} + \\frac{1}{2} \\rfloor$ is equivalent to rounding $\\sqrt{n}$ to the nearest integer. Let $k = \\text{round}(\\sqrt{n})$. This condition holds for integers $n$ in the range $k^2-k+1 \\le n \\le k^2+k$. For such $n$, the sequence value is $a_n = n+k$. The set of values generated for a fixed $k$ is the range of consecutive integers $[k^2+1, k^2+2k]$. The union of these sets for $k=1, 2, 3, \\dots$ is $\\{2,3\\} \\cup \\{5,6,7,8\\} \\cup \\{10,\\dots,15\\} \\cup \\dots$. The integers that are missing from this sequence are exactly the perfect squares: $1, 4, 9, 16, \\dots$. We need to find the number of perfect squares less than or equal to 2025. Since $\\sqrt{2025} = 45$, the missing numbers are $1^2, 2^2, \\dots, 45^2$. There are 45 such numbers." },
                 { answer: "-1", steps: "The product is $P = A/B$ where $A$ is the product over quadratic residues $R$ and $B$ is over non-residues $N$. For $p=2027 \\equiv 3 \\pmod 4$, we have $N = \\{-k \\pmod p | k \\in R\\}$, which implies $B = \\bar{A}$. Thus $P = A/\\bar{A}$ has magnitude 1. The value is given by $P = (-1)^{h_{(-p)}}$, where $h_{(-p)}$ is the class number of the imaginary quadratic field $\\mathbb{Q}(\\sqrt{-p})$. For a prime $p>3$ with $p \\equiv 3 \\pmod 4$, the class number $h_{(-p)}$ is odd if and only if $p \\equiv 3 \\pmod 8$. We check $2027 \\pmod 8$: $2027 = 8 \\cdot 253 + 3$. Since $p \\equiv 3 \\pmod 8$, the class number $h_{(-2027)}$ is odd. Therefore, $P = (-1)^{\\text{odd}} = -1$." },
                 { answer: "999", steps: "The equation $x^2 - Dy^2 = -1$ is a negative Pell's equation. It has a solution in positive integers if and only if the period length of the simple continued fraction of $\\sqrt{D}$ is odd. Here, $D = n^2+1$. The continued fraction for $\\sqrt{n^2+1}$ is $[n; \\overline{2n}]$. The period of this continued fraction is $(2n)$, which has a length of 1. Since 1 is an odd number, the equation $x^2 - (n^2+1)y^2 = -1$ has a solution for every positive integer $n$. The question asks for the largest integer $n$ less than 1000. Since a solution exists for all $n$, we simply need the largest integer satisfying $n < 1000$, which is 999." },
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 { answer: "-1", steps: "ผลคูณคือ $P = A/B$ โดยที่ $A$ คือผลคูณของพจน์ที่เกี่ยวข้องกับเศษกำลังสอง (Residues) และ $B$ คือผลคูณของพจน์ที่ไม่ใช่เศษกำลังสอง (Non-residues) สำหรับจำนวนเฉพาะ $p=2027 \\equiv 3 \\pmod 4$ จะมีความสัมพันธ์ว่า $B=\\bar{A}$ ดังนั้น $P=A/\\bar{A}$ ซึ่งมีขนาดเท่ากับ 1 ค่าของ $P$ สามารถคำนวณได้จากสูตร $P=(-1)^{h_{(-p)}}$ โดยที่ $h_{(-p)}$ คือเลขชั้น (class number) ของฟีลด์จินตภาพกำลังสอง $\\mathbb{Q}(\\sqrt{-p})$ สำหรับจำนวนเฉพาะ $p>3$ ที่ $p \\equiv 3 \\pmod 4$ เลขชั้น $h_{(-p)}$ จะเป็นจำนวนคี่ก็ต่อเมื่อ $p \\equiv 3 \\pmod 8$ เราตรวจสอบได้ว่า $2027 \\equiv 3 \\pmod 8$ ดังนั้นเลขชั้นเป็นจำนวนคี่ ทำให้ $P = (-1)^{\\text{odd}} = -1$" },
                 { answer: "999", steps: "สมการ $x^2 - Dy^2 = -1$ คือสมการของเพลล์ภาคลบ ซึ่งจะมีผลเฉลยเป็นจำนวนเต็มบวกก็ต่อเมื่อความยาวคาบของเศษส่วนต่อเนื่องของ $\\sqrt{D}$ เป็นจำนวนคี่ ในข้อนี้ $D=n^2+1$ ซึ่งมีเศษส่วนต่อเนื่องคือ $[n; \\overline{2n}]$ คาบมีความยาวเท่ากับ 1 ซึ่งเป็นจำนวนคี่เสมอ ดังนั้นสมการนี้จึงมีผลเฉลยสำหรับทุกจำนวนเต็มบวก $n$ โจทย์ต้องการหาจำนวนเต็ม $n$ ที่มากที่สุดที่น้อยกว่า 1000 ดังนั้นคำตอบคือ 999" },
                 { answer: "42", steps: "ผลบวกของรากปฐมฐานมอดุโล $p$ เท่ากับ $\\mu(p-1) \\pmod p$ สำหรับ $p=43$ เราต้องการหาค่า $\\mu(42)$ เนื่องจาก $42=2 \\cdot 3 \\cdot 7$ เป็นผลคูณของจำนวนเฉพาะที่แตกต่างกัน 3 ตัว ดังนั้น $\\mu(42)=(-1)^3 = -1$ ผลบวกของรากปฐมฐานจึงเท่ากับ $-1 \\equiv 42 \\pmod{43}$" },
-                { answer: "20", steps: "เงื่อนไข $\\sigma(n) \\equiv 2 \\pmod{n}$ หมายความว่า $n$ ต้องเป็นจำนวนบริบูรณ์ (abundant number) ซึ่งคือจำนวนที่ $\\sigma(n) > 2n$ เราจึงเริ่มทดสอบจากจำนวนบริบูรณ์น้อยๆ ไป: $n=12$, $\\sigma(12)=28 \\equiv 4 \\pmod{12}$; $n=18$, $\\sigma(18)=39 \\equiv 3 \\pmod{18}$; สำหรับ $n=20$, $\\sigma(20)=42$ และเนื่องจาก $42 = 2 \\cdot 20 + 2$ ดังนั้น $42 \\equiv 2 \\pmod{20}$ เนื่องจากจำนวนที่น้อยกว่า 20 ไม่สอดคล้องเงื่อนไข 20 จึงเป็นผลเฉลยที่น้อยที่สุด" },
+                { answer: "20", steps: "เงื่อนไข $\\sigma(n) \\equiv 2 \\pmod{n}$ หมายความว่า $n$ ต้องเป็นจำนวนบริบูรณ์ (abundant number) ซึ่งคือจำนวนที่ $\\sigma(n) > 2n$ เราจึงเริ่มทดสอบจากจำนวนบริบูรณ์น้อยๆ ไป: $n=12$, $\\sigma(12)=28 \\equiv 4 \\pmod{12}$; $n=18$, $\\sigma(18)=39 \\equiv 3 \\pmod{18}$; สำหรับ $n=20$, $\\sigma(20)=42$ และเนื่องจาก $42 = 2 \\cdot 20 + 2$ ดังนั้น $42 \\equiv 2 \\pmod{20}$ เนื่องจากจำนวนที่น้อยกว่า 20 ไม่สอดคล้องเงื่อนไข 20 จึงเป็นผลเฉลยที่เล็กที่สุด" },
                 { answer: "-arctan(1/7)", steps: "พจน์ใน arctan สอดคล้องกับสูตรผลต่างของอาร์กแทนเจนต์ $\\arctan(x)-\\arctan(y) = \\arctan(\\frac{x-y}{1+xy})$ เมื่อให้ $x=F_{n-1}/F_{n-2}$ และ $y=F_{n+1}/F_n$ จะได้ว่าพจน์ที่ $n$ ของอนุกรมคือ $A_{n-1} - A_{n+1}$ โดยที่ $A_k = \\arctan(F_k/F_{k-1})$ อนุกรมนี้จึงเป็นอนุกรมโทรทรรศน์ที่มีผลบวกเท่ากับ $S = A_2+A_3 - 2\\lim A_k = \\arctan(1)+\\arctan(2) - 2\\arctan(\\phi)$ เมื่อใช้เอกลักษณ์ที่เกี่ยวข้อง จะได้ผลลัพธ์สุดท้ายเป็น $\\arctan(2) - \\arctan(3)$ ซึ่งเท่ากับ $-\\arctan(1/7)$" },
                 { answer: "2", steps: "เลขโดดที่ไม่ใช่ศูนย์ตัวสุดท้ายคือ $D(1000!) = \\frac{1000!}{10^k} \\pmod{10}$ โดยที่ $k = \\nu_5(1000!) = 249$ เราต้องแก้ระบบสมการ $X \\equiv 0 \\pmod 2$ และ $X \\equiv \\frac{1000!}{5^{249}} (2^{-1})^{249} \\pmod 5$ จากทฤษฎีบทวิลสันรูปแบบทั่วไป จะได้ว่า $\\frac{1000!}{5^{249}} \\equiv 4 \\pmod 5$ และพจน์ $(2^{-1})^{249} \\equiv 3^{249} \\equiv 3 \\pmod 5$ ดังนั้น $X \\equiv 4 \\cdot 3 = 12 \\equiv 2 \\pmod 5$ เลขโดดคู่เดียวที่สอดคล้องกับเงื่อนไขทั้งสองคือ 2" }
             ]
@@ -103,27 +103,20 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     // --- Core Functions ---
-
     const showScreen = (screenId) => {
         Object.values(screens).forEach(screen => screen.classList.remove('active'));
-        if (screens[screenId]) {
-            screens[screenId].classList.add('active');
-        }
+        screens[screenId].classList.add('active');
     };
 
-    const renderMath = () => {
-        try {
-            if (window.renderMathInElement) {
-                renderMathInElement(document.body, {
-                    delimiters: [
-                        {left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false},
-                        {left: '\\(', right: '\\)', display: false}, {left: '\\[', right: '\\]', display: true}
-                    ],
-                    throwOnError: false
-                });
-            }
-        } catch (error) {
-            console.error("KaTeX rendering failed:", error);
+    const renderMathInElement = (elem) => {
+        if (window.renderMathInElement) {
+            window.renderMathInElement(elem, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false}, {left: '\\[', right: '\\]', display: true}
+                ],
+                throwOnError: false
+            });
         }
     };
     
@@ -146,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 startTimer();
             });
         });
-        renderMath();
+        renderMathInElement(examListContainer);
     };
 
     const renderProblems = () => {
@@ -157,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.innerHTML = `<h2>${p.title}</h2><div class="problem-statement">${p.statement}</div><input type="text" class="answer-input" id="answer-${index}" placeholder="${currentLang === 'en' ? 'Your answer' : 'คำตอบของคุณ'}">`;
             problemContainer.appendChild(card);
         });
-        renderMath();
+        renderMathInElement(problemContainer);
     };
 
     const startTimer = () => {
@@ -187,11 +180,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         let score = 0;
-        allProblems[currentSetId]['en'].forEach((p, i) => { // Always check against 'en' answer key
+        allSolutions[currentSetId].en.forEach((sol, i) => {
             const userInputEl = document.getElementById(`answer-${i}`);
             if(userInputEl) {
                 const userInput = userInputEl.value.trim();
-                const correctAnswer = allSolutions[currentSetId][i].answer;
+                const correctAnswer = sol.answer;
                 if (userInput === correctAnswer) {
                     score++;
                 }
@@ -218,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.innerHTML = `<h2>${problems[index].title}</h2><div class="problem-statement">${problems[index].statement}</div><hr><p><strong>${currentLang === 'en' ? 'Answer' : 'คำตอบ'}: ${s.answer}</strong></p><div class="solution-statement">${s.steps}</div>`;
             solutionList.appendChild(card);
         });
-        renderMath();
+        renderMathInElement(solutionList);
     };
     
     const setLanguage = (lang) => {
@@ -267,8 +260,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (completedSetId) {
                 currentSetId = completedSetId;
-                lastScore = "N/A"; // Score is not saved, so just mark as not applicable
-                displayScore("N/A");
+                // We don't know the score from last time, so just show solutions
+                scoreDisplay.textContent = '';
                 renderSolutions();
                 showScreen('solution');
             } else {
@@ -295,35 +288,37 @@ document.addEventListener('DOMContentLoaded', () => {
     langToggles.forEach(btn => btn.addEventListener('click', () => setLanguage(currentLang === 'en' ? 'th' : 'en')));
     
     // --- Initial Setup ---
-    const init = () => {
-        // This function runs once KaTeX is loaded
-        const allSolutionsData = {
-            'nt1': {
-                en: allSolutions['nt1'],
-                th: [
-                    { answer: "1/4", steps: "ให้ $m, n$ เป็นรากจำนวนเต็ม ให้ $S=m+n$ และ $P=mn$ จากสูตรของเวียดจะได้ $r = \\frac{P+2S}{P+S}$ นำไปแทนค่าในความสัมพันธ์ $r^2(S+P)=-1$ จะได้สมการกำลังสองของ $P$: $P^2+P(4S+1)+(4S^2+S)=0$ การที่ $P$ จะเป็นจำนวนเต็มได้ ดิสคริมิแนนต์ $D_P = 4S+1$ จะต้องเป็นกำลังสองสมบูรณ์ ($k^2$) ซึ่งหมายความว่า $S=j(j+1)$ และราก $m,n$ ต้องเป็นจำนวนเต็ม ดังนั้น $S^2-4P$ ก็ต้องเป็นกำลังสองสมบูรณ์เช่นกัน เมื่อทดสอบค่า $j$ จะได้คู่ $(S,P)$ ที่สอดคล้องสำหรับ $j=0,1,3$ ซึ่งให้ค่า $r=1, -1, 1/4$ ตามลำดับ ผลรวมคือ $1/4$" },
-                    { answer: "6", steps: "เราต้องการหา $n$ ที่ $n | 2^n+2$ ถ้า $n$ เป็นคู่ ให้ $n=2k$ เงื่อนไขจะกลายเป็น $k | (2^{2k-1}+1)$ การที่เงื่อนไขนี้จะเป็นจริง $k$ จะต้องเป็นจำนวนคี่ (ยกเว้นกรณี $k=1$) เมื่อทดสอบค่า $k$ ที่เป็นจำนวนคี่น้อยๆ: กรณี $k=1$ เป็นจริง ได้ $n=2$ ซึ่งเป็นผลเฉลยแรกที่ไม่ใช่กำลังของ 3 กรณี $k=3$ เป็นจริง ได้ $n=6$ ซึ่งเป็นผลเฉลยที่สองที่ไม่ใช่กำลังของ 3 ผลเฉลยถัดไปคือ $n=66$ (จาก $k=33$) ดังนั้น 6 จึงเป็นคำตอบ" },
-                    { answer: "8", steps: "นี่คือสมการมาร์คอฟ เราหาผลเฉลยได้ด้วยเทคนิค Vieta Jumping เริ่มจากผลเฉลยพื้นฐาน $(1,1,1)$ ตรึงค่า $(x,y)=(1,1)$ ในสมการกำลังสอง $t^2 - 3xyt + (x^2+y^2)=0$ จะได้ราก $t=1,2$ ซึ่งสร้างผลเฉลยใหม่ $(1,1,2)$ จากนั้นตรึง $(1,2)$ ในสมการเดียวกันจะได้ราก $t=1,5$ ซึ่งสร้างผลเฉลย $(1,2,5)$ ผลเฉลยถัดไปคือ $(1,5,13)$ ซึ่งมี $z \\ge 10$ ดังนั้นผลเฉลยที่สอดคล้องกับเงื่อนไขคือ $(1,1,1), (1,1,2), (1,2,5)$ ผลเฉลยที่ไม่ใช่ผลเฉลยชัดแจ้งที่ใหญ่ที่สุดคือ $(1,2,5)$ ผลรวมคือ $1+2+5=8$" },
-                    { answer: "45", steps: "นิพจน์ $\\lfloor \\sqrt{n} + \\frac{1}{2} \\rfloor$ คือการปัดเศษของ $\\sqrt{n}$ ไปยังจำนวนเต็มที่ใกล้ที่สุด ให้ $k = \\text{round}(\\sqrt{n})$ ซึ่งจะเกิดขึ้นเมื่อ $k^2-k+1 \\le n \\le k^2+k$ สำหรับค่า $n$ เหล่านี้ ค่าของลำดับคือ $a_n = n+k$ ซึ่งจะสร้างช่วงของจำนวนเต็ม $[k^2+1, k^2+2k]$ เมื่อรวมช่วงเหล่านี้สำหรับ $k=1, 2, 3, \\dots$ จะพบว่าจำนวนเต็มที่หายไปจากลำดับคือจำนวนกำลังสองสมบูรณ์: $1, 4, 9, \\dots$ เราจึงต้องหาจำนวนกำลังสองสมบูรณ์ที่น้อยกว่าหรือเท่ากับ 2025 เนื่องจาก $\\sqrt{2025}=45$ จำนวนที่หายไปคือ $1^2, 2^2, \\dots, 45^2$ ซึ่งมีทั้งหมด 45 จำนวน" },
-                    { answer: "-1", steps: "ผลคูณคือ $P = A/B$ โดยที่ $A$ คือผลคูณของพจน์ที่เกี่ยวข้องกับเศษกำลังสอง (Residues) และ $B$ คือผลคูณของพจน์ที่ไม่ใช่เศษกำลังสอง (Non-residues) สำหรับจำนวนเฉพาะ $p=2027 \\equiv 3 \\pmod 4$ จะมีความสัมพันธ์ว่า $B=\\bar{A}$ ดังนั้น $P=A/\\bar{A}$ ซึ่งมีขนาดเท่ากับ 1 ค่าของ $P$ สามารถคำนวณได้จากสูตร $P=(-1)^{h_{(-p)}}$ โดยที่ $h_{(-p)}$ คือเลขชั้น (class number) ของฟีลด์จินตภาพกำลังสอง $\\mathbb{Q}(\\sqrt{-p})$ สำหรับจำนวนเฉพาะ $p>3$ ที่ $p \\equiv 3 \\pmod 4$ เลขชั้น $h_{(-p)}$ จะเป็นจำนวนคี่ก็ต่อเมื่อ $p \\equiv 3 \\pmod 8$ เราตรวจสอบได้ว่า $2027 \\equiv 3 \\pmod 8$ ดังนั้นเลขชั้นเป็นจำนวนคี่ ทำให้ $P = (-1)^{\\text{odd}} = -1$" },
-                    { answer: "999", steps: "สมการ $x^2 - Dy^2 = -1$ คือสมการของเพลล์ภาคลบ ซึ่งจะมีผลเฉลยเป็นจำนวนเต็มบวกก็ต่อเมื่อความยาวคาบของเศษส่วนต่อเนื่องของ $\\sqrt{D}$ เป็นจำนวนคี่ ในข้อนี้ $D=n^2+1$ ซึ่งมีเศษส่วนต่อเนื่องคือ $[n; \\overline{2n}]$ คาบมีความยาวเท่ากับ 1 ซึ่งเป็นจำนวนคี่เสมอ ดังนั้นสมการนี้จึงมีผลเฉลยสำหรับทุกจำนวนเต็มบวก $n$ โจทย์ต้องการหาจำนวนเต็ม $n$ ที่มากที่สุดที่น้อยกว่า 1000 ดังนั้นคำตอบคือ 999" },
-                    { answer: "42", steps: "ผลบวกของรากปฐมฐานมอดุโล $p$ เท่ากับ $\\mu(p-1) \\pmod p$ สำหรับ $p=43$ เราต้องการหาค่า $\\mu(42)$ เนื่องจาก $42=2 \\cdot 3 \\cdot 7$ เป็นผลคูณของจำนวนเฉพาะที่แตกต่างกัน 3 ตัว ดังนั้น $\\mu(42)=(-1)^3 = -1$ ผลบวกของรากปฐมฐานจึงเท่ากับ $-1 \\equiv 42 \\pmod{43}$" },
-                    { answer: "20", steps: "เงื่อนไข $\\sigma(n) \\equiv 2 \\pmod{n}$ หมายความว่า $n$ ต้องเป็นจำนวนบริบูรณ์ (abundant number) ซึ่งคือจำนวนที่ $\\sigma(n) > 2n$ เราจึงเริ่มทดสอบจากจำนวนบริบูรณ์น้อยๆ ไป: $n=12$, $\\sigma(12)=28 \\equiv 4 \\pmod{12}$; $n=18$, $\\sigma(18)=39 \\equiv 3 \\pmod{18}$; สำหรับ $n=20$, $\\sigma(20)=42$ และเนื่องจาก $42 = 2 \\cdot 20 + 2$ ดังนั้น $42 \\equiv 2 \\pmod{20}$ เนื่องจากจำนวนที่น้อยกว่า 20 ไม่สอดคล้องเงื่อนไข 20 จึงเป็นผลเฉลยที่น้อยที่สุด" },
-                    { answer: "-arctan(1/7)", steps: "พจน์ใน arctan สอดคล้องกับสูตรผลต่างของอาร์กแทนเจนต์ $\\arctan(x)-\\arctan(y) = \\arctan(\\frac{x-y}{1+xy})$ เมื่อให้ $x=F_{n-1}/F_{n-2}$ และ $y=F_{n+1}/F_n$ จะได้ว่าพจน์ที่ $n$ ของอนุกรมคือ $A_{n-1} - A_{n+1}$ โดยที่ $A_k = \\arctan(F_k/F_{k-1})$ อนุกรมนี้จึงเป็นอนุกรมโทรทรรศน์ที่มีผลบวกเท่ากับ $S = A_2+A_3 - 2\\lim A_k = \\arctan(1)+\\arctan(2) - 2\\arctan(\\phi)$ เมื่อใช้เอกลักษณ์ที่เกี่ยวข้อง จะได้ผลลัพธ์สุดท้ายเป็น $\\arctan(2) - \\arctan(3)$ ซึ่งเท่ากับ $-\\arctan(1/7)$" },
-                    { answer: "2", steps: "เลขโดดที่ไม่ใช่ศูนย์ตัวสุดท้ายคือ $D(1000!) = \\frac{1000!}{10^k} \\pmod{10}$ โดยที่ $k = \\nu_5(1000!) = 249$ เราต้องแก้ระบบสมการ $X \\equiv 0 \\pmod 2$ และ $X \\equiv \\frac{1000!}{5^{249}} (2^{-1})^{249} \\pmod 5$ จากทฤษฎีบทวิลสันรูปแบบทั่วไป จะได้ว่า $\\frac{1000!}{5^{249}} \\equiv 4 \\pmod 5$ และพจน์ $(2^{-1})^{249} \\equiv 3^{249} \\equiv 3 \\pmod 5$ ดังนั้น $X \\equiv 4 \\cdot 3 = 12 \\equiv 2 \\pmod 5$ เลขโดดคู่เดียวที่สอดคล้องกับเงื่อนไขทั้งสองคือ 2" }
-                ]
-            }
-        };
-        Object.assign(allSolutions['nt1'], allSolutionsData);
+    const initApp = () => {
+        // This function runs once the main DOM and the KaTeX script are ready
+        // It's the true starting point of the app.
+        const solutionsTh = allSolutions['nt1'].th;
+        const problemsTh = allProblems['nt1'].th;
+        allSolutions['nt1'].en.forEach((sol, i) => {
+            solutionsTh[i].answer = sol.answer; // Ensure Thai solutions have the answer key
+            solutionsTh[i].title = problemsTh[i].title; // Sync titles
+        });
         setLanguage('en');
     };
-
+    
     // This robustly waits for the KaTeX script to be loaded and ready
     const kaTeXScript = document.querySelector('script[src*="auto-render.min.js"]');
     if (kaTeXScript) {
-        kaTeXScript.onload = init;
+        let loaded = false;
+        kaTeXScript.onload = () => {
+            if(!loaded) {
+                initApp();
+                loaded = true;
+            }
+        };
+        // In case the script is already cached and loaded before this listener is attached
+        if (window.renderMathInElement) {
+             if(!loaded) {
+                initApp();
+                loaded = true;
+            }
+        }
     } else {
-        // Fallback if the script is already loaded by the time this runs
-        init();
+        // Fallback if the script tag isn't found for some reason
+        initApp();
     }
 });
