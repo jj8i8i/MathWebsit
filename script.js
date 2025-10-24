@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const submitTest = () => {
         clearInterval(timerInterval);
-        const username = loginStuff.usernameInput.value;
+        const username = loginStuff.usernameInput.value.trim();
         localStorage.setItem(`test_completed_${username}`, 'true');
 
         let score = 0;
@@ -281,14 +281,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Event Listeners ---
     loginStuff.loginBtn.addEventListener('click', () => {
-        const username = loginStuff.usernameInput.value;
-        const password = loginStuff.passwordInput.value;
+        // Trim whitespace from inputs
+        const username = loginStuff.usernameInput.value.trim();
+        const password = loginStuff.passwordInput.value.trim();
 
         if (credentials[username] && credentials[username] === password) {
             loginStuff.errorMsg.textContent = '';
             lastScore = null;
             scoreDisplay.textContent = '';
             
+            // Use the trimmed username for localStorage
             if (localStorage.getItem(`test_completed_${username}`)) {
                 renderSolutions();
                 showScreen('solution');
