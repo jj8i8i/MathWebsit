@@ -3,8 +3,8 @@
     --card-bg: #ffffff;
     --primary-text: #1c1e21;
     --secondary-text: #606770;
-    --accent-color: #28a745; /* Changed to green */
-    --accent-hover: #218838; /* Darker green */
+    --accent-color: #007bff;
+    --accent-hover: #0056b3;
     --border-color: #dddfe2;
     --error-color: #d93025;
     --timer-warning: #f5a623;
@@ -78,7 +78,7 @@ button:hover {
     min-height: 1.2em;
 }
 
-/* Header for Test/Solution */
+/* Header */
 header {
     background-color: var(--card-bg);
     padding: 1rem 1.5rem;
@@ -131,25 +131,48 @@ header h1 {
     background-color: #f0f0f0;
 }
 
+/* Selection Screen */
+#exam-list-container {
+    padding: 1.5rem;
+}
+.exam-card {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.exam-card h2 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+.exam-card .start-btn {
+    width: auto;
+    padding: 10px 24px;
+    font-size: 1rem;
+}
+
 /* Problem & Solution Container */
 main {
     padding: 1.5rem;
     background-color: var(--card-bg);
 }
-.problem-card {
+.problem-card, .solution-card {
     margin-bottom: 2rem;
     padding: 1.5rem;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     background-color: #f9f9f9;
 }
-.problem-card h2 {
+.problem-card h2, .solution-card h2 {
     margin-top: 0;
     border-bottom: 2px solid var(--accent-color);
     padding-bottom: 0.5rem;
     font-size: 1.3rem;
 }
-.problem-statement {
+.problem-statement, .solution-statement {
     margin-bottom: 1rem;
     line-height: 1.6;
 }
@@ -166,8 +189,6 @@ main {
     width: calc(100% - 3rem);
     margin: 0 1.5rem 1.5rem 1.5rem;
 }
-
-/* Solution Screen specific */
 #score-display {
     font-size: 1.5rem;
     font-weight: bold;
@@ -182,21 +203,6 @@ main {
 #score-display:empty {
     display: none;
 }
-.solution-card {
-    margin-bottom: 2rem;
-    padding: 1.5rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background-color: #f9f9f9;
-}
-.solution-card h2 {
-    margin-top: 0;
-    font-size: 1.3rem;
-}
-.solution-statement {
-    line-height: 1.6;
-}
-
 
 /* KaTeX font styling */
 .katex {
@@ -205,15 +211,10 @@ main {
 
 @media (max-width: 600px) {
     body { font-size: 15px; }
-    header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-    }
-    .header-content {
-        width: 100%;
-        justify-content: space-between;
-    }
-    main, #login-screen .card { padding: 1rem; }
+    header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    .header-content { width: 100%; justify-content: space-between; }
+    main, #login-screen .card, #exam-list-container { padding: 1rem; }
     #submit-btn { width: calc(100% - 2rem); margin: 0 1rem 1rem 1rem; }
+    .exam-card { flex-direction: column; gap: 1rem; }
+    .exam-card .start-btn { width: 100%; }
 }
