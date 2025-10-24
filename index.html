@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Theory Mock Test</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0KOVwNw43oAnd6ffoX67gL4+iSU7wuIUvx4Gпущен6EGmrN8mg" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzYCACeUdcIQLPk5f1ca8DDXLlvtZoBugv" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="app">
+        <div id="login-screen" class="screen active">
+            <div class="card">
+                <h1 id="login-title">Number Theory Set 1</h1>
+                <p id="login-subtitle">Mock Test</p>
+                <input type="text" id="username" placeholder="Username">
+                <input type="password" id="password" placeholder="Password">
+                <button id="login-btn">Login</button>
+                <p id="login-error" class="error-message"></p>
+                 <div class="lang-toggle-container">
+                    <button id="lang-toggle-login" class="lang-toggle">EN/TH</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="test-screen" class="screen">
+            <header>
+                <div class="header-content">
+                    <h1 id="test-title">Number Theory Set 1</h1>
+                    <div id="timer-container">
+                        <span id="timer-label">Time Left:</span>
+                        <span id="timer">02:00:00</span>
+                    </div>
+                </div>
+                 <button id="lang-toggle-test" class="lang-toggle">EN/TH</button>
+            </header>
+            <main id="problem-container"></main>
+            <button id="submit-btn">Submit</button>
+        </div>
+
+        <div id="solution-screen" class="screen">
+            <header>
+                 <div class="header-content">
+                    <h1 id="solution-title">Results & Solutions</h1>
+                    <button id="back-to-login-btn">Back to Login</button>
+                </div>
+                <button id="lang-toggle-solution" class="lang-toggle">EN/TH</button>
+            </header>
+            <main id="solution-container">
+                <div id="score-display"></div>
+                <div id="solution-list"></div>
+            </main>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
