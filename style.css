@@ -3,8 +3,8 @@
     --card-bg: #ffffff;
     --primary-text: #1c1e21;
     --secondary-text: #606770;
-    --accent-color: #007bff;
-    --accent-hover: #0056b3;
+    --accent-color: #28a745; /* Changed to green */
+    --accent-hover: #218838; /* Darker green */
     --border-color: #dddfe2;
     --error-color: #d93025;
     --timer-warning: #f5a623;
