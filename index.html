@@ -12,6 +12,95 @@
 </head>
 <body>
     <div id="app">
+        <div id="login-screen" class="screen">
+            <div class="card zoom-in">
+                <h1 id="login-title">Mathematics Exam</h1>
+                <p id="login-subtitle">Mock Test</p>
+                <div id="login-form">
+                    <div class="form-group">
+                        <input type="text" id="username" placeholder="Username" autocomplete="username">
+                        <input type="password" id="password" placeholder="Password" autocomplete="current-password">
+                    </div>
+                    <button id="login-btn">Login</button>
+                </div>
+                <div id="loading-indicator" class="hidden">
+                    <div class="spinner"></div>
+                    <span id="loading-text">Verifying...</span>
+                </div>
+                <p id="login-error" class="error-message"></p>
+                 <div class="lang-toggle-container">
+                    <button id="lang-toggle-login" class="lang-toggle">EN / TH</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="selection-screen" class="screen">
+             <header>
+                 <h1 id="selection-title">Select Exam</h1>
+                 <div class="user-info">
+                    <span class="welcome-message"></span>
+                    <button class="logout-btn">Logout</button>
+                 </div>
+                 <button id="lang-toggle-selection" class="lang-toggle">EN / TH</button>
+            </header>
+            <main id="exam-list-container"></main>
+        </div>
+
+        <div id="test-screen" class="screen">
+            <header>
+                <div class="header-content">
+                    <h1 id="test-title"></h1>
+                    <div id="timer-container">
+                        <span id="timer-label">Time Left:</span>
+                        <span id="timer">02:00:00</span>
+                    </div>
+                </div>
+                <div class="user-info">
+                    <span class="welcome-message"></span>
+                    <button class="logout-btn">Logout</button>
+                 </div>
+                 <button id="lang-toggle-test" class="lang-toggle">EN / TH</button>
+            </header>
+            <main id="problem-container"></main>
+            <button id="submit-btn" class="submit-footer-btn">Submit</button>
+        </div>
+
+        <div id="solution-screen" class="screen">
+            <header>
+                <h1 id="solution-title">Results & Solutions</h1>
+                <div class="user-info">
+                    <span class="welcome-message"></span>
+                    <button class="logout-btn">Logout</button>
+                 </div>
+                <button id="lang-toggle-solution" class="lang-toggle">EN / TH</button>
+            </header>
+            <main id="solution-container">
+                <div id="score-display"></div>
+                <div id="solution-list"></div>
+                <button id="back-to-selection-btn">Select Another Exam</button>
+            </main>
+        </div>
+    </div>
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathematics Exam</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+</head>
+<body>
+    <div id="app">
         <div id="login-screen" class="screen active">
             <div class="card zoom-in">
                 <h1 id="login-title">Mathematics Exam</h1>
