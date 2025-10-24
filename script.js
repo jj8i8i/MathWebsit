@@ -1,4 +1,6 @@
+// ===== SCRIPT.JS (FINAL CORRECTED VERSION) =====
 document.addEventListener('DOMContentLoaded', () => {
+    // --- DOM Elements ---
     const screens = {
         login: document.getElementById('login-screen'),
         selection: document.getElementById('selection-screen'),
@@ -20,11 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToLoginBtn = document.getElementById('back-to-login-btn');
     const langToggles = document.querySelectorAll('.lang-toggle');
 
+    // --- State ---
     let timerInterval;
     let currentLang = 'en';
     let lastScore = null;
     let currentSetId = null;
-    const DURATION = 2 * 60 * 60;
+    const DURATION = 2 * 60 * 60; 
 
     const credentials = {
         JJ: 'admin',
@@ -84,22 +87,32 @@ document.addEventListener('DOMContentLoaded', () => {
             { answer: "2", steps: "We need to compute $X = \\frac{1000!}{10^{249}} \\pmod{10}$. This requires solving $X \\equiv 0 \\pmod 2$ and $X \\equiv \\frac{1000!}{5^{249}} (2^{-1})^{249} \\pmod 5$. This resolves to $X \\equiv 2 \\pmod 5$. The only even digit is 2." }
         ]
     };
+    
+    // --- Core Functions ---
 
     const showScreen = (screenId) => {
         Object.values(screens).forEach(screen => screen.classList.remove('active'));
         screens[screenId].classList.add('active');
     };
 
+    const renderMath = () => {
+        if (window.renderMathInElement) {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false}, {left: '\\[', right: '\\]', display: true}
+                ]
+            });
+        }
+    };
+    
     const renderSelectionScreen = () => {
         examListContainer.innerHTML = '';
         for (const setId in examSets) {
+            const setName = examSets[setId][currentLang].name;
             const card = document.createElement('div');
             card.className = 'exam-card';
-            const setName = examSets[setId][currentLang].name;
-            card.innerHTML = `
-                <h2>${setName}</h2>
-                <button class="start-btn" data-set-id="${setId}">${currentLang === 'en' ? 'Start' : 'เริ่มทำ'}</button>
-            `;
+            card.innerHTML = `<h2>${setName}</h2><button class="start-btn" data-set-id="${setId}">${currentLang === 'en' ? 'Start' : 'เริ่มทำ'}</button>`;
             examListContainer.appendChild(card);
         }
 
@@ -107,7 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
             button.addEventListener('click', (e) => {
                 currentSetId = e.target.getAttribute('data-set-id');
                 document.getElementById('test-title').textContent = examSets[currentSetId][currentLang].name;
-                
                 showScreen('test');
                 setTimeout(() => {
                     renderProblems();
@@ -115,26 +127,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 50);
             });
         });
+        renderMath();
     };
 
-    const login = () => {
-        const username = loginStuff.usernameInput.value.trim();
-        const password = loginStuff.passwordInput.value.trim();
-
-        if (credentials[username] && credentials[username] === password) {
-            loginStuff.errorMsg.textContent = '';
-            renderSelectionScreen();
-            showScreen('selection');
-        } else {
-            loginStuff.errorMsg.textContent = currentLang === 'en' ? 'Invalid username or password. Note: It is case-sensitive.' : 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง (โปรดระวังตัวพิมพ์เล็ก-ใหญ่)';
-        }
-    };
-
-    const formatTime = (seconds) => {
-        const h = Math.floor(seconds / 3600);
-        const m = Math.floor((seconds % 3600) / 60);
-        const s = seconds % 60;
-        return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    const renderProblems = () => {
+        problemContainer.innerHTML = '';
+        allProblems[currentSetId][currentLang].forEach((p, index) => {
+            const card = document.createElement('div');
+            card.className = 'problem-card';
+            card.innerHTML = `<h2>${p.title}</h2><div class="problem-statement">${p.statement}</div><input type="text" class="answer-input" id="answer-${index}" placeholder="${currentLang === 'en' ? 'Your answer' : 'คำตอบของคุณ'}">`;
+            problemContainer.appendChild(card);
+        });
+        renderMath();
     };
 
     const startTimer = () => {
@@ -154,29 +158,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     };
 
-    const renderProblems = () => {
-        problemContainer.innerHTML = '';
-        allProblems[currentSetId][currentLang].forEach((p, index) => {
-            const card = document.createElement('div');
-            card.className = 'problem-card';
-            card.innerHTML = `
-                <h2>${p.title}</h2>
-                <div class="problem-statement">${p.statement}</div>
-                <input type="text" class="answer-input" id="answer-${index}" placeholder="${currentLang === 'en' ? 'Your answer' : 'คำตอบของคุณ'}">
-            `;
-            problemContainer.appendChild(card);
-        });
-        renderMath();
-    };
-
     const submitTest = () => {
+        if(!currentSetId) return; // safety check
         clearInterval(timerInterval);
+        
+        const username = loginStuff.usernameInput.value.trim();
+        if (username !== 'JJ') {
+            localStorage.setItem(`test_completed_${username}_${currentSetId}`, 'true');
+        }
+
         let score = 0;
         allProblems[currentSetId][currentLang].forEach((p, i) => {
-            const userInput = document.getElementById(`answer-${i}`).value.trim();
-            const correctAnswer = allSolutions[currentSetId][i].answer;
-            if (userInput === correctAnswer) {
-                score++;
+            const userInputEl = document.getElementById(`answer-${i}`);
+            if(userInputEl) {
+                const userInput = userInputEl.value.trim();
+                const correctAnswer = allSolutions[currentSetId][i].answer;
+                if (userInput === correctAnswer) {
+                    score++;
+                }
             }
         });
         lastScore = score;
@@ -195,36 +194,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const solutions = allSolutions[currentSetId];
         const problems = allProblems[currentSetId][currentLang];
         solutions.forEach((s, index) => {
-            const problem = problems[index];
             const card = document.createElement('div');
             card.className = 'solution-card';
-            card.innerHTML = `
-                <h2>${problem.title}</h2>
-                <div class="problem-statement">${problem.statement}</div>
-                <hr>
-                <p><strong>${currentLang === 'en' ? 'Answer' : 'คำตอบ'}: ${s.answer}</strong></p>
-                <div class="solution-statement">${s.steps}</div>
-            `;
+            card.innerHTML = `<h2>${problems[index].title}</h2><div class="problem-statement">${problems[index].statement}</div><hr><p><strong>${currentLang === 'en' ? 'Answer' : 'คำตอบ'}: ${s.answer}</strong></p><div class="solution-statement">${s.steps}</div>`;
             solutionList.appendChild(card);
         });
         renderMath();
-    }
-    
-    const renderMath = () => {
-        if (window.renderMathInElement) {
-            renderMathInElement(document.body, {
-                delimiters: [
-                    {left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false},
-                    {left: '\\(', right: '\\)', display: false}, {left: '\\[', right: '\\]', display: true}
-                ]
-            });
-        }
     };
-    
+
     const setLanguage = (lang) => {
         currentLang = lang;
         document.getElementById('login-title').textContent = lang === 'en' ? 'Mathematics Exam' : 'แบบทดสอบคณิตศาสตร์';
-        document.getElementById('login-subtitle').textContent = lang === 'en' ? 'Mock Test' : 'ข้อสอบจำลอง';
         loginStuff.usernameInput.placeholder = lang === 'en' ? 'Username' : 'ชื่อผู้ใช้';
         loginStuff.passwordInput.placeholder = lang === 'en' ? 'Password' : 'รหัสผ่าน';
         loginStuff.loginBtn.textContent = lang === 'en' ? 'Login' : 'เข้าสู่ระบบ';
@@ -245,20 +225,56 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const toggleLanguage = () => setLanguage(currentLang === 'en' ? 'th' : 'en');
-    
-    loginStuff.loginBtn.addEventListener('click', login);
+    // --- Event Listeners ---
+    loginStuff.loginBtn.addEventListener('click', () => {
+        const username = loginStuff.usernameInput.value.trim();
+        const password = loginStuff.passwordInput.value.trim();
+
+        if (credentials[username] && credentials[username] === password) {
+            loginStuff.errorMsg.textContent = '';
+            
+            // Special case for JJ - always allow retake
+            if (username === 'JJ') {
+                 renderSelectionScreen();
+                 showScreen('selection');
+                 return;
+            }
+
+            // Check if any test was completed
+            let hasCompletedTest = false;
+            for (const setId in examSets) {
+                if (localStorage.getItem(`test_completed_${username}_${setId}`)) {
+                    hasCompletedTest = true;
+                    currentSetId = setId; // Show the last completed test solutions
+                    break;
+                }
+            }
+
+            if (hasCompletedTest) {
+                renderSolutions(); // This will use the stored currentSetId
+                showScreen('solution');
+            } else {
+                renderSelectionScreen();
+                showScreen('selection');
+            }
+        } else {
+            loginStuff.errorMsg.textContent = currentLang === 'en' ? 'Invalid username or password. Note: It is case-sensitive.' : 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง (โปรดระวังตัวพิมพ์เล็ก-ใหญ่)';
+        }
+    });
+
     submitBtn.addEventListener('click', () => {
         if (confirm(currentLang === 'en' ? 'Are you sure you want to submit?' : 'คุณแน่ใจหรือไม่ว่าต้องการส่งคำตอบ?')) {
             submitTest();
         }
     });
+
     backToLoginBtn.addEventListener('click', () => {
         loginStuff.usernameInput.value = '';
         loginStuff.passwordInput.value = '';
         showScreen('login');
     });
-    langToggles.forEach(btn => btn.addEventListener('click', toggleLanguage));
+    
+    langToggles.forEach(btn => btn.addEventListener('click', () => setLanguage(currentLang === 'en' ? 'th' : 'en')));
     
     setLanguage('en');
 });
