@@ -16,11 +16,17 @@
             <div class="card zoom-in">
                 <h1 id="login-title">Mathematics Exam</h1>
                 <p id="login-subtitle">Mock Test</p>
-                <div class="form-group">
-                    <input type="text" id="username" placeholder="Username" autocomplete="username">
-                    <input type="password" id="password" placeholder="Password" autocomplete="current-password">
+                <div id="login-form">
+                    <div class="form-group">
+                        <input type="text" id="username" placeholder="Username" autocomplete="username">
+                        <input type="password" id="password" placeholder="Password" autocomplete="current-password">
+                    </div>
+                    <button id="login-btn">Login</button>
                 </div>
-                <button id="login-btn">Login</button>
+                <div id="loading-indicator" class="hidden">
+                    <div class="spinner"></div>
+                    <span id="loading-text">Verifying...</span>
+                </div>
                 <p id="login-error" class="error-message"></p>
                  <div class="lang-toggle-container">
                     <button id="lang-toggle-login" class="lang-toggle">EN / TH</button>
