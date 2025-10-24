@@ -24,11 +24,21 @@
                 </div>
             </div>
         </div>
+        
+        <div id="selection-screen" class="screen">
+             <header>
+                 <div class="header-content">
+                    <h1 id="selection-title">Select Exam</h1>
+                </div>
+                <button id="lang-toggle-selection" class="lang-toggle">EN/TH</button>
+            </header>
+            <main id="exam-list-container"></main>
+        </div>
 
         <div id="test-screen" class="screen">
             <header>
                 <div class="header-content">
-                    <h1 id="test-title">Mathematics Exam</h1>
+                    <h1 id="test-title"></h1>
                     <div id="timer-container">
                         <span id="timer-label">Time Left:</span>
                         <span id="timer">02:00:00</span>
@@ -54,6 +64,6 @@
             </main>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
