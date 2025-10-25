@@ -1,4 +1,4 @@
-// ===== SCRIPT.JS (FINAL COMPLETE VERSION) =====
+// ===== SCRIPT.JS (FINAL COMPLETE VERSION - ALGEBRA SET 1 + HINTS + NO STEP NUMBERS) =====
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Elements ---
     const screens = {
@@ -39,9 +39,69 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- Data ---
-    const examSets = { 'nt1': { en: { name: "Number Theory Set 1" }, th: { name: "ทฤษฎีจำนวน ชุดที่ 1" } } };
-    const allProblems = {};
-    const allSolutions = {};
+    // Only Algebra Set 1
+    const examSets = {
+        'alg1': {
+            en: { name: "Algebra Set 1 (2 Hours)" },
+            th: { name: "พีชคณิต ชุดที่ 1 (2 ชั่วโมง)" }
+        }
+    };
+    const allProblems = {
+         'alg1': {
+            en: [
+                { title: "Problem 1", statement: "Let $P(x) = x^3 - 6x^2 + 11x - 6$. If $\\alpha, \\beta, \\gamma$ are the roots of $P(x)$, find the value of $(\\alpha+1)(\\beta+1)(\\gamma+1)$." },
+                { title: "Problem 2", statement: "Find all functions $f: \\mathbb{R} \\to \\mathbb{R}$ such that $f(x+y) + f(x-y) = 2f(x) + 2f(y)$ for all $x, y \\in \\mathbb{R}$ and $f(1)=2$. Find the value of $f(3)$." },
+                { title: "Problem 3", statement: "For positive real numbers $a, b, c$ such that $a+b+c=3$, find the minimum value of $\\frac{a^2}{b+c} + \\frac{b^2}{c+a} + \\frac{c^2}{a+b}$." },
+                { title: "Problem 4", statement: "Let the sequence $a_1 = 1$ and $a_{n+1} = \\frac{a_n}{1+na_n}$ for $n \\ge 1$. Find the value of $a_{100}$ (answer as a fraction)." },
+                { title: "Problem 5", statement: "Let $P(x)$ be a polynomial such that $P(x^2+1) = x^4+5x^2+3$. Find the value of $P(5)$." },
+                { title: "Problem 6", statement: "Find the number of ordered pairs of positive integers $(x,y)$ such that $\\frac{1}{x} + \\frac{1}{y} = \\frac{1}{12}$." },
+                { title: "Problem 7", statement: "Let $\\omega = e^{2\\pi i / 5}$ be a primitive 5th root of unity. Find the value of $(1-\\omega)(1-\\omega^2)(1-\\omega^3)(1-\\omega^4)$." },
+                { title: "Problem 8", statement: "Let $f: \\mathbb{R} \\to \\mathbb{R}$ be a differentiable function satisfying $f(x+y) = f(x)f(y)$ for all $x,y \\in \\mathbb{R}$ and $f'(0)=3$. Find the value of $f(2)$ (answer in terms of $e$)." },
+                { title: "Problem 9", statement: "Find the maximum value of $x^2y$ where $x,y$ are positive real numbers satisfying $2x+3y=6$." },
+                { title: "Problem 10", statement: "Let $P(x)$ be a polynomial with integer coefficients. If $P(1)=5$ and $P(4)=8$, and $a$ is an integer such that $P(a)=6$, find the value of $a$." }
+            ],
+            th: [
+                { title: "โจทย์ข้อที่ 1", statement: "ให้ $P(x) = x^3 - 6x^2 + 11x - 6$ ถ้า $\\alpha, \\beta, \\gamma$ เป็นรากของ $P(x)$ จงหาค่าของ $(\\alpha+1)(\\beta+1)(\\gamma+1)$" },
+                { title: "โจทย์ข้อที่ 2", statement: "จงหาฟังก์ชัน $f: \\mathbb{R} \\to \\mathbb{R}$ ทั้งหมดที่สอดคล้องเงื่อนไข $f(x+y) + f(x-y) = 2f(x) + 2f(y)$ สำหรับทุก $x, y \\in \\mathbb{R}$ และ $f(1)=2$ จงหาค่าของ $f(3)$" },
+                { title: "โจทย์ข้อที่ 3", statement: "สำหรับจำนวนจริงบวก $a, b, c$ ซึ่ง $a+b+c=3$ จงหาค่าต่ำสุดของ $\\frac{a^2}{b+c} + \\frac{b^2}{c+a} + \\frac{c^2}{a+b}$" },
+                { title: "โจทย์ข้อที่ 4", statement: "ให้ลำดับ $a_1 = 1$ และ $a_{n+1} = \\frac{a_n}{1+na_n}$ สำหรับ $n \\ge 1$ จงหาค่าของ $a_{100}$ (ตอบในรูปเศษส่วน)" },
+                { title: "โจทย์ข้อที่ 5", statement: "ให้ $P(x)$ เป็นพหุนามซึ่ง $P(x^2+1) = x^4+5x^2+3$ จงหาค่าของ $P(5)$" },
+                { title: "โจทย์ข้อที่ 6", statement: "จงหาจำนวนคู่อันดับของจำนวนเต็มบวก $(x,y)$ ทั้งหมดที่สอดคล้องสมการ $\\frac{1}{x} + \\frac{1}{y} = \\frac{1}{12}$" },
+                { title: "โจทย์ข้อที่ 7", statement: "ให้ $\\omega = e^{2\\pi i / 5}$ เป็นรากปฐมฐานที่ 5 ของ 1 จงหาค่าของ $(1-\\omega)(1-\\omega^2)(1-\\omega^3)(1-\\omega^4)$" },
+                { title: "โจทย์ข้อที่ 8", statement: "ให้ $f: \\mathbb{R} \\to \\mathbb{R}$ เป็นฟังก์ชันที่หาอนุพันธ์ได้ ซึ่งสอดคล้อง $f(x+y) = f(x)f(y)$ สำหรับทุก $x,y \\in \\mathbb{R}$ และ $f'(0)=3$ จงหาค่าของ $f(2)$ (ตอบในรูป $e$ ยกกำลัง)" },
+                { title: "โจทย์ข้อที่ 9", statement: "จงหาค่าสูงสุดของ $x^2y$ เมื่อ $x,y$ เป็นจำนวนจริงบวกที่สอดคล้อง $2x+3y=6$" },
+                { title: "โจทย์ข้อที่ 10", statement: "ให้ $P(x)$ เป็นพหุนามที่มีสัมประสิทธิ์เป็นจำนวนเต็ม ถ้า $P(1)=5$ และ $P(4)=8$ และ $a$ เป็นจำนวนเต็มซึ่ง $P(a)=6$ จงหาค่าของ $a$" }
+            ]
+        }
+    };
+    const allSolutions = {
+         'alg1': {
+            en: [
+                { answer: "24", hint: "Consider the factored form P(x) = (x-α)(x-β)(x-γ) and evaluate P(-1).", steps: "Since $\\alpha, \\beta, \\gamma$ are the roots, $P(x) = (x-\\alpha)(x-\\beta)(x-\\gamma)$.\nWe want $V = (\\alpha+1)(\\beta+1)(\\gamma+1)$.\nNotice $P(-1) = (-1-\\alpha)(-1-\\beta)(-1-\\gamma) = (-1)^3 (1+\\alpha)(1+\beta)(1+\\gamma) = -V$.\nThus, $V = -P(-1)$.\nCalculate $P(-1) = (-1)^3 - 6(-1)^2 + 11(-1) - 6 = -1 - 6 - 11 - 6 = -24$.\n$V = -(-24) = 24$." },
+                { answer: "18", hint: "This is a standard functional equation. What kind of function satisfies it?", steps: "The equation is d'Alembert's functional equation.\nThe general continuous solution is $f(x) = cx^2$.\nUse $f(1)=2$: $c(1)^2 = 2 \\implies c=2$.\nSo $f(x) = 2x^2$.\n$f(3) = 2(3^2) = 2(9) = 18$." },
+                { answer: "3/2", hint: "Try applying the Engel form of Cauchy-Schwarz.", steps: "Apply Cauchy-Schwarz (Engel form): $\\frac{a^2}{b+c} + \\frac{b^2}{c+a} + \\frac{c^2}{a+b} \\ge \\frac{(a+b+c)^2}{(b+c)+(c+a)+(a+b)}$.\nDenominator simplifies to $2(a+b+c)$.\nInequality becomes: $\\ge \\frac{(a+b+c)^2}{2(a+b+c)} = \\frac{a+b+c}{2}$.\nGiven $a+b+c=3$, the minimum is $\\ge 3/2$.\nEquality holds for $a=b=c=1$. Checking: $1/2+1/2+1/2 = 3/2$.\nMinimum value is $3/2$." },
+                { answer: "1/4951", hint: "Consider the reciprocal sequence b_n = 1/a_n.", steps: "Let $b_n = 1/a_n$. Then $b_{n+1} = 1/a_{n+1} = (1+na_n)/a_n = 1/a_n + n = b_n + n$.\n$b_{n+1} - b_n = n$.\n$b_{100} = b_1 + \\sum_{k=1}^{99} (b_{k+1}-b_k) = b_1 + \\sum_{k=1}^{99} k$.\n$b_1 = 1/a_1 = 1$.\n$\\sum_{k=1}^{99} k = \\frac{99(100)}{2} = 4950$.\n$b_{100} = 1 + 4950 = 4951$.\n$a_{100} = 1/b_{100} = 1/4951$." },
+                { answer: "39", hint: "Let y = x^2+1 and express the right side in terms of y.", steps: "Let $y = x^2+1$, so $x^2 = y-1$.\nSubstitute into $P(x^2+1) = x^4+5x^2+3$:\n$P(y) = (x^2)^2 + 5(x^2) + 3$\n$P(y) = (y-1)^2 + 5(y-1) + 3$\nExpand: $P(y) = (y^2 - 2y + 1) + (5y - 5) + 3 = y^2 + 3y - 1$.\nFind $P(5)$ by substituting $y=5$:\n$P(5) = 5^2 + 3(5) - 1 = 25 + 15 - 1 = 39$." },
+                { answer: "15", hint: "Clear denominators and try to factor using SFFT (Simon's Favorite Factoring Trick).", steps: "Multiply $\\frac{1}{x} + \\frac{1}{y} = \\frac{1}{12}$ by $12xy$: $12y + 12x = xy$.\nRearrange: $xy - 12x - 12y = 0$.\nAdd 144 to both sides: $xy - 12x - 12y + 144 = 144$.\nFactor: $(x-12)(y-12) = 144$.\nLet $X=x-12, Y=y-12$. $XY=144$.\nSince $x, y \ge 1$, $X, Y \ge -11$. As $XY=144>0$, $X$ and $Y$ must have the same sign. They must be positive.\n$X, Y$ must be positive integer factors of 144.\nNumber of positive divisors of $144 = 2^4 \\cdot 3^2$ is $(4+1)(2+1) = 15$.\nThere are 15 pairs." },
+                { answer: "5", hint: "Consider the polynomial P(x) = x^5 - 1 and its roots.", steps: "Consider $P(x) = x^5 - 1$. Its roots are $1, \\omega, \\omega^2, \\omega^3, \\omega^4$.\n$x^5 - 1 = (x-1)(x-\\omega)(x-\\omega^2)(x-\\omega^3)(x-\\omega^4)$.\nLet $Q(x) = \\frac{x^5-1}{x-1} = x^4 + x^3 + x^2 + x + 1$.\nThen $Q(x) = (x-\\omega)(x-\\omega^2)(x-\\omega^3)(x-\\omega^4)$.\nThe desired expression is $(1-\\omega)(1-\\omega^2)(1-\\omega^3)(1-\\omega^4) = Q(1)$.\n$Q(1) = 1^4 + 1^3 + 1^2 + 1 + 1 = 5$." },
+                { answer: "e^6", hint: "What is the general form of a differentiable function satisfying f(x+y)=f(x)f(y)?", steps: "$f(x+y)=f(x)f(y)$ with $f$ differentiable implies $f(x)=e^{cx}$ (non-zero case).\n$f'(x) = c e^{cx}$.\n$f'(0) = c e^0 = c$. Given $f'(0)=3$, so $c=3$.\n$f(x) = e^{3x}$.\n$f(2) = e^{3(2)} = e^6$." },
+                { answer: "8/3", hint: "Use AM-GM inequality. How can you split 2x+3y to get x^2y in the product?", steps: "Maximize $x^2y$ subject to $x,y>0$ and $2x+3y=6$.\nUse AM-GM on terms $x, x, 3y$. Their sum is $x+x+3y = 2x+3y = 6$.\n$\\frac{x+x+3y}{3} \ge \\sqrt[3]{x \\cdot x \\cdot (3y)}$.\n$\\frac{6}{3} \ge \\sqrt[3]{3x^2y} \implies 2 \ge \\sqrt[3]{3x^2y}$.\nCube both sides: $8 \ge 3x^2y \implies x^2y \le 8/3$.\nEquality holds when $x = 3y$. Substitute into $2x+3y=6$: $2(3y)+3y=6 \implies 9y=6 \implies y=2/3$. Then $x=2$. Maximum is $8/3$." },
+                { answer: "2", hint: "Use the property that (m-n) divides (P(m)-P(n)) for polynomials with integer coefficients.", steps: "Property: If $P(x)$ has integer coefficients, then $(m-n)$ divides $(P(m)-P(n))$ for distinct integers $m, n$.\nApply with $(a, 1)$: $(a-1)$ divides $(P(a)-P(1)) = 6-5 = 1$. So $a-1 = \pm 1 \implies a=2$ or $a=0$.\nApply with $(a, 4)$: $(a-4)$ divides $(P(a)-P(4)) = 6-8 = -2$. So $a-4 \in \{1, -1, 2, -2\}$.\nCheck possibilities for $a$:\nIf $a=0$, $a-4 = -4$. $-4$ does not divide $-2$.\nIf $a=2$, $a-4 = -2$. $-2$ divides $-2$. Yes.\nThe only possible integer value for $a$ is 2." }
+            ],
+            th: [ // Translate hints and remove step numbers from Thai solutions
+                 { answer: "24", hint: "พิจารณารูปตัวประกอบ P(x) = (x-α)(x-β)(x-γ) และหาค่า P(-1)", steps: "ให้รากคือ $\\alpha, \\beta, \\gamma$ ดังนั้น $P(x) = (x-\\alpha)(x-\\beta)(x-\\gamma)$\nเราต้องการหา $V = (\\alpha+1)(\\beta+1)(\\gamma+1)$\nสังเกตว่า $P(-1) = (-1-\\alpha)(-1-\\beta)(-1-\\gamma) = (-1)^3 (1+\\alpha)(1+\beta)(1+\\gamma) = -V$\nดังนั้น $V = -P(-1)$\nคำนวณ $P(-1) = (-1)^3 - 6(-1)^2 + 11(-1) - 6 = -1 - 6 - 11 - 6 = -24$\n$V = -(-24) = 24$" },
+                { answer: "18", hint: "นี่คือสมการฟังก์ชันมาตรฐาน ฟังก์ชันรูปแบบใดสอดคล้องกับสมการนี้?", steps: "สมการที่ให้มาคือสมการฟังก์ชัน d'Alembert\nผลเฉลยต่อเนื่องทั่วไปคือ $f(x) = cx^2$\nจาก $f(1)=2$ ได้ $c(1)^2 = 2 \implies c=2$\nดังนั้น $f(x) = 2x^2$\nหาค่า $f(3) = 2(3^2) = 2(9) = 18$" },
+                { answer: "3/2", hint: "ลองใช้อสมการ Cauchy-Schwarz ในรูปแบบ Engel", steps: "ใช้อสมการ Cauchy-Schwarz (Engel form):\n$\\frac{a^2}{b+c} + \\frac{b^2}{c+a} + \\frac{c^2}{a+b} \\ge \\frac{(a+b+c)^2}{(b+c)+(c+a)+(a+b)}$\nตัวส่วน $= 2(a+b+c)$\nอสมการกลายเป็น $\\ge \\frac{(a+b+c)^2}{2(a+b+c)} = \\frac{a+b+c}{2}$\nโจทย์ให้ $a+b+c=3$, ดังนั้นค่าต่ำสุด $\\ge 3/2$\nสมการเกิดเมื่อ $a=b=c=1$. ตรวจสอบ: $1/2+1/2+1/2 = 3/2$\nค่าต่ำสุดคือ $3/2$" },
+                { answer: "1/4951", hint: "พิจารณาลำดับส่วนกลับ b_n = 1/a_n", steps: "ให้ $b_n = 1/a_n$. จะได้ $b_{n+1} = 1/a_{n+1} = (1+na_n)/a_n = 1/a_n + n = b_n + n$\n$b_{n+1} - b_n = n$\n$b_{100} = b_1 + \\sum_{k=1}^{99} (b_{k+1}-b_k) = b_1 + \\sum_{k=1}^{99} k$\n$b_1 = 1/a_1 = 1$\n$\\sum_{k=1}^{99} k = \\frac{99(100)}{2} = 4950$\n$b_{100} = 1 + 4950 = 4951$\n$a_{100} = 1/b_{100} = 1/4951$" },
+                { answer: "39", hint: "ให้ y = x^2+1 แล้วเขียนนิพจน์ฝั่งขวาในเทอมของ y", steps: "ให้ $y = x^2+1$ ดังนั้น $x^2 = y-1$\nแทนค่าใน $P(x^2+1) = x^4+5x^2+3$:\n$P(y) = (x^2)^2 + 5(x^2) + 3$\n$P(y) = (y-1)^2 + 5(y-1) + 3$\nกระจาย: $P(y) = (y^2 - 2y + 1) + (5y - 5) + 3 = y^2 + 3y - 1$\nหา $P(5)$ โดยแทน $y=5$:\n$P(5) = 5^2 + 3(5) - 1 = 25 + 15 - 1 = 39$" },
+                { answer: "15", hint: "กำจัดส่วนแล้วลองแยกตัวประกอบโดยใช้ SFFT (Simon's Favorite Factoring Trick)", steps: "คูณ $\\frac{1}{x} + \\frac{1}{y} = \\frac{1}{12}$ ด้วย $12xy$: $12y + 12x = xy$\nจัดรูป: $xy - 12x - 12y = 0$\nบวก 144 ทั้งสองข้าง: $xy - 12x - 12y + 144 = 144$\nแยกตัวประกอบ: $(x-12)(y-12) = 144$\nให้ $X=x-12, Y=y-12$. $XY=144$\nเนื่องจาก $x, y \\ge 1$, $X, Y \\ge -11$. $XY>0$ แสดงว่า $X, Y$ เครื่องหมายเหมือนกัน ต้องเป็นบวกทั้งคู่\n$X, Y$ ต้องเป็นตัวประกอบบวกของ 144\nจำนวนตัวประกอบบวกของ $144 = 2^4 \\cdot 3^2$ คือ $(4+1)(2+1) = 15$\nมี 15 คู่" },
+                { answer: "5", hint: "พิจารณาพหุนาม P(x) = x^5 - 1 และรากของมัน", steps: "พิจารณา $P(x) = x^5 - 1$. รากคือ $1, \\omega, \\omega^2, \\omega^3, \\omega^4$\n$x^5 - 1 = (x-1)(x-\\omega)(x-\\omega^2)(x-\\omega^3)(x-\\omega^4)$\nให้ $Q(x) = \\frac{x^5-1}{x-1} = x^4 + x^3 + x^2 + x + 1$\nดังนั้น $Q(x) = (x-\\omega)(x-\\omega^2)(x-\\omega^3)(x-\\omega^4)$\nค่าที่ต้องการคือ $(1-\\omega)(1-\\omega^2)(1-\\omega^3)(1-\\omega^4) = Q(1)$\n$Q(1) = 1^4 + 1^3 + 1^2 + 1 + 1 = 5$" },
+                { answer: "e^6", hint: "ฟังก์ชันที่หาอนุพันธ์ได้ที่สอดคล้อง f(x+y)=f(x)f(y) มีรูปแบบทั่วไปอย่างไร?", steps: "$f(x+y)=f(x)f(y)$ และ $f$ หาอนุพันธ์ได้ หมายความว่า $f(x)=e^{cx}$\n$f'(x) = c e^{cx}$\n$f'(0) = c e^0 = c$. โจทย์ให้ $f'(0)=3$, ดังนั้น $c=3$\n$f(x) = e^{3x}$\n$f(2) = e^{3(2)} = e^6$" },
+                { answer: "8/3", hint: "ใช้อสมการ AM-GM จะแยกพจน์ 2x+3y อย่างไรเพื่อให้ผลคูณเกิด x^2y?", steps: "หาค่าสูงสุดของ $x^2y$ เมื่อ $x,y>0$ และ $2x+3y=6$\nใช้ AM-GM กับพจน์ $x, x, 3y$. ผลบวกคือ $x+x+3y = 2x+3y = 6$\n$\\frac{x+x+3y}{3} \ge \\sqrt[3]{x \\cdot x \\cdot (3y)}$\n$\\frac{6}{3} \ge \\sqrt[3]{3x^2y} \implies 2 \ge \\sqrt[3]{3x^2y}$\nยกกำลังสาม: $8 \ge 3x^2y \implies x^2y \le 8/3$\nสมการเกิดเมื่อ $x = 3y$. แทนใน $2x+3y=6$: $2(3y)+3y=6 \implies 9y=6 \implies y=2/3$. $x=2$. ค่าสูงสุดคือ $8/3$" },
+                { answer: "2", hint: "ใช้คุณสมบัติที่ว่า (m-n) หาร (P(m)-P(n)) ลงตัว สำหรับพหุนามที่มีสัมประสิทธิ์เป็นจำนวนเต็ม", steps: "คุณสมบัติ: ถ้า $P(x)$ มีสัมประสิทธิ์เป็นจำนวนเต็ม แล้ว $(m-n)$ หาร $(P(m)-P(n))$ ลงตัว สำหรับ $m \ne n$\nใช้กับ $(a, 1)$: $(a-1)$ หาร $(P(a)-P(1)) = 6-5 = 1$. ดังนั้น $a-1 = \pm 1 \implies a=2$ หรือ $a=0$\nใช้กับ $(a, 4)$: $(a-4)$ หาร $(P(a)-P(4)) = 6-8 = -2$. ดังนั้น $a-4 \in \{1, -1, 2, -2\}$\nตรวจสอบค่า $a$:\nถ้า $a=0$ แล้ว $a-4 = -4$. $-4$ หาร $-2$ ไม่ลงตัว\nถ้า $a=2$ แล้ว $a-4 = -2$. $-2$ หาร $-2$ ลงตัว\nค่า $a$ ที่เป็นไปได้คือ 2" }
+            ]
+        }
+    };
 
     // --- Core Functions ---
     const showScreen = (screenId) => {
@@ -53,7 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const renderMath = () => {
-        // Only run if KaTeX is loaded
         if (window.renderMathInElement) {
             try {
                 renderMathInElement(document.body, {
@@ -82,13 +141,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const setName = examSets[setId][currentLang].name;
             const card = document.createElement('div');
             card.className = 'exam-card';
-            card.innerHTML = `<h2>${setName}</h2><button class="start-btn" data-set-id="${setId}">${currentLang === 'en' ? 'Start' : 'เริ่มทำ'}</button>`;
+            const numQuestions = (allProblems[setId]?.[currentLang] || []).length;
+            const detailsText = currentLang === 'en' ? `${numQuestions} Questions` : `${numQuestions} ข้อ`;
+            card.innerHTML = `<div><h2>${setName}</h2><p class="exam-details">${detailsText}</p></div><button class="start-btn" data-set-id="${setId}">${currentLang === 'en' ? 'Start' : 'เริ่มทำ'}</button>`;
             examListContainer.appendChild(card);
         });
         document.querySelectorAll('.start-btn').forEach(button => {
             button.addEventListener('click', (e) => {
                 currentSetId = e.target.getAttribute('data-set-id');
-                document.getElementById('test-title').textContent = examSets[currentSetId][currentLang].name;
+                const titleElement = document.getElementById('test-title');
+                if (titleElement) {
+                    titleElement.textContent = examSets[currentSetId][currentLang].name;
+                }
                 showScreen('test');
                 renderProblems();
                 startTimer();
@@ -100,14 +164,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderProblems = () => {
         problemContainer.innerHTML = '';
+        if (!currentSetId || !allProblems[currentSetId]?.[currentLang]) {
+            problemContainer.innerHTML = "Error: Problem set not found.";
+            return;
+        }
         allProblems[currentSetId][currentLang].forEach((p, index) => {
             const card = document.createElement('div');
             card.className = 'problem-card';
-            card.innerHTML = `<h2>${p.title}</h2><div class="problem-statement">${p.statement}</div><input type="text" class="answer-input" id="answer-${index}" placeholder="${currentLang === 'en' ? 'Your answer' : 'คำตอบของคุณ'}">`;
+            const hintButtonText = currentLang === 'en' ? 'Hint' : 'คำใบ้';
+            card.innerHTML = `
+                <h2>${p.title}</h2>
+                <div class="problem-statement">${p.statement}</div>
+                <input type="text" class="answer-input" id="answer-${index}" placeholder="${currentLang === 'en' ? 'Your answer' : 'คำตอบของคุณ'}">
+                <button class="hint-btn" data-problem-index="${index}">${hintButtonText}</button>
+            `;
             problemContainer.appendChild(card);
         });
+
+        document.querySelectorAll('.hint-btn').forEach(button => {
+             button.addEventListener('click', handleHintClick);
+        });
+
         renderMath();
     };
+
+    const handleHintClick = (event) => {
+        const button = event.target;
+        const problemIndex = parseInt(button.getAttribute('data-problem-index'), 10);
+        showHint(currentSetId, currentLang, problemIndex);
+    };
+
+    const showHint = (setId, lang, index) => {
+        // Find the correct hint text based on current language
+        const hintText = allSolutions[setId]?.[lang]?.[index]?.hint;
+        const alertTitle = lang === 'en' ? 'Hint' : 'คำใบ้';
+        if (hintText) {
+            alert(`${alertTitle}: ${hintText}`);
+        } else {
+            alert(lang === 'en' ? 'No hint available for this problem.' : 'ไม่มีคำใบ้สำหรับข้อนี้');
+        }
+    };
+
 
     const startTimer = () => {
         let timeLeft = DURATION;
@@ -121,53 +218,91 @@ document.addEventListener('DOMContentLoaded', () => {
             if (timeLeft < 60) timerDisplay.classList.add('danger');
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
-                submitTest();
+                submitTest(); // Automatically submit when time runs out
             }
         }, 1000);
     };
 
     const submitTest = () => {
-        if(!currentSetId) return;
-        clearInterval(timerInterval);
+        if(!currentSetId || !allSolutions[currentSetId]?.en) {
+            console.error("Cannot submit: currentSetId or solutions missing.");
+            return;
+        }
+        clearInterval(timerInterval); // Stop the timer
         if (currentUser !== 'JJ') {
-            localStorage.setItem(`test_completed_${currentUser}_${currentSetId}`, 'true');
+            // Use try-catch for localStorage in case of security restrictions
+            try {
+                localStorage.setItem(`test_completed_${currentUser}_${currentSetId}`, 'true');
+            } catch (e) {
+                console.warn("Could not save completion status to localStorage:", e);
+            }
         }
         let score = 0;
         allSolutions[currentSetId].en.forEach((sol, i) => {
             const userInputEl = document.getElementById(`answer-${i}`);
+            // Check if element exists before accessing value
             if(userInputEl && userInputEl.value.trim() === sol.answer) {
                 score++;
             }
         });
         lastScore = score;
-        displayScore(score);
-        renderSolutions();
-        showScreen('solution');
+        displayScore(score); // Calculate score first
+        renderSolutions();   // Then render solutions page
+        showScreen('solution'); // Finally, show the solutions screen
     };
 
     const displayScore = (score) => {
-        const total = allProblems[currentSetId][currentLang].length;
-        scoreDisplay.textContent = currentLang === 'en' ? `Your Score: ${score} / ${total}` : `คะแนนของคุณ: ${score} / ${total}`;
+        // Safely get total number of problems
+        const total = (currentSetId && allProblems[currentSetId]?.[currentLang]) ? allProblems[currentSetId][currentLang].length : 0;
+        const scoreText = currentLang === 'en' ? `Your Score: ${score} / ${total}` : `คะแนนของคุณ: ${score} / ${total}`;
+        // Ensure scoreDisplay element exists
+        if (scoreDisplay) {
+            scoreDisplay.textContent = scoreText;
+        } else {
+             console.error("Score display element not found.");
+        }
     };
 
     const renderSolutions = () => {
-        solutionList.innerHTML = '';
-        const solutions = allSolutions[currentSetId][currentLang];
-        const problems = allProblems[currentSetId][currentLang];
-        solutions.forEach((s, index) => {
-            const card = document.createElement('div');
-            card.className = 'solution-card';
-            // Use replaceAll for safety, although replace with /g should work
-            const formattedSteps = s.steps.replace(/\n/g, '<br><br>');
-            card.innerHTML = `<h2>${problems[index].title}</h2><div class="problem-statement">${problems[index].statement}</div><hr><p><strong>${currentLang === 'en' ? 'Answer' : 'คำตอบ'}: ${s.answer}</strong></p><div class="solution-statement">${formattedSteps}</div>`;
-            solutionList.appendChild(card);
-        });
-        updateWelcomeMessage();
-        renderMath();
+        solutionList.innerHTML = ''; // Clear previous solutions
+        // Check if all necessary data exists
+        if (currentSetId && allSolutions[currentSetId]?.[currentLang] && allProblems[currentSetId]?.[currentLang]) {
+            const solutions = allSolutions[currentSetId][currentLang];
+            const problems = allProblems[currentSetId][currentLang];
+            solutions.forEach((s, index) => {
+                const card = document.createElement('div');
+                card.className = 'solution-card';
+                // Format steps without numbering
+                const formattedSteps = s.steps
+                    .replace(/^\s*[\d\.]+\s*/gm, '') // Remove starting numbers/dots
+                    .replace(/\n\n/g, '<br><br>')    // Keep paragraph breaks
+                    .replace(/\n/g, '<br>');         // Convert single newlines
+
+                // Safely access problem title and statement
+                const problemTitle = problems[index]?.title || `Problem ${index + 1}`;
+                const problemStatement = problems[index]?.statement || '';
+
+                card.innerHTML = `
+                    <h2>${problemTitle}</h2>
+                    <div class="problem-statement">${problemStatement}</div>
+                    <hr>
+                    <p><strong>${currentLang === 'en' ? 'Answer' : 'คำตอบ'}: ${s.answer}</strong></p>
+                    <div class="solution-statement">${formattedSteps}</div>`;
+                solutionList.appendChild(card);
+            });
+        } else {
+            // Display an error message if data is missing
+            solutionList.innerHTML = `<p>${currentLang === 'en' ? 'Solutions are currently unavailable.' : 'ไม่สามารถแสดงเฉลยได้ในขณะนี้'}</p>`;
+            console.error("Could not render solutions: Data missing for set", currentSetId, " lang", currentLang);
+        }
+        updateWelcomeMessage(); // Update welcome message if user info is displayed here
+        renderMath(); // Re-render math content
     };
+
 
     const setLanguage = (lang) => {
         currentLang = lang;
+        // Update static text elements
         document.getElementById('login-title').textContent = lang === 'en' ? 'Mathematics Exam' : 'แบบทดสอบคณิตศาสตร์';
         loginStuff.usernameInput.placeholder = lang === 'en' ? 'Username' : 'ชื่อผู้ใช้';
         loginStuff.passwordInput.placeholder = lang === 'en' ? 'Password' : 'รหัสผ่าน';
@@ -180,86 +315,60 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('loading-text').textContent = lang === 'en' ? 'Verifying...' : 'กำลังตรวจสอบ...';
         logoutBtns.forEach(btn => btn.textContent = lang === 'en' ? 'Logout' : 'ออกจากระบบ');
 
+        // Update dynamic content based on the current screen
         updateWelcomeMessage();
-        if (screens.selection.classList.contains('active')) renderSelectionScreen();
-        if (screens.test.classList.contains('active')) {
-            if(currentSetId) document.getElementById('test-title').textContent = examSets[currentSetId][currentLang].name;
-            renderProblems();
-        }
-        if (screens.solution.classList.contains('active')) {
+        if (screens.selection.classList.contains('active')) {
+            renderSelectionScreen();
+        } else if (screens.test.classList.contains('active')) {
+            // Update title and re-render problems with correct language
+            const titleElement = document.getElementById('test-title');
+             if (titleElement && currentSetId && examSets[currentSetId]) {
+                 titleElement.textContent = examSets[currentSetId][currentLang].name;
+             }
+            renderProblems(); // Re-render problems to update hint button text
+        } else if (screens.solution.classList.contains('active')) {
+            // Update score display and re-render solutions
             if (lastScore !== null) displayScore(lastScore);
             renderSolutions();
         }
     };
 
-    const loginAction = () => {
-        loginCard.classList.add('authenticating');
-        loginStuff.errorMsg.textContent = '';
-        console.log("Login button clicked, showing loading.");
 
-        setTimeout(() => {
-            const username = loginStuff.usernameInput.value.trim();
-            const password = loginStuff.passwordInput.value.trim();
-            console.log(`Verifying: User='${username}', Pass='${password}'`);
-
-            if (credentials[username] && credentials[username] === password) {
-                console.log("Credentials verified successfully.");
-                currentUser = username;
-                localStorage.setItem('loggedInUser', username); // Save session
-                showScreen('selection'); // Switch screen FIRST
-                renderSelectionScreen(); // Render content AFTER switching
-            } else {
-                console.log("Credential verification failed.");
-                loginStuff.errorMsg.textContent = currentLang === 'en' ? 'Invalid username or password. Note: It is case-sensitive.' : 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง (โปรดระวังตัวพิมพ์เล็ก-ใหญ่)';
-                loginCard.classList.remove('authenticating'); // Remove loading on error
-            }
-        }, 100); // Short delay
-    };
-
-    const logoutAction = () => {
-        console.log("Logout action initiated");
-        currentUser = null;
-        lastScore = null;
-        currentSetId = null;
-        localStorage.removeItem('loggedInUser');
-        loginStuff.usernameInput.value = '';
-        loginStuff.passwordInput.value = '';
-        if(timerInterval) clearInterval(timerInterval);
-        showScreen('login');
-    };
+    const loginAction = () => { loginCard.classList.add('authenticating'); loginStuff.errorMsg.textContent = ''; setTimeout(() => { const username = loginStuff.usernameInput.value.trim(); const password = loginStuff.passwordInput.value.trim(); if (credentials[username] && credentials[username] === password) { currentUser = username; localStorage.setItem('loggedInUser', username); showScreen('selection'); renderSelectionScreen(); } else { loginStuff.errorMsg.textContent = currentLang === 'en' ? 'Invalid username or password. Note: It is case-sensitive.' : 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง (โปรดระวังตัวพิมพ์เล็ก-ใหญ่)'; loginCard.classList.remove('authenticating'); } }, 100); };
+    const logoutAction = () => { currentUser = null; lastScore = null; currentSetId = null; localStorage.removeItem('loggedInUser'); loginStuff.usernameInput.value = ''; loginStuff.passwordInput.value = ''; if(timerInterval) clearInterval(timerInterval); showScreen('login'); };
 
     // --- Event Listeners ---
     loginStuff.loginBtn.addEventListener('click', loginAction);
-    submitBtn.addEventListener('click', () => {
-        if (confirm(currentLang === 'en' ? 'Are you sure you want to submit?' : 'คุณแน่ใจหรือไม่ว่าต้องการส่งคำตอบ?')) {
-            submitTest();
-        }
-    });
-    backToSelectionBtn.addEventListener('click', () => {
-        renderSelectionScreen();
-        showScreen('selection');
-    });
+    submitBtn.addEventListener('click', () => { if (confirm(currentLang === 'en' ? 'Are you sure you want to submit?' : 'คุณแน่ใจหรือไม่ว่าต้องการส่งคำตอบ?')) { submitTest(); } });
+    backToSelectionBtn.addEventListener('click', () => { renderSelectionScreen(); showScreen('selection'); });
     logoutBtns.forEach(btn => btn.addEventListener('click', logoutAction));
     langToggles.forEach(btn => btn.addEventListener('click', () => setLanguage(currentLang === 'en' ? 'th' : 'en')));
 
-    // --- Data Definitions ---
-    const formatTime = (seconds) => { const h = Math.floor(seconds / 3600); const m = Math.floor((seconds % 3600) / 60); const s = seconds % 60; return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`; };
-    Object.assign(allProblems, {'nt1':{en:[{title:"Problem 1",statement:"Find the sum of all rational numbers $r$ for which the equation $r^2 x^2 + (r-1)x + (r-2) = 0$ has two distinct integer roots."},{title:"Problem 2",statement:"It is a known fact that the only integer solutions to $n | (2^n+1)$ are powers of 3. Find the second smallest integer $n>1$ that is not a power of 3, such that $n$ divides $2^n+2$."},{title:"Problem 3",statement:"The equation $x^2+y^2+z^2=3xyz$ is known as the Markov equation. Find the sum of the components of the unique non-trivial integer solution $(x,y,z)$ with $x \\le y \\le z$ and $z < 10$. A non-trivial solution is one where $x, y, z$ are positive integers."},{title:"Problem 4",statement:"Let the sequence $a_n$ be defined for $n \\ge 1$ by $a_n = n + \\lfloor \\sqrt{n} + \\frac{1}{2} \\rfloor$. Find the number of positive integers less than or equal to 2025 that are not in the set $\\{a_n | n \\in \\mathbb{Z}^+\\}$."},{title:"Problem 5",statement:"Let $p=2027$ (a prime number). Let $\\omega = e^{2\\pi i/p}$ be a primitive $p$-th root of unity. Calculate the numerical value of the product $P = \\prod_{k=1}^{p-1} (1-\\omega^k)^{(\\frac{k}{p})}$, where $(\\frac{k}{p})$ is the Legendre symbol."},{title:"Problem 6",statement:"Find the largest integer $n$ less than 1000 for which there exists a pair of positive integers $(x,y)$ satisfying the equation $x^2 - (n^2+1)y^2 = -1$."},{title:"Problem 7",statement:"Let $p=43$. Find the value of the sum $\\sum_{g} g \\pmod{p}$, where the sum is taken over all primitive roots $g$ modulo $p$ in the range $1 \\le g < p$."},{title:"Problem 8",statement:"Let $\\sigma(n)$ denote the sum of the positive divisors of $n$. Find the smallest integer $n > 2$ such that $\\sigma(n) \\equiv 2 \\pmod{n}$."},{title:"Problem 9",statement:"Let $F_n$ be the $n$-th Fibonacci number ($F_1=1, F_2=1$). Evaluate the sum $S = \\sum_{n=3}^{\\infty} \\arctan\\left(\\frac{F_{n-1}F_n - F_{n-2}F_{n+1}}{F_{n-1}F_{n+1}+F_n F_{n-2}}\\right)$."},{title:"Problem 10",statement:"Find the last non-zero digit in the decimal representation of $1000!$."}],th:[{title:"โจทย์ข้อที่ 1",statement:"จงหาผลบวกของจำนวนตรรกยะ $r$ ทั้งหมดที่ทำให้สมการ $r^2 x^2 + (r-1)x + (r-2) = 0$ มีรากเป็นจำนวนเต็มที่แตกต่างกันสองค่า"},{title:"โจทย์ข้อที่ 2",statement:"เป็นที่ทราบกันว่าผลเฉลยจำนวนเต็มของ $n | (2^n+1)$ คือ $3^k$ เท่านั้น จงหาจำนวนเต็ม $n>1$ ที่ไม่ใช่กำลังของ 3 ที่มีค่าน้อยที่สุดเป็นอันดับที่สอง ที่สอดคล้องกับ $n$ หาร $2^n+2$ ลงตัว"},{title:"โจทย์ข้อที่ 3",statement:"สมการ $x^2+y^2+z^2=3xyz$ คือสมการมาร์คอฟ จงหาผลบวกขององค์ประกอบของผลเฉลยจำนวนเต็มบวก $(x,y,z)$ ที่ไม่ใช่ผลเฉลยชัดแจ้งเพียงชุดเดียวที่สอดคล้องกับ $x \\le y \\le z$ และ $z < 10$"},{title:"โจทย์ข้อที่ 4",statement:"ให้ลำดับ $a_n$ สำหรับ $n \\ge 1$ นิยามโดย $a_n = n + \\lfloor \\sqrt{n} + \\frac{1}{2} \\rfloor$ จงหาจำนวนของจำนวนเต็มบวกที่ $\\le 2025$ ที่ไม่อยู่ในเซต $\\{a_n | n \\in \\mathbb{Z}^+\\}$"},{title:"โจทย์ข้อที่ 5",statement:"ให้ $p=2027$ (จำนวนเฉพาะ) และให้ $\\omega = e^{2\\pi i/p}$... จงคำนวณค่าของผลคูณ $P = \\prod_{k=1}^{p-1} (1-\\omega^k)^{(\\frac{k}{p})}$..."},{title:"โจทย์ข้อที่ 6",statement:"จงหาจำนวนเต็ม $n$ ที่มากที่สุดที่น้อยกว่า 1000 ซึ่งมีคู่ของจำนวนเต็มบวก $(x,y)$ ที่สอดคล้องกับสมการ $x^2 - (n^2+1)y^2 = -1$"},{title:"โจทย์ข้อที่ 7",statement:"ให้ $p=43$ จงหาค่าของผลบวก $\\sum_{g} g \\pmod{p}$ โดยที่ผลบวกนี้กระทำบนทุกรากปฐมฐาน $g$ ในช่วง $1 \\le g < p$"},{title:"โจทย์ข้อที่ 8",statement:"ให้ $\\sigma(n)$ แทนผลบวกของตัวหารที่เป็นบวกของ $n$ จงหาจำนวนเต็ม $n > 2$ ที่น้อยที่สุดที่สอดคล้องกับ $\\sigma(n) \\equiv 2 \\pmod{n}$"},{title:"โจทย์ข้อที่ 9",statement:"ให้ $F_n$ เป็นจำนวนฟีโบนักชี... จงหาค่าของผลบวก $S = \\sum_{n=3}^{\\infty} \\arctan\\left(\\frac{F_{n-1}F_n - F_{n-2}F_{n+1}}{F_{n-1}F_{n+1}+F_n F_{n-2}}\\right)$"},{title:"โจทย์ข้อที่ 10",statement:"จงหาเลขโดดที่ไม่ใช่ศูนย์ตัวสุดท้ายในการเขียนแทน $1000!$ ในระบบเลขฐานสิบ"}]}});
-    Object.assign(allSolutions, {'nt1':{en:[{answer:"1/4",steps:"Let the integer roots be $m, n$. Let $S=m+n$ and $P=mn$. From Vieta's formulas, we derive $r = \\frac{P+2S}{P+S}$.\n\nSubstituting this into the relation $r^2(S+P)=-1$ gives a quadratic equation for $P$: $P^2+P(4S+1)+(4S^2+S)=0$.\n\nFor $P$ to be an integer, the discriminant $D_P = 4S+1$ must be a perfect square. For the roots $m,n$ to be integers, $S^2-4P$ must also be a perfect square.\n\nTesting integer values for $j$ (where $S=j(j+1)$) yields valid pairs for $j=0,1,3$. These pairs correspond to $r=1, -1, 1/4$. The sum is $1 + (-1) + 1/4 = 1/4$."},{answer:"6",steps:"We need $n | 2^n+2$. If $n$ is even, let $n=2k$. The condition becomes $k | (2^{2k-1}+1)$.\n\nFor this to hold, $k$ must be odd (unless $k=1$).\n\nFor $k=1$, $1|2^1+1$ is true, giving $n=2$. This is the smallest solution not a power of 3.\n\nFor $k=3$, $3|2^5+1=33$ is true, giving $n=6$. This is the second smallest solution not a power of 3."},{answer:"8",steps:"This is the Markov equation. We find solutions using Vieta Jumping. Start with the base solution $(1,1,1)$.\n\nFix $(x,y)=(1,1)$, and solve the resulting quadratic $t^2 - 3xyt + (x^2+y^2)=0$. This gives $t^2-3t+2=0$, with roots $t=1,2$, generating $(1,1,2)$.\n\nNext, starting with $(1,2)$, the quadratic is $t^2 - 6t+5=0$, with roots $t=1,5$, generating $(1,2,5)$.\n\nThe largest solution with $z<10$ is $(1,2,5)$. The sum is $1+2+5=8$."},{answer:"45",steps:"The expression $\\lfloor \\sqrt{n} + \\frac{1}{2} \\rfloor$ is rounding $\\sqrt{n}$ to the nearest integer. Let $k = \\text{round}(\\sqrt{n})$. This holds for $n$ in the range $k^2-k+1 \\le n \\le k^2+k$.\n\nFor such $n$, $a_n = n+k$. The set of values for a fixed $k$ is the range $[k^2+1, k^2+2k]$.\n\nThe integers missing from the sequence are the perfect squares: $1, 4, 9, \\dots$. We need the number of perfect squares $\\le 2025$. Since $\\sqrt{2025} = 45$, there are 45 such numbers."},{answer:"-1",steps:"The product is $P = (-1)^{h_{(-p)}}$, where $h_{(-p)}$ is the class number of the imaginary quadratic field $\\mathbb{Q}(\\sqrt{-p})$.\n\nFor a prime $p>3$ with $p \\equiv 3 \\pmod 4$, the class number $h_{(-p)}$ is odd if and only if $p \\equiv 3 \\pmod 8$.\n\nWe check $2027 \\equiv 3 \\pmod 8$. Since the class number is odd, $P = (-1)^{\\text{odd}} = -1$."},{answer:"999",steps:"The equation $x^2 - Dy^2 = -1$ has a solution if and only if the period length of the continued fraction of $\\sqrt{D}$ is odd.\n\nHere, $D = n^2+1$. The continued fraction for $\\sqrt{n^2+1}$ is $[n; \\overline{2n}]$. The period length is 1.\n\nSince 1 is odd, the equation has a solution for every positive integer $n$. The largest $n < 1000$ is 999."},{answer:"42",steps:"The sum of primitive roots modulo a prime $p$ is congruent to $\\mu(p-1) \\pmod p$.\n\nFor $p=43$, we need $\\mu(p-1) = \\mu(42)$.\n\nSince $42 = 2 \\cdot 3 \\cdot 7$, $\\mu(42) = (-1)^3 = -1$.\n\nThe sum is therefore $-1 \\equiv 42 \\pmod{43}$."},{answer:"20",steps:"The condition $\\sigma(n) \\equiv 2 \\pmod{n}$ means the sum of proper divisors $S_p(n) \\equiv 2 \\pmod n$. This implies $n$ must be an abundant number.\n\nWe test abundant numbers in order: $n=12 (\\sigma(12)=28 \\equiv 4)$, $n=18 (\\sigma(18)=39 \\equiv 3)$.\n\nFor $n=20$, $\\sigma(20)=42$. Since $42 = 2 \\cdot 20 + 2$, we have $42 \\equiv 2 \\pmod{20}$. This is the smallest solution > 2."},{answer:"-arctan(1/7)",steps:"The argument fits the tangent subtraction formula $\\arctan(x)-\\arctan(y)$.\n\nLet $x=F_{n-1}/F_{n-2}$ and $y=F_{n+1}/F_n$. The $n$-th term is $A_{n-1} - A_{n+1}$, where $A_k = \\arctan(F_k/F_{k-1})$.\n\nThis is a telescoping sum which evaluates to $S = A_2+A_3 - 2\\lim A_k = \\arctan(1)+\\arctan(2) - 2\\arctan(\\phi)$.\n\nUsing known identities, this simplifies to $\\arctan(2) - \\arctan(3) = -\\arctan(1/7)$."},{answer:"2",steps:"The last non-zero digit is $D(1000!) = \\frac{1000!}{10^k} \\pmod{10}$ where $k = \\nu_5(1000!) = 249$.\n\nWe need to solve $X \\equiv 0 \\pmod 2$ and $X \\equiv \\frac{1000!}{5^{249}} (2^{-1})^{249} \\pmod 5$.\n\nUsing a generalization of Wilson's Theorem, we show that $A = \\frac{1000!}{5^{249}} \\equiv 4 \\pmod 5$. The other term is $(2^{-1})^{249} \\equiv 3 \\pmod 5$.\n\nThus, $X \\equiv 4 \\cdot 3 = 12 \\equiv 2 \\pmod 5$. The only even digit that is $2 \\pmod 5$ is 2."}],th:[{answer:"1/4",steps:"ให้ $m, n$ เป็นรากจำนวนเต็ม และ $S=m+n, P=mn$ จากสูตรของเวียดจะได้ $r = \\frac{P+2S}{P+S}$ \n\nเมื่อแทนค่าใน $r^2(S+P)=-1$ จะได้สมการกำลังสองของ $P$ ซึ่งมี discriminant $D_P = 4S+1$ จะต้องเป็นกำลังสองสมบูรณ์ และ $S^2-4P$ ก็ต้องเป็นกำลังสองสมบูรณ์เช่นกัน\n\nเมื่อทดสอบค่า $j$ (โดย $S=j(j+1)$) จะได้คู่ $(S,P)$ ที่สอดคล้องสำหรับ $j=0,1,3$ ซึ่งให้ค่า $r=1, -1, 1/4$ ตามลำดับ ผลรวมคือ $1/4$"},{answer:"6",steps:"เราต้องการหา $n$ ที่ $n | 2^n+2$ ถ้า $n$ เป็นคู่ ให้ $n=2k$ เงื่อนไขจะกลายเป็น $k | (2^{2k-1}+1)$ \n\n$k$ จะต้องเป็นจำนวนคี่ (ยกเว้น $k=1$)\n\nกรณี $k=1$ เป็นจริง ได้ $n=2$ ซึ่งเป็นผลเฉลยแรกที่ไม่ใช่กำลังของ 3\n\nกรณี $k=3$ เป็นจริง ได้ $n=6$ ซึ่งเป็นผลเฉลยที่สองที่ไม่ใช่กำลังของ 3"},{answer:"8",steps:"นี่คือสมการมาร์คอฟ ซึ่งหาผลเฉลยได้ด้วยเทคนิค Vieta Jumping เริ่มจากผลเฉลยพื้นฐาน $(1,1,1)$\n\nตรึงค่า $(x,y)=(1,1)$ ในสมการกำลังสอง $t^2 - 3xyt + (x^2+y^2)=0$ จะได้ราก $t=1,2$ ซึ่งสร้างผลเฉลยใหม่ $(1,1,2)$ จากนั้นตรึง $(1,2)$ ในสมการเดียวกันจะได้ราก $t=1,5$ ซึ่งสร้างผลเฉลย $(1,2,5)$\n\nผลเฉลยถัดไปมีค่า $z \\ge 10$ ดังนั้นผลเฉลยที่ใหญ่ที่สุดที่สอดคล้องเงื่อนไขคือ $(1,2,5)$ ผลรวมคือ $1+2+5=8$"},{answer:"45",steps:"นิพจน์ $\\lfloor \\sqrt{n} + \\frac{1}{2} \\rfloor$ คือการปัดเศษของ $\\sqrt{n}$\n\nให้ $k = \\text{round}(\\sqrt{n})$ ซึ่งจะเกิดขึ้นเมื่อ $k^2-k+1 \\le n \\le k^2+k$ สำหรับค่า $n$ เหล่านี้ $a_n = n+k$ ซึ่งจะสร้างช่วงของจำนวนเต็ม $[k^2+1, k^2+2k]$\n\nเมื่อรวมช่วงเหล่านี้ จะพบว่าจำนวนเต็มที่หายไปคือจำนวนกำลังสองสมบูรณ์: $1, 4, 9, \\dots$ เราจึงต้องหาจำนวนกำลังสองสมบูรณ์ที่น้อยกว่าหรือเท่ากับ 2025 เนื่องจาก $\\sqrt{2025}=45$ จำนวนที่หายไปคือ $1^2, 2^2, \\dots, 45^2$ ซึ่งมีทั้งหมด 45 จำนวน"},{answer:"-1",steps:"ผลคูณคือ $P = (-1)^{h_{(-p)}}$ โดยที่ $h_{(-p)}$ คือเลขชั้น (class number) ของฟีลด์จินตภาพกำลังสอง $\\mathbb{Q}(\\sqrt{-p})$\n\nสำหรับจำนวนเฉพาะ $p>3$ ที่ $p \\equiv 3 \\pmod 4$ เลขชั้น $h_{(-p)}$ จะเป็นจำนวนคี่ก็ต่อเมื่อ $p \\equiv 3 \\pmod 8$\n\nเราตรวจสอบได้ว่า $2027 \\equiv 3 \\pmod 8$ ดังนั้นเลขชั้นเป็นจำนวนคี่ ทำให้ $P = (-1)^{\\text{odd}} = -1$"},{answer:"999",steps:"สมการ $x^2 - Dy^2 = -1$ คือสมการของเพลล์ภาคลบ ซึ่งจะมีผลเฉลยเป็นจำนวนเต็มบวกก็ต่อเมื่อความยาวคาบของเศษส่วนต่อเนื่องของ $\\sqrt{D}$ เป็นเลขคี่\n\nในข้อนี้ $D=n^2+1$ ซึ่งมีเศษส่วนต่อเนื่องคือ $[n; \\overline{2n}]$ และมีความยาวคาบเท่ากับ 1 ซึ่งเป็นจำนวนคี่เสมอ\n\nดังนั้นสมการนี้จึงมีผลเฉลยสำหรับทุกจำนวนเต็มบวก $n$ คำตอบคือจำนวนเต็มที่มากที่สุดที่น้อยกว่า 1000 ซึ่งก็คือ 999"},{answer:"42",steps:"ผลบวกของรากปฐมฐานมอดุโล $p$ เท่ากับ $\\mu(p-1) \\pmod p$\n\nสำหรับ $p=43$ เราต้องการหาค่า $\\mu(42)$\n\nเนื่องจาก $42 = 2 \\cdot 3 \\cdot 7$ ดังนั้น $\\mu(42)=(-1)^3 = -1$\n\nผลบวกจึงเป็น $-1 \\equiv 42 \\pmod{43}$"},{answer:"20",steps:"เงื่อนไข $\\sigma(n) \\equiv 2 \\pmod{n}$ หมายความว่า $n$ ต้องเป็นจำนวนบริบูรณ์ (abundant number) ซึ่งคือจำนวนที่ $\\sigma(n) > 2n$\n\nเราจึงเริ่มทดสอบจากจำนวนบริบูรณ์น้อยๆ ไป: $n=12 (\\sigma(12)=28 \\equiv 4)$, $n=18 (\\sigma(18)=39 \\equiv 3)$\n\nสำหรับ $n=20$, $\\sigma(20)=42$ และเนื่องจาก $42 = 2 \\cdot 20 + 2$ ดังนั้น $42 \\equiv 2 \\pmod{20}$ นี่คือผลเฉลยที่เล็กที่สุด"},{answer:"-arctan(1/7)",steps:"พจน์ใน arctan อยู่ในรูป $\\frac{x-y}{1+xy}$ ทำให้เกิดอนุกรมโทรทรรศน์ $S = \\sum_{n=3}^\\infty (A_{n-1}-A_{n+1})$ โดย $A_k = \\arctan(F_k/F_{k-1})$\n\nผลบวกของอนุกรมนี้มีค่าเท่ากับ $S = A_2+A_3 - 2\\lim A_k = \\arctan(1)+\\arctan(2) - 2\\arctan(\\phi)$\n\nเมื่อใช้เอกลักษณ์ของ arctan จะได้ผลลัพธ์สุดท้ายเป็น $\\arctan(2) - \\arctan(3)$ ซึ่งเท่ากับ $-\\arctan(1/7)$"},{answer:"2",steps:"เลขโดดที่ไม่ใช่ศูนย์ตัวสุดท้ายคือ $D(1000!) = \\frac{1000!}{10^k} \\pmod{10}$ โดยที่ $k = \\nu_5(1000!) = 249$\n\nเราต้องแก้ระบบสมการ $X \\equiv 0 \\pmod 2$ และ $X \\equiv \\frac{1000!}{5^{249}} (2^{-1})^{249} \\pmod 5$\n\nจากทฤษฎีบทวิลสันรูปแบบทั่วไป จะได้ว่า $\\frac{1000!}{5^{249}} \\equiv 4 \\pmod 5$ และพจน์ $(2^{-1})^{249} \\equiv 3 \\pmod 5$\n\nดังนั้น $X \\equiv 4 \\cdot 3 = 12 \\equiv 2 \\pmod 5$ เลขโดดคู่เดียวที่สอดคล้องคือ 2"}]}});
-
+    // --- Initialize App ---
     const initApp = () => {
         console.log("Initializing App...");
         // Tie data together
         Object.keys(allSolutions).forEach(setId => {
-            if (allSolutions[setId]?.th) {
+            if (allSolutions[setId]?.th && allSolutions[setId]?.en) {
                 allSolutions[setId].th.forEach((sol_th, i) => {
-                    if (allSolutions[setId]?.en?.[i]) sol_th.answer = allSolutions[setId].en[i].answer;
-                    if (allProblems[setId]?.th?.[i]) sol_th.title = allProblems[setId].th[i].title;
+                    if (allSolutions[setId].en[i]) {
+                        sol_th.answer = allSolutions[setId].en[i].answer;
+                        sol_th.hint = allSolutions[setId].en[i].hint; // Copy hint
+                    }
+                    if (allProblems[setId]?.th?.[i]) {
+                        sol_th.title = allProblems[setId].th[i].title;
+                    }
                 });
             }
+             if (allSolutions[setId]?.en && allProblems[setId]?.en) {
+                 allSolutions[setId].en.forEach((sol_en, i) => {
+                     if (allProblems[setId].en[i]) {
+                         sol_en.title = allProblems[setId].en[i].title; // Sync EN title too
+                     }
+                 });
+             }
         });
 
-        // Check for a logged-in user session
         const savedUser = localStorage.getItem('loggedInUser');
         if (savedUser && credentials[savedUser]) {
             console.log(`Found logged in user: ${savedUser}`);
@@ -270,29 +379,23 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("No logged in user found, showing login.");
             showScreen('login');
         }
-        setLanguage('en'); // Set initial language
-        // No need to call renderMath here, showScreen does it.
+        setLanguage('en');
     };
-    
-    // Robust Initialization: Wait for DOM, then check for KaTeX
+
     let katexLoaded = false;
     const checkKatexAndInit = () => {
-         // Check if KaTeX's core object is available
         if (window.katex && window.renderMathInElement) {
             if (!katexLoaded) {
                 katexLoaded = true;
                 console.log("KaTeX confirmed loaded, initializing app.");
-                initApp(); // Run the main app initialization
+                initApp();
             }
         } else {
-             // If not loaded, wait and check again
             console.log("Waiting for KaTeX to load...");
-            setTimeout(checkKatexAndInit, 100); // Check again shortly
+            setTimeout(checkKatexAndInit, 100);
         }
     };
-    
-    // --- Start the App ---
-    // Instead of waiting for DOMContentLoaded AND KaTeX, just wait for DOM and then poll for KaTeX
+
     checkKatexAndInit();
 
-}); // End DOMContentLoaded (this line might need adjustment depending on where you paste)
+}); // End DOMContentLoaded
