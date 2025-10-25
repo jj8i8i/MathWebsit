@@ -19,43 +19,30 @@ body {
     font-family: var(--font-family); background-color: var(--primary-bg);
     color: var(--primary-text); box-sizing: border-box;
 }
-#app {
-    width: 100%; max-width: 900px; margin: 0 auto;
-    padding: 0; /* Remove app padding, handle padding within screens */
-    box-sizing: border-box; min-height: 100%;
-}
+#app { width: 100%; max-width: 900px; margin: 0 auto; padding: 0; box-sizing: border-box; min-height: 100%; }
 .screen { display: none; min-height: 100vh; box-sizing: border-box; }
-.screen.active { display: block; animation: fadeIn 0.5s ease-in-out; }
+.screen.active { display: block; animation: fadeIn 0.3s ease-out; }
 
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-.zoom-in { animation: zoomIn 0.5s ease-in-out; }
-@keyframes zoomIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.zoom-in { animation: zoomIn 0.3s ease-out; }
+@keyframes zoomIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
-/* --- Login Screen (Corrected Centering) --- */
-#login-screen {
-    /* Screen itself takes full height */
-    padding: 1rem; /* Padding for spacing on small screens */
-}
-.login-container {
-    display: flex; /* Use flexbox on the container */
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh; /* Make container full height */
-    width: 100%;
-}
+/* --- Login Screen (Simplified Centering) --- */
+#login-screen.active { display: flex; /* Use flex ONLY on the active login screen */ justify-content: center; align-items: center; padding: 1rem; }
+.login-container { width: 100%; display: flex; justify-content: center; } /* Container ensures card is centered */
 #login-screen .card {
     background-color: var(--card-bg); padding: 2.5rem 3rem; border-radius: 16px;
     box-shadow: var(--shadow); text-align: center; width: 100%;
-    max-width: 400px; margin: 0; /* Card doesn't need margin for centering now */
-    box-sizing: border-box; transition: height 0.3s ease-in-out;
+    max-width: 400px; margin: 0; box-sizing: border-box;
 }
-#login-title { font-size: 2.2rem; font-weight: 700; color: var(--primary-text); margin: 0; }
-#login-subtitle { font-size: 1.1rem; color: var(--secondary-text); margin-bottom: 2.5rem; }
+#login-title { font-size: 2.2rem; font-weight: 700; margin: 0 0 0.5rem 0; }
+#login-subtitle { font-size: 1.1rem; color: var(--secondary-text); margin: 0 0 2.5rem 0; }
 .form-group { margin-bottom: 1.5rem; }
 input[type="text"], input[type="password"] { width: 100%; padding: 14px 16px; margin-bottom: 1rem; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; font-size: 1rem; font-family: var(--font-family); transition: border-color 0.2s, box-shadow 0.2s; }
 input[type="text"]:focus, input[type="password"]:focus { border-color: var(--accent-color); box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); outline: none; }
-button { background-color: var(--accent-color); color: white; padding: 14px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 1.1rem; font-weight: 600; width: 100%; transition: background-color 0.2s, transform 0.2s; }
-button:hover { background-color: var(--accent-hover); transform: translateY(-2px); }
+button { background-color: var(--accent-color); color: white; padding: 14px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 1.1rem; font-weight: 600; width: 100%; transition: background-color 0.2s, transform 0.1s; }
+button:hover { background-color: var(--accent-hover); }
+button:active { transform: scale(0.98); } /* Click effect */
 .error-message { color: var(--error-color); margin-top: 1rem; min-height: 1.2em; font-weight: 500; }
 
 .hidden { display: none !important; }
@@ -67,8 +54,8 @@ button:hover { background-color: var(--accent-hover); transform: translateY(-2px
 #loading-text { font-size: 1.1rem; color: var(--secondary-text); }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* --- Header (For non-login screens) --- */
-header { background-color: var(--card-bg); padding: 1rem 2rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; position: sticky; top: 0; z-index: 10; border-radius: 12px 12px 0 0; }
+/* --- Header --- */
+header { background-color: var(--card-bg); padding: 1rem 2rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; position: sticky; top: 0; z-index: 10; border-radius: 0; } /* Remove border-radius */
 header h1 { font-size: 1.5rem; font-weight: 600; margin: 0; flex-grow: 1; }
 .header-content { display: flex; align-items: center; gap: 1.5rem; }
 .user-info { display: flex; align-items: center; gap: 1rem; color: var(--secondary-text); font-size: 0.9rem; }
@@ -83,7 +70,7 @@ header h1 { font-size: 1.5rem; font-weight: 600; margin: 0; flex-grow: 1; }
 .lang-toggle:hover { background-color: var(--primary-bg); transform: none; }
 
 /* --- Selection Screen --- */
-#selection-screen main { border-radius: 0 0 12px 12px; padding-top: 0; }
+#selection-screen main { border-radius: 0; padding-top: 0; } /* Remove border-radius */
 #exam-list-container { padding: 2rem; }
 .exam-card { background-color: var(--card-bg); padding: 1.5rem 2rem; border-radius: 12px; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; transition: transform 0.2s, box-shadow 0.2s; margin-bottom: 1.5rem; }
 .exam-card:hover { transform: translateY(-4px); box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1); }
@@ -91,7 +78,7 @@ header h1 { font-size: 1.5rem; font-weight: 600; margin: 0; flex-grow: 1; }
 .exam-card .start-btn { width: auto; padding: 10px 24px; font-size: 1rem; flex-shrink: 0; }
 
 /* --- Main Content (Test/Solution) --- */
-main { padding: 2rem; background-color: var(--card-bg); border-radius: 0 0 12px 12px; }
+main { padding: 2rem; background-color: var(--card-bg); border-radius: 0; } /* Remove border-radius */
 .problem-card, .solution-card { margin-bottom: 2rem; padding: 2rem; border-radius: 12px; background-color: var(--card-bg); box-shadow: var(--shadow); }
 .problem-card h2, .solution-card h2 { margin-top: 0; padding-bottom: 0.75rem; font-size: 1.3rem; font-weight: 600; color: var(--accent-color); border-bottom: 2px solid var(--accent-color); }
 .problem-statement, .solution-statement { line-height: 1.8; }
@@ -107,10 +94,10 @@ hr { border: none; border-top: 1px solid var(--border-color); margin: 1.5rem 0; 
 @media (max-width: 600px) {
     body { padding: 0; }
     #app { margin: 0; padding: 0; }
-    header { padding: 1rem; border-radius: 0; }
-    main, #exam-list-container { padding: 1rem; border-radius: 0; }
-    #login-screen { padding: 0; } /* Remove padding for mobile login */
-    #login-screen .card { padding: 2rem 1.5rem; margin: 0; border-radius: 0; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; max-width: none; }
+    header { padding: 1rem; }
+    main, #exam-list-container { padding: 1rem; }
+    #login-screen.active { padding: 0; }
+    #login-screen .card { padding: 2rem 1.5rem; margin: 0; border-radius: 0; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; max-width: none; box-shadow: none;} /* Remove shadow on mobile login */
     .problem-card, .solution-card { padding: 1.5rem; }
     .submit-footer-btn { width: calc(100% - 2rem); margin: 1rem auto; }
     .exam-card { flex-direction: column; gap: 1rem; text-align: center; }
