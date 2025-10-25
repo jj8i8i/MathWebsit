@@ -14,7 +14,7 @@
     <div id="app">
 
         <div id="login-screen" class="screen">
-            <div class="login-container"> {/* Added container for centering */}
+            <div class="login-container">
                 <div class="card zoom-in">
                     <h1 id="login-title">Mathematics Exam</h1>
                     <p id="login-subtitle">Mock Test</p>
@@ -51,7 +51,17 @@
 
         <div id="test-screen" class="screen">
             <header>
-                {/* ... Header content ... */}
+                <div class="header-content">
+                    <h1 id="test-title"></h1>
+                    <div id="timer-container">
+                        <span id="timer-label">Time Left:</span>
+                        <span id="timer">02:00:00</span>
+                    </div>
+                </div>
+                <div class="user-info">
+                    <span class="welcome-message"></span>
+                    <button class="logout-btn">Logout</button>
+                 </div>
                  <button id="lang-toggle-test" class="lang-toggle">EN / TH</button>
             </header>
             <main id="problem-container"></main>
@@ -60,11 +70,17 @@
 
         <div id="solution-screen" class="screen">
             <header>
-                {/* ... Header content ... */}
+                <h1 id="solution-title">Results & Solutions</h1>
+                <div class="user-info">
+                    <span class="welcome-message"></span>
+                    <button class="logout-btn">Logout</button>
+                 </div>
                 <button id="lang-toggle-solution" class="lang-toggle">EN / TH</button>
             </header>
             <main id="solution-container">
-                {/* ... Solution content ... */}
+                <div id="score-display"></div>
+                <div id="solution-list"></div>
+                <button id="back-to-selection-btn">Select Another Exam</button>
             </main>
         </div>
 
