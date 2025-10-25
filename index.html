@@ -3,30 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Page</title>
-    <link rel="stylesheet" href="style.css">
-    </head>
+    <title>Basic HTML Test</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background-color: lightyellow; }
+        h1 { color: blue; }
+    </style>
+</head>
 <body>
-    <div id="app">
-        <div id="error-display" style="color: red; padding: 20px; border: 1px solid red; margin: 10px; display: none; background-color: #ffebee;"></div>
 
-        <div id="login-screen" class="screen">
-            <div style="padding: 40px; text-align: center; border: 1px solid #ccc; margin: 20px;">
-                <h1>Login Screen Test</h1>
-                <p>If you see this, HTML is working.</p>
-                <input type="text" id="username" placeholder="Username">
-                <input type="password" id="password" placeholder="Password">
-                <button id="login-btn">Login Button Test</button>
-                <p id="login-error"></p>
-            </div>
-        </div>
+    <h1>Basic HTML Test Page</h1>
 
-        <div id="selection-screen" class="screen">Selection Screen Placeholder</div>
-        <div id="test-screen" class="screen">Test Screen Placeholder</div>
-        <div id="solution-screen" class="screen">Solution Screen Placeholder</div>
+    <p>If you can see this text, then the basic HTML file is being served correctly by GitHub Pages.</p>
 
-    </div>
+    <p>The problem might be with loading CSS or JavaScript files, or with the JavaScript code itself.</p>
 
-    <script src="script.js"></script>
+    <hr>
+
+    <p>Next steps:</p>
+    <ol>
+        <li>Ensure `style.css` and `script.js` are in the same folder as this `index.html` file on GitHub.</li>
+        <li>Check the file names in the `<link>` and `<script>` tags when you add them back.</li>
+    </ol>
+
 </body>
 </html>
