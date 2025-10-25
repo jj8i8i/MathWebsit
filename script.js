@@ -1,144 +1,119 @@
-// ===== SCRIPT.JS (FINAL V3 - ALGEBRA SET 1 + HINTS + BETTER SOLUTIONS/FORMATTING) =====
+// ===== SCRIPT.JS (FINAL ROBUST INIT v3 - ALGEBRA SET 1 + HINTS + DIFF + 1.5 HOURS) =====
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOM Loaded. Initializing script...");
+    // --- Error Boundary for Initialization ---
+    try {
+        console.log("DOM Loaded. Initializing script...");
 
-    // --- DOM Elements ---
-    const getElem = (id) => document.getElementById(id);
+        // --- DOM Elements ---
+        const getElem = (id) => document.getElementById(id);
 
-    const screens = {
-        login: getElem('login-screen'),
-        selection: getElem('selection-screen'),
-        test: getElem('test-screen'),
-        solution: getElem('solution-screen'),
-    };
-    const loginStuff = {
-        usernameInput: getElem('username'),
-        passwordInput: getElem('password'),
-        loginBtn: getElem('login-btn'),
-        errorMsg: getElem('login-error'),
-    };
-    const loginCard = document.querySelector('#login-screen .card');
-    const examListContainer = getElem('exam-list-container');
-    const timerDisplay = getElem('timer');
-    const problemContainer = getElem('problem-container');
-    const solutionList = getElem('solution-list');
-    const scoreDisplay = getElem('score-display');
-    const submitBtn = getElem('submit-btn');
-    const backToSelectionBtn = getElem('back-to-selection-btn');
-    const langToggles = document.querySelectorAll('.lang-toggle');
-    const welcomeMessages = document.querySelectorAll('.welcome-message');
-    const logoutBtns = document.querySelectorAll('.logout-btn');
+        const screens = {
+            login: getElem('login-screen'),
+            selection: getElem('selection-screen'),
+            test: getElem('test-screen'),
+            solution: getElem('solution-screen'),
+        };
+        const loginStuff = {
+            usernameInput: getElem('username'),
+            passwordInput: getElem('password'),
+            loginBtn: getElem('login-btn'),
+            errorMsg: getElem('login-error'),
+        };
+        // Use querySelector for elements that might exist only on certain screens
+        const loginCard = document.querySelector('#login-screen .card');
+        const examListContainer = getElem('exam-list-container');
+        const timerDisplay = getElem('timer');
+        const problemContainer = getElem('problem-container');
+        const solutionList = getElem('solution-list');
+        const scoreDisplay = getElem('score-display');
+        const submitBtn = getElem('submit-btn');
+        const backToSelectionBtn = getElem('back-to-selection-btn');
+        const langToggles = document.querySelectorAll('.lang-toggle');
+        const welcomeMessages = document.querySelectorAll('.welcome-message');
+        const logoutBtns = document.querySelectorAll('.logout-btn');
 
-    // --- State ---
-    let timerInterval;
-    let currentLang = 'en';
-    let lastScore = null;
-    let currentSetId = null;
-    let currentUser = null;
-    const DURATION = 1 * 60 * 60 + 30 * 60; // 1.5 hours
+        // --- State ---
+        let timerInterval;
+        let currentLang = 'en';
+        let lastScore = null;
+        let currentSetId = null;
+        let currentUser = null;
+        const DURATION = 1 * 60 * 60 + 30 * 60; // 1.5 hours
 
-    const credentials = {
-        JJ: 'admin', Waigoon: 'Joi', Thimphu: 'Yensira',
-        Meepooh: 'Meepooh', Win: 'Eovs',
-    };
+        const credentials = {
+            JJ: 'admin', Waigoon: 'Joi', Thimphu: 'Yensira',
+            Meepooh: 'Meepooh', Win: 'Eovs',
+        };
 
-    // --- Data ---
-    const examSets = {
-        'alg1': {
-            en: { name: "Algebra Set 1 (1.5 Hours)", difficulty: "Easy" },
-            th: { name: "พีชคณิต ชุดที่ 1 (1.5 ชั่วโมง)", difficulty: "ง่าย" }
-        }
-    };
-    // ** PROBLEMS DATA **
-    const allProblems = {
-         'alg1': {
-            en: [
-                { title: "Problem 1", statement: "Let $P(x) = x^3 - 6x^2 + 11x - 6$. If $\\alpha, \\beta, \\gamma$ are the roots of $P(x)$, find the value of $(\\alpha+1)(\\beta+1)(\\gamma+1)$." },
-                { title: "Problem 2", statement: "Find all functions $f: \\mathbb{R} \\to \\mathbb{R}$ such that $f(x+y) + f(x-y) = 2f(x) + 2f(y)$ for all $x, y \\in \\mathbb{R}$ and $f(1)=2$. Find the value of $f(3)$." },
-                { title: "Problem 3", statement: "For positive real numbers $a, b, c$ such that $a+b+c=3$, find the minimum value of $\\frac{a^2}{b+c} + \\frac{b^2}{c+a} + \\frac{c^2}{a+b}$." },
-                { title: "Problem 4", statement: "Let the sequence $a_1 = 1$ and $a_{n+1} = \\frac{a_n}{1+na_n}$ for $n \\ge 1$. Find the value of $a_{100}$ (answer as a fraction)." },
-                { title: "Problem 5", statement: "Let $P(x)$ be a polynomial such that $P(x^2+1) = x^4+5x^2+3$. Find the value of $P(5)$." },
-                { title: "Problem 6", statement: "Find the number of ordered pairs of positive integers $(x,y)$ such that $\\frac{1}{x} + \\frac{1}{y} = \\frac{1}{12}$." },
-                { title: "Problem 7", statement: "Let $\\omega = e^{2\\pi i / 5}$ be a primitive 5th root of unity. Find the value of $(1-\\omega)(1-\\omega^2)(1-\\omega^3)(1-\\omega^4)$." },
-                { title: "Problem 8", statement: "Let $f: \\mathbb{R} \\to \\mathbb{R}$ be a differentiable function satisfying $f(x+y) = f(x)f(y)$ for all $x,y \\in \\mathbb{R}$ and $f'(0)=3$. Find the value of $f(2)$ (answer in terms of $e$)." },
-                { title: "Problem 9", statement: "Find the maximum value of $x^2y$ where $x,y$ are positive real numbers satisfying $2x+3y=6$." },
-                { title: "Problem 10", statement: "Let $P(x)$ be a polynomial with integer coefficients. If $P(1)=5$ and $P(4)=8$, and $a$ is an integer such that $P(a)=6$, find the value of $a$." }
-            ],
-            th: [
-                { title: "โจทย์ข้อที่ 1", statement: "ให้ $P(x) = x^3 - 6x^2 + 11x - 6$ ถ้า $\\alpha, \\beta, \\gamma$ เป็นรากของ $P(x)$ จงหาค่าของ $(\\alpha+1)(\\beta+1)(\\gamma+1)$" },
-                { title: "โจทย์ข้อที่ 2", statement: "จงหาฟังก์ชัน $f: \\mathbb{R} \\to \\mathbb{R}$ ทั้งหมดที่สอดคล้องเงื่อนไข $f(x+y) + f(x-y) = 2f(x) + 2f(y)$ สำหรับทุก $x, y \\in \\mathbb{R}$ และ $f(1)=2$ จงหาค่าของ $f(3)$" },
-                { title: "โจทย์ข้อที่ 3", statement: "สำหรับจำนวนจริงบวก $a, b, c$ ซึ่ง $a+b+c=3$ จงหาค่าต่ำสุดของ $\\frac{a^2}{b+c} + \\frac{b^2}{c+a} + \\frac{c^2}{a+b}$" },
-                { title: "โจทย์ข้อที่ 4", statement: "ให้ลำดับ $a_1 = 1$ และ $a_{n+1} = \\frac{a_n}{1+na_n}$ สำหรับ $n \\ge 1$ จงหาค่าของ $a_{100}$ (ตอบในรูปเศษส่วน)" },
-                { title: "โจทย์ข้อที่ 5", statement: "ให้ $P(x)$ เป็นพหุนามซึ่ง $P(x^2+1) = x^4+5x^2+3$ จงหาค่าของ $P(5)$" },
-                { title: "โจทย์ข้อที่ 6", statement: "จงหาจำนวนคู่อันดับของจำนวนเต็มบวก $(x,y)$ ทั้งหมดที่สอดคล้องสมการ $\\frac{1}{x} + \\frac{1}{y} = \\frac{1}{12}$" },
-                { title: "โจทย์ข้อที่ 7", statement: "ให้ $\\omega = e^{2\\pi i / 5}$ เป็นรากปฐมฐานที่ 5 ของ 1 จงหาค่าของ $(1-\\omega)(1-\\omega^2)(1-\\omega^3)(1-\\omega^4)$" },
-                { title: "โจทย์ข้อที่ 8", statement: "ให้ $f: \\mathbb{R} \\to \\mathbb{R}$ เป็นฟังก์ชันที่หาอนุพันธ์ได้ ซึ่งสอดคล้อง $f(x+y) = f(x)f(y)$ สำหรับทุก $x,y \\in \\mathbb{R}$ และ $f'(0)=3$ จงหาค่าของ $f(2)$ (ตอบในรูป $e$ ยกกำลัง)" },
-                { title: "โจทย์ข้อที่ 9", statement: "จงหาค่าสูงสุดของ $x^2y$ เมื่อ $x,y$ เป็นจำนวนจริงบวกที่สอดคล้อง $2x+3y=6$" },
-                { title: "โจทย์ข้อที่ 10", statement: "ให้ $P(x)$ เป็นพหุนามที่มีสัมประสิทธิ์เป็นจำนวนเต็ม ถ้า $P(1)=5$ และ $P(4)=8$ และ $a$ เป็นจำนวนเต็มซึ่ง $P(a)=6$ จงหาค่าของ $a$" }
-            ]
-        }
-    };
-    // ** MORE DETAILED SOLUTIONS DATA **
-    const allSolutions = {
-         'alg1': {
-            en: [
-                {
-                    answer: "24",
-                    hint: "Consider the factored form P(x) = (x-α)(x-β)(x-γ) and evaluate P(-1).",
-                    steps: "Let the roots of the polynomial $P(x) = x^3 - 6x^2 + 11x - 6$ be $\\alpha, \\beta, \\gamma$.\nBy the Factor Theorem, we can write the polynomial as $P(x) = (x-\\alpha)(x-\\beta)(x-\\gamma)$.\n\nWe are asked to find the value of the expression $V = (\\alpha+1)(\\beta+1)(\\gamma+1)$.\n\nConsider evaluating the polynomial $P(x)$ at $x = -1$. Using the factored form:\n$P(-1) = (-1-\\alpha)(-1-\\beta)(-1-\\gamma)$.\n\nFactor out $-1$ from each term:\n$P(-1) = (-1)(1+\\alpha) \\cdot (-1)(1+\\beta) \\cdot (-1)(1+\\gamma)$\n$P(-1) = (-1)^3 (1+\\alpha)(1+\\beta)(1+\\gamma)$.\n\nRecognize that the product $(1+\\alpha)(1+\\beta)(1+\\gamma)$ is exactly the expression $V$ we want to find.\nSo, $P(-1) = -V$.\nThis implies $V = -P(-1)$.\n\nNow, calculate $P(-1)$ using the standard form of the polynomial:\n$P(-1) = (-1)^3 - 6(-1)^2 + 11(-1) - 6$\n$P(-1) = -1 - 6(1) - 11 - 6$\n$P(-1) = -1 - 6 - 11 - 6 = -24$.\n\nFinally, substitute the value of $P(-1)$ to find $V$:\n$V = -(-24) = 24$."
-                },
-                {
-                    answer: "18",
-                    hint: "This is a standard functional equation. What kind of function satisfies it?",
-                    steps: "The given functional equation is $f(x+y) + f(x-y) = 2f(x) + 2f(y)$. This is known as d'Alembert's functional equation or the quadratic functional equation.\n\nFor functions defined on real numbers, assuming continuity (or even weaker conditions like boundedness on an interval), the general solution is known to be of the form $f(x) = cx^2$ for some constant $c$.\n(Verification: $c(x+y)^2 + c(x-y)^2 = c(x^2+2xy+y^2 + x^2-2xy+y^2) = c(2x^2+2y^2) = 2(cx^2) + 2(cy^2) = 2f(x)+2f(y)$).\n\nWe are given the condition $f(1)=2$. This allows us to determine the specific constant $c$.\nSubstitute $x=1$ into the general form $f(x)=cx^2$:\n$f(1) = c(1)^2 = c$.\nSince $f(1)=2$, we conclude that $c=2$.\n\nTherefore, the function satisfying the given conditions is $f(x) = 2x^2$.\n\nThe question asks for the value of $f(3)$.\nSubstitute $x=3$ into the function: $f(3) = 2(3^2) = 2(9) = 18$."
-                },
-                {
-                    answer: "3/2",
-                    hint: "Try applying the Engel form of Cauchy-Schwarz.",
-                    steps: "We need to find the minimum value of $S = \\frac{a^2}{b+c} + \\frac{b^2}{c+a} + \\frac{c^2}{a+b}$ for positive real numbers $a, b, c$ with $a+b+c=3$.\n\nThis expression is suitable for the Engel form of the Cauchy-Schwarz inequality (also known as Titu's Lemma).\nFor positive $x_1, x_2, x_3$ and $y_1, y_2, y_3$:\n$\\frac{x_1^2}{y_1} + \\frac{x_2^2}{y_2} + \\frac{x_3^2}{y_3} \\ge \\frac{(x_1+x_2+x_3)^2}{y_1+y_2+y_3}$.\n\nLet $x_1=a, x_2=b, x_3=c$. Let $y_1=b+c, y_2=c+a, y_3=a+b$. Applying the inequality:\n$S \\ge \\frac{(a+b+c)^2}{(b+c)+(c+a)+(a+b)}$.\n\nThe denominator simplifies to $2a+2b+2c = 2(a+b+c)$.\nSo, $S \\ge \\frac{(a+b+c)^2}{2(a+b+c)}$.\n\nSince $a+b+c=3$ (which is non-zero), we can simplify:\n$S \\ge \\frac{a+b+c}{2}$.\n\nSubstitute the given sum $a+b+c=3$:\n$S \\ge \\frac{3}{2}$.\n\nThis establishes $3/2$ as a lower bound.\nEquality holds in the Engel form if $\\frac{x_1}{y_1} = \\frac{x_2}{y_2} = \\frac{x_3}{y_3}$.\nIn our case, $\\frac{a}{b+c} = \\frac{b}{c+a} = \\frac{c}{a+b}$. This condition is met when $a=b=c$.\n\nGiven $a+b+c=3$, the equality case occurs when $a=b=c=1$.\nLet's check the value of S when $a=b=c=1$:\n$S = \\frac{1^2}{1+1} + \\frac{1^2}{1+1} + \\frac{1^2}{1+1} = \\frac{1}{2} + \\frac{1}{2} + \\frac{1}{2} = \\frac{3}{2}$.\n\nSince the lower bound $3/2$ is achieved, it is the minimum value."
-                },
-                {
-                    answer: "1/4951",
-                    hint: "Consider the reciprocal sequence b_n = 1/a_n.",
-                    steps: "The recurrence $a_{n+1} = \\frac{a_n}{1+na_n}$ suggests looking at the reciprocals.\nLet $b_n = 1/a_n$. Then $a_n = 1/b_n$.\nSubstitute this into the recurrence relation:\n$\\frac{1}{b_{n+1}} = \\frac{1/b_n}{1+n(1/b_n)} = \\frac{1/b_n}{1+n/b_n}$.\n\nTo simplify the fraction on the right, multiply the numerator and denominator by $b_n$:\n$\\frac{1}{b_{n+1}} = \\frac{(1/b_n) \cdot b_n}{(1+n/b_n) \cdot b_n} = \\frac{1}{b_n + n}$.\n\nTaking the reciprocal of both sides gives the recurrence for $b_n$:\n$b_{n+1} = b_n + n$.\n\nThis means the difference between consecutive terms is $b_{k+1} - b_k = k$.\nWe want to find $b_{100}$. We can write $b_{100}$ using a telescoping sum:\n$b_{100} = b_1 + \sum_{k=1}^{99} (b_{k+1}-b_k)$.\nSubstitute the difference we found:\n$b_{100} = b_1 + \sum_{k=1}^{99} k$.\n\nWe know $a_1=1$, so $b_1 = 1/a_1 = 1$.\nThe sum is the sum of the first 99 integers: $\\sum_{k=1}^{99} k = \\frac{99(99+1)}{2} = \\frac{99 \times 100}{2} = 99 \times 50 = 4950$.\n\nSubstitute these values back:\n$b_{100} = 1 + 4950 = 4951$.\n\nFinally, find $a_{100}$:\n$a_{100} = \\frac{1}{b_{100}} = \\frac{1}{4951}$."
-                },
-                {
-                    answer: "39",
-                    hint: "Let y = x^2+1 and express the right side in terms of y.",
-                    steps: "We are given $P(x^2+1) = x^4+5x^2+3$. We want to find the form of the polynomial $P(y)$.\nPerform a substitution: let the input to $P$ be $y$, so $y = x^2+1$.\nWe need to rewrite the right side, $x^4+5x^2+3$, using only $y$.\nFrom $y = x^2+1$, we solve for $x^2$: $x^2 = y-1$.\nWe also need $x^4$, which is $(x^2)^2$: $x^4 = (y-1)^2$.\n\nSubstitute these into the right side of the original equation:\n$P(y) = (y-1)^2 + 5(y-1) + 3$.\n\nNow, expand and simplify the expression for $P(y)$:\n$P(y) = (y^2 - 2y + 1) + (5y - 5) + 3$\nCombine like terms by grouping powers of $y$:\n$P(y) = y^2 + (-2y + 5y) + (1 - 5 + 3)$\n$P(y) = y^2 + 3y - 1$.\n\nThis is the explicit form of the polynomial $P$. For any input $t$, $P(t)=t^2+3t-1$.\n\nWe need to find $P(5)$. Substitute $y=5$ (or $t=5$):\n$P(5) = (5)^2 + 3(5) - 1$\n$P(5) = 25 + 15 - 1$\n$P(5) = 40 - 1 = 39$."
-                },
-                {
-                    answer: "15",
-                    hint: "Clear denominators and try to factor using SFFT (Simon's Favorite Factoring Trick).",
-                    steps: "The equation is $\\frac{1}{x} + \\frac{1}{y} = \\frac{1}{12}$ for positive integers $x, y$.\nMultiply by $12xy$ to clear the denominators:\n$12y + 12x = xy$.\n\nRearrange into the form $xy + Ax + By + C = D$ to facilitate factoring:\n$xy - 12x - 12y = 0$.\n\nTo factor this, we aim for the form $(x+A)(y+B)$. Notice that $(x-12)(y-12) = xy - 12x - 12y + 144$. Our current equation almost matches this, except for the constant term. Add 144 to both sides of $xy - 12x - 12y = 0$:\n$xy - 12x - 12y + 144 = 144$.\n\nNow the left side factors:\n$(x-12)(y-12) = 144$.\n\nLet $X = x-12$ and $Y = y-12$. We have $XY = 144$.\nSince $x$ and $y$ are positive integers, $x \ge 1$ and $y \ge 1$.\nThis implies $X = x-12 \ge 1-12 = -11$ and $Y = y-12 \ge 1-12 = -11$. Also, $X$ and $Y$ must be integers.\n\nSince $XY = 144$ (positive), $X$ and $Y$ must have the same sign.\nIf $X$ and $Y$ were both negative, let $X=-a, Y=-b$ where $a, b$ are positive divisors of 144. Then $x = 12-a$ and $y = 12-b$. For $x \ge 1$, we need $a \le 11$. For $y \ge 1$, we need $b \le 11$. We need a pair of factors $(a,b)$ of 144 such that $a \le 11$ and $b \le 11$. The pairs are $(1, 144), (2, 72), (3, 48), (4, 36), (6, 24), (8, 18), (9, 16), (12, 12)$. Only the pair $(a,b)=(12,12)$ has $a,b \ge 12$. All other pairs have at least one factor greater than 11. If $a=12, b=12$, then $X=-12, Y=-12$. This gives $x=0, y=0$, which are not positive integers.\nTherefore, $X$ and $Y$ must both be positive integer divisors of 144.\n\nEach positive integer factor $X$ of 144 determines a unique positive integer factor $Y = 144/X$. This pair $(X, Y)$ gives a unique pair $(x, y)$ where $x = X+12$ and $y = Y+12$. Since $X \ge 1$ and $Y \ge 1$, $x \ge 13$ and $y \ge 13$, satisfying the positive integer condition.\n\nThe number of solutions $(x, y)$ is equal to the number of positive divisors of 144.\n\nFind the prime factorization of 144: $144 = 12^2 = (2^2 \cdot 3)^2 = 2^4 \cdot 3^2$.\nThe number of positive divisors is calculated by adding 1 to each exponent and multiplying the results: $d(144) = (4+1)(2+1) = 5 \times 3 = 15$.\n\nThere are 15 such ordered pairs."
-                },
-                {
-                    answer: "5",
-                    hint: "Consider the polynomial P(x) = x^5 - 1 and its roots.",
-                    steps: "Let $\\omega = e^{2\\pi i / 5}$. This is a primitive 5th root of unity, meaning $\\omega^5 = 1$ and $\\omega^k \ne 1$ for $1 \le k \le 4$.\nThe roots of the polynomial equation $x^5 - 1 = 0$ are the five 5th roots of unity: $1, \\omega, \\omega^2, \\omega^3, \\omega^4$.\n\nBy the Factor Theorem, we can factor $x^5 - 1$ as:\n$x^5 - 1 = (x-1)(x-\\omega)(x-\\omega^2)(x-\\omega^3)(x-\\omega^4)$.\n\nNow, consider the polynomial $Q(x) = \\frac{x^5-1}{x-1}$. This polynomial has the roots $\\omega, \\omega^2, \\omega^3, \\omega^4$. We can find its form by polynomial division or the geometric series sum formula:\n$Q(x) = x^4 + x^3 + x^2 + x + 1$.\n\nFrom the factorization of $x^5-1$, we can also write $Q(x)$ as:\n$Q(x) = (x-\\omega)(x-\\omega^2)(x-\\omega^3)(x-\\omega^4)$.\n\nThe expression we want to find is $V = (1-\\omega)(1-\\omega^2)(1-\\omega^3)(1-\\omega^4)$.\nNotice that this is exactly the value of the polynomial $Q(x)$ when evaluated at $x=1$.\n\n$V = Q(1)$.\n\nSubstitute $x=1$ into the standard form of $Q(x)$:\n$Q(1) = 1^4 + 1^3 + 1^2 + 1 + 1 = 1 + 1 + 1 + 1 + 1 = 5$.\n\nTherefore, the value of the product is 5."
-                },
-                {
-                    answer: "e^6",
-                    hint: "What is the general form of a differentiable function satisfying f(x+y)=f(x)f(y)?",
-                    steps: "The functional equation $f(x+y) = f(x)f(y)$ is the exponential Cauchy functional equation.\nIf $f$ is assumed to be differentiable, then it must be of the form $f(x) = e^{cx}$ for some constant $c$. (We exclude the trivial solution $f(x)=0$ because its derivative at 0 is 0, not 3).\n\nTo find the constant $c$, we differentiate $f(x) = e^{cx}$ with respect to $x$:\n$f'(x) = \frac{d}{dx}(e^{cx}) = e^{cx} \cdot \frac{d}{dx}(cx) = c e^{cx}$.\n\nNow use the given condition $f'(0)=3$.\n$f'(0) = c e^{c \cdot 0} = c e^0 = c \times 1 = c$.\nEquating this to the given value, we get $c=3$.\n\nSo the function is uniquely determined as $f(x) = e^{3x}$.\n\nWe need to find the value of $f(2)$.\n$f(2) = e^{3 \times 2} = e^6$."
-                },
-                {
-                    answer: "8/3",
-                    hint: "Use AM-GM inequality. How can you split 2x+3y to get x^2y in the product?",
-                    steps: "We want to maximize $P = x^2y$ given $x>0, y>0$ and the linear constraint $2x+3y=6$.\nThe AM-GM inequality states $\frac{a_1+\dots+a_k}{k} \ge \sqrt[k]{a_1 \dots a_k}$ for non-negative $a_i$.\n\nTo obtain $x^2y$ in the geometric mean, we need three terms, two involving $x$ and one involving $y$. Let's try the terms $x, x, 3y$. These are positive.\nTheir sum is $x+x+3y = 2x+3y$, which equals 6 according to the constraint.\n\nApply AM-GM to $x, x, 3y$:\n$\\frac{x+x+3y}{3} \ge \\sqrt[3]{x \cdot x \cdot (3y)}$\n$\\frac{2x+3y}{3} \ge \\sqrt[3]{3x^2y}$.\n\nSubstitute the constraint $2x+3y=6$:\n$\\frac{6}{3} \ge \\sqrt[3]{3x^2y}$\n$2 \ge \\sqrt[3]{3x^2y}$.\n\nCube both sides:\n$8 \ge 3x^2y$.\n\nDivide by 3:\n$x^2y \le \\frac{8}{3}$.\n\nThe maximum value is $8/3$, provided equality can occur.\nEquality in AM-GM holds when $x = x = 3y$, i.e., $x=3y$.\n\nCheck if this condition is compatible with the constraint:\nSubstitute $x=3y$ into $2x+3y=6$:\n$2(3y) + 3y = 6$\n$6y + 3y = 6$\n$9y = 6 \implies y = 2/3$.\nThen $x = 3y = 3(2/3) = 2$.\n\nSince $x=2$ and $y=2/3$ are positive real numbers, equality is achievable.\nTherefore, the maximum value of $x^2y$ is $8/3$."
-                },
-                {
-                    answer: "2",
-                    hint: "Use the property that (m-n) divides (P(m)-P(n)) for polynomials with integer coefficients.",
-                    steps: "Let $P(x)$ be a polynomial with integer coefficients.\nA crucial property is that for any two distinct integers $m$ and $n$, the difference $m-n$ must divide the difference $P(m)-P(n)$. We write this as $m-n \mid P(m)-P(n)$.\n\nWe are given $P(1)=5$, $P(4)=8$, and $P(a)=6$ where $a$ is an integer.\n\nApply the property using $m=a$ and $n=1$. Since $P(a)=6 \ne P(1)=5$, we know $a \ne 1$.\n$a-1 \mid P(a)-P(1)$\n$a-1 \mid 6-5$\n$a-1 \mid 1$.\nThe only integers that divide 1 are 1 and -1.\nIf $a-1=1$, then $a=2$.\nIf $a-1=-1$, then $a=0$.\nSo, $a$ must be either 0 or 2.\n\nNow apply the property using $m=a$ and $n=4$. Since $P(a)=6 \ne P(4)=8$, we know $a \ne 4$.\n$a-4 \mid P(a)-P(4)$\n$a-4 \mid 6-8$\n$a-4 \mid -2$.\nThe integer divisors of -2 are $1, -1, 2, -2$. So $a-4$ must be one of these.\n\nWe check which of our possible values for $a$ (0 or 2) satisfies this condition.\nCase $a=0$: $a-4 = 0-4 = -4$. Is $-4$ a divisor of $-2$? No.\nCase $a=2$: $a-4 = 2-4 = -2$. Is $-2$ a divisor of $-2$? Yes.\n\nOnly $a=2$ satisfies both conditions. The problem also states $a \ne 7, a \ne 11$, which $a=2$ fulfills.\nTherefore, the unique integer value for $a$ is 2."
-                }
-            ]
-        }
-    };
+        // --- Data ---
+        const examSets = {
+            'alg1': {
+                en: { name: "Algebra Set 1 (1.5 Hours)", difficulty: "Easy" },
+                th: { name: "พีชคณิต ชุดที่ 1 (1.5 ชั่วโมง)", difficulty: "ง่าย" }
+            }
+        };
+        // ** COMPLETE & VERIFIED DATA **
+        const allProblems = {
+             'alg1': {
+                en: [
+                    { title: "Problem 1", statement: "Let $P(x) = x^3 - 6x^2 + 11x - 6$. If $\\alpha, \\beta, \\gamma$ are the roots of $P(x)$, find the value of $(\\alpha+1)(\\beta+1)(\\gamma+1)$." },
+                    { title: "Problem 2", statement: "Find all functions $f: \\mathbb{R} \\to \\mathbb{R}$ such that $f(x+y) + f(x-y) = 2f(x) + 2f(y)$ for all $x, y \\in \\mathbb{R}$ and $f(1)=2$. Find the value of $f(3)$." },
+                    { title: "Problem 3", statement: "For positive real numbers $a, b, c$ such that $a+b+c=3$, find the minimum value of $\\frac{a^2}{b+c} + \\frac{b^2}{c+a} + \\frac{c^2}{a+b}$." },
+                    { title: "Problem 4", statement: "Let the sequence $a_1 = 1$ and $a_{n+1} = \\frac{a_n}{1+na_n}$ for $n \\ge 1$. Find the value of $a_{100}$ (answer as a fraction)." },
+                    { title: "Problem 5", statement: "Let $P(x)$ be a polynomial such that $P(x^2+1) = x^4+5x^2+3$. Find the value of $P(5)$." },
+                    { title: "Problem 6", statement: "Find the number of ordered pairs of positive integers $(x,y)$ such that $\\frac{1}{x} + \\frac{1}{y} = \\frac{1}{12}$." },
+                    { title: "Problem 7", statement: "Let $\\omega = e^{2\\pi i / 5}$ be a primitive 5th root of unity. Find the value of $(1-\\omega)(1-\\omega^2)(1-\\omega^3)(1-\\omega^4)$." },
+                    { title: "Problem 8", statement: "Let $f: \\mathbb{R} \\to \\mathbb{R}$ be a differentiable function satisfying $f(x+y) = f(x)f(y)$ for all $x,y \\in \\mathbb{R}$ and $f'(0)=3$. Find the value of $f(2)$ (answer in terms of $e$)." },
+                    { title: "Problem 9", statement: "Find the maximum value of $x^2y$ where $x,y$ are positive real numbers satisfying $2x+3y=6$." },
+                    { title: "Problem 10", statement: "Let $P(x)$ be a polynomial with integer coefficients. If $P(1)=5$ and $P(4)=8$, and $a$ is an integer such that $P(a)=6$, find the value of $a$." }
+                ],
+                th: [
+                    { title: "โจทย์ข้อที่ 1", statement: "ให้ $P(x) = x^3 - 6x^2 + 11x - 6$ ถ้า $\\alpha, \\beta, \\gamma$ เป็นรากของ $P(x)$ จงหาค่าของ $(\\alpha+1)(\\beta+1)(\\gamma+1)$" },
+                    { title: "โจทย์ข้อที่ 2", statement: "จงหาฟังก์ชัน $f: \\mathbb{R} \\to \\mathbb{R}$ ทั้งหมดที่สอดคล้องเงื่อนไข $f(x+y) + f(x-y) = 2f(x) + 2f(y)$ สำหรับทุก $x, y \\in \\mathbb{R}$ และ $f(1)=2$ จงหาค่าของ $f(3)$" },
+                    { title: "โจทย์ข้อที่ 3", statement: "สำหรับจำนวนจริงบวก $a, b, c$ ซึ่ง $a+b+c=3$ จงหาค่าต่ำสุดของ $\\frac{a^2}{b+c} + \\frac{b^2}{c+a} + \\frac{c^2}{a+b}$" },
+                    { title: "โจทย์ข้อที่ 4", statement: "ให้ลำดับ $a_1 = 1$ และ $a_{n+1} = \\frac{a_n}{1+na_n}$ สำหรับ $n \\ge 1$ จงหาค่าของ $a_{100}$ (ตอบในรูปเศษส่วน)" },
+                    { title: "โจทย์ข้อที่ 5", statement: "ให้ $P(x)$ เป็นพหุนามซึ่ง $P(x^2+1) = x^4+5x^2+3$ จงหาค่าของ $P(5)$" },
+                    { title: "โจทย์ข้อที่ 6", statement: "จงหาจำนวนคู่อันดับของจำนวนเต็มบวก $(x,y)$ ทั้งหมดที่สอดคล้องสมการ $\\frac{1}{x} + \\frac{1}{y} = \\frac{1}{12}$" },
+                    { title: "โจทย์ข้อที่ 7", statement: "ให้ $\\omega = e^{2\\pi i / 5}$ เป็นรากปฐมฐานที่ 5 ของ 1 จงหาค่าของ $(1-\\omega)(1-\\omega^2)(1-\\omega^3)(1-\\omega^4)$" },
+                    { title: "โจทย์ข้อที่ 8", statement: "ให้ $f: \\mathbb{R} \\to \\mathbb{R}$ เป็นฟังก์ชันที่หาอนุพันธ์ได้ ซึ่งสอดคล้อง $f(x+y) = f(x)f(y)$ สำหรับทุก $x,y \\in \\mathbb{R}$ และ $f'(0)=3$ จงหาค่าของ $f(2)$ (ตอบในรูป $e$ ยกกำลัง)" },
+                    { title: "โจทย์ข้อที่ 9", statement: "จงหาค่าสูงสุดของ $x^2y$ เมื่อ $x,y$ เป็นจำนวนจริงบวกที่สอดคล้อง $2x+3y=6$" },
+                    { title: "โจทย์ข้อที่ 10", statement: "ให้ $P(x)$ เป็นพหุนามที่มีสัมประสิทธิ์เป็นจำนวนเต็ม ถ้า $P(1)=5$ และ $P(4)=8$ และ $a$ เป็นจำนวนเต็มซึ่ง $P(a)=6$ จงหาค่าของ $a$" }
+                ]
+            }
+        };
+        const allSolutions = {
+             'alg1': {
+                en: [
+                    { answer: "24", hint: "Consider the factored form P(x) = (x-α)(x-β)(x-γ) and evaluate P(-1).", steps: "Since $\\alpha, \\beta, \\gamma$ are the roots of the cubic polynomial $P(x)$, by the Factor Theorem, we can express $P(x)$ in its factored form:\n$P(x) = (x-\\alpha)(x-\\beta)(x-\\gamma)$.\n\nThe expression we want to evaluate is $V = (\\alpha+1)(\\beta+1)(\\gamma+1)$.\n\nLet's evaluate the polynomial $P(x)$ at $x = -1$. Using the factored form:\n$P(-1) = (-1-\\alpha)(-1-\\beta)(-1-\\gamma)$.\n\nWe can factor out -1 from each term:\n$P(-1) = [(-1)(1+\\alpha)][(-1)(1+\\beta)][(-1)(1+\\gamma)]$\n$P(-1) = (-1)^3 (1+\\alpha)(1+\\beta)(1+\\gamma)$.\n\nRecognizing that $V = (1+\\alpha)(1+\\beta)(1+\\gamma)$, we have $P(-1) = -V$.\n\nRearranging this gives us the value we want: $V = -P(-1)$.\n\nNow, we calculate $P(-1)$ using the given polynomial form $P(x) = x^3 - 6x^2 + 11x - 6$:\n$P(-1) = (-1)^3 - 6(-1)^2 + 11(-1) - 6$\n$P(-1) = -1 - 6(1) - 11 - 6$\n$P(-1) = -1 - 6 - 11 - 6 = -24$.\n\nFinally, substitute the value of $P(-1)$ back into $V = -P(-1)$:\n$V = -(-24) = 24$." },
+                    { answer: "18", hint: "This is a standard functional equation. What kind of function satisfies it?", steps: "The given functional equation is $f(x+y) + f(x-y) = 2f(x) + 2f(y)$. This is known as d'Alembert's functional equation or the quadratic functional equation.\n\nIt is a standard result that if $f$ is continuous (or satisfies weaker conditions), the general solution is known to be of the form $f(x) = cx^2$ for some constant $c$.\n(Verification: $c(x+y)^2 + c(x-y)^2 = c(x^2+2xy+y^2 + x^2-2xy+y^2) = c(2x^2+2y^2) = 2(cx^2) + 2(cy^2) = 2f(x)+2f(y)$).\n\nWe are given the condition $f(1)=2$. This allows us to determine the specific value of the constant $c$.\nSubstitute $x=1$ into the general solution $f(x)=cx^2$:\n$f(1) = c(1)^2 = c$.\nSince $f(1)=2$, we must have $c=2$.\n\nTherefore, the unique function satisfying both conditions is $f(x) = 2x^2$.\n\nThe problem asks for the value of $f(3)$.\nSubstitute $x=3$ into the function: $f(3) = 2(3^2) = 2(9) = 18$." },
+                    { answer: "3/2", hint: "Try applying the Engel form of Cauchy-Schwarz.", steps: "We want to find the minimum value of the expression $S = \\frac{a^2}{b+c} + \\frac{b^2}{c+a} + \\frac{c^2}{a+b}$ given $a,b,c > 0$ and $a+b+c=3$.\n\nThis form is suitable for applying the Cauchy-Schwarz inequality in Engel form (also known as Titu's Lemma).\nThe Engel form states that for positive real numbers $x_1, \dots, x_n$ and $y_1, \dots, y_n$:\n$\\frac{x_1^2}{y_1} + \frac{x_2^2}{y_2} + \dots + \\frac{x_n^2}{y_n} \\ge \\frac{(x_1+x_2+\dots+x_n)^2}{y_1+y_2+\dots+y_n}$.\n\nLet $x_1=a, x_2=b, x_3=c$ and $y_1=b+c, y_2=c+a, y_3=a+b$. Applying the inequality:\n$S \\ge \\frac{(a+b+c)^2}{(b+c)+(c+a)+(a+b)}$.\n\nThe denominator simplifies to $2a+2b+2c = 2(a+b+c)$.\n\nThe inequality becomes: $S \\ge \\frac{(a+b+c)^2}{2(a+b+c)}$.\n\nSince $a+b+c=3$ (which is non-zero), we can simplify: $S \\ge \\frac{a+b+c}{2}$.\n\nSubstitute the given sum $a+b+c=3$: $S \\ge \\frac{3}{2}$.\n\nThis establishes $3/2$ as a lower bound.\nEquality holds in the Engel form if $\\frac{x_1}{y_1} = \\frac{x_2}{y_2} = \\frac{x_3}{y_3}$.\nIn our case, $\\frac{a}{b+c} = \\frac{b}{c+a} = \\frac{c}{a+b}$. This condition is met when $a=b=c$.\n\nGiven $a+b+c=3$, the equality case occurs when $a=b=c=1$.\nLet's check the value of S when $a=b=c=1$:\n$S = \\frac{1^2}{1+1} + \\frac{1^2}{1+1} + \\frac{1^2}{1+1} = \\frac{1}{2} + \\frac{1}{2} + \\frac{1}{2} = \\frac{3}{2}$.\n\nSince the lower bound $3/2$ is achieved, it is the minimum value." },
+                    { answer: "1/4951", hint: "Consider the reciprocal sequence b_n = 1/a_n.", steps: "The recurrence $a_{n+1} = \\frac{a_n}{1+na_n}$ suggests looking at the reciprocals.\nLet $b_n = 1/a_n$. Then $a_n = 1/b_n$.\nSubstitute this into the recurrence relation:\n$\\frac{1}{b_{n+1}} = \\frac{1/b_n}{1+n(1/b_n)} = \\frac{1/b_n}{(b_n+n)/b_n} = \\frac{1}{b_n + n}$.\n\nTaking the reciprocal gives the recurrence for $b_n$: $b_{n+1} = b_n + n$.\n\nThis means the difference between consecutive terms is $b_{k+1} - b_k = k$.\nWe want to find $b_{100}$. Use a telescoping sum:\n$b_{100} = b_1 + \sum_{k=1}^{99} (b_{k+1}-b_k) = b_1 + \sum_{k=1}^{99} k$.\n\nWe know $a_1=1$, so $b_1 = 1/a_1 = 1$.\nThe sum is $\\sum_{k=1}^{99} k = \\frac{99(100)}{2} = 4950$.\n\nSubstitute these values back: $b_{100} = 1 + 4950 = 4951$.\n\nFinally, $a_{100} = \\frac{1}{b_{100}} = \\frac{1}{4951}$." },
+                    { answer: "39", hint: "Let y = x^2+1 and express the right side in terms of y.", steps: "We are given $P(x^2+1) = x^4+5x^2+3$. Let $y = x^2+1$. Our goal is to express the right side in terms of $y$.\nFrom $y = x^2+1$, solve for $x^2$: $x^2 = y-1$.\nThen $x^4 = (x^2)^2 = (y-1)^2$.\n\nSubstitute these into the right side of the given equation:\n$P(y) = (y-1)^2 + 5(y-1) + 3$.\n\nExpand the expression:\n$P(y) = (y^2 - 2y + 1) + (5y - 5) + 3$.\nCombine like terms:\n$P(y) = y^2 + (-2y + 5y) + (1 - 5 + 3) = y^2 + 3y - 1$.\n\nThis is the form of the polynomial $P$. To find $P(5)$, substitute $y=5$:\n$P(5) = (5)^2 + 3(5) - 1 = 25 + 15 - 1 = 39$." },
+                    { answer: "15", hint: "Clear denominators and try to factor using SFFT (Simon's Favorite Factoring Trick).", steps: "Start with $\\frac{1}{x} + \\frac{1}{y} = \\frac{1}{12}$. Multiply by $12xy$:\n$12y + 12x = xy$.\n\nRearrange: $xy - 12x - 12y = 0$.\n\nAdd $144$ to both sides to complete the factorization:\n$xy - 12x - 12y + 144 = 144$.\nFactor the left side: $(x-12)(y-12) = 144$.\n\nLet $X = x-12$ and $Y = y-12$. We have $XY = 144$.\nSince $x, y$ are positive integers ($x \ge 1, y \ge 1$), then $X \ge -11$ and $Y \ge -11$.\nSince $XY=144$ is positive, $X$ and $Y$ must have the same sign. If they were both negative, $X, Y \le -1$. The largest possible values for $X, Y$ would be constrained by $X, Y \ge -11$. The pair $(-12, -12)$ gives $x=y=0$, not positive. Pairs like $(-9, -16)$ give $y=-4$, not positive.\nThus, $X$ and $Y$ must both be positive integer factors of 144.\n\nEach positive factor $X$ of 144 corresponds to a unique positive factor $Y = 144/X$. This pair $(X, Y)$ gives a unique solution $(x, y)$ where $x=X+12$ and $y=Y+12$. Since $X,Y \ge 1$, $x,y \ge 13$, which are positive.\n\nThe number of solutions is the number of positive divisors of 144.\n$144 = 12^2 = (2^2 \cdot 3)^2 = 2^4 \cdot 3^2$.\nThe number of divisors is $(4+1)(2+1) = 5 \times 3 = 15$." },
+                    { answer: "5", hint: "Consider the polynomial P(x) = x^5 - 1 and its roots.", steps: "Let $\\omega = e^{2\\pi i / 5}$. It is a primitive 5th root of unity.\nThe roots of $x^5 - 1 = 0$ are $1, \\omega, \\omega^2, \\omega^3, \\omega^4$.\n\nFactor the polynomial $x^5 - 1$ using its roots:\n$x^5 - 1 = (x-1)(x-\\omega)(x-\\omega^2)(x-\\omega^3)(x-\\omega^4)$.\n\nDivide by $(x-1)$ to get the cyclotomic polynomial $\\Phi_5(x)$:\n$\\Phi_5(x) = \\frac{x^5-1}{x-1} = x^4 + x^3 + x^2 + x + 1$.\n\nFrom the factorization, we also have:\n$\\Phi_5(x) = (x-\\omega)(x-\\omega^2)(x-\\omega^3)(x-\\omega^4)$.\n\nThe expression we want to evaluate is $(1-\\omega)(1-\\omega^2)(1-\\omega^3)(1-\\omega^4)$.\nThis is exactly $\\Phi_5(1)$.\n\nSubstitute $x=1$ into $\\Phi_5(x) = x^4 + x^3 + x^2 + x + 1$:\n$\\Phi_5(1) = 1^4 + 1^3 + 1^2 + 1 + 1 = 1 + 1 + 1 + 1 + 1 = 5$." },
+                    { answer: "e^6", hint: "What is the general form of a differentiable function satisfying f(x+y)=f(x)f(y)?", steps: "The functional equation $f(x+y) = f(x)f(y)$ for a differentiable function $f$ implies $f(x)$ must be of the form $f(x) = e^{cx}$ (excluding the trivial solution $f(x)=0$).\n\nDifferentiate $f(x) = e^{cx}$: $f'(x) = c e^{cx}$.\n\nUse the given condition $f'(0)=3$:\n$f'(0) = c e^{c \cdot 0} = c e^0 = c$.\nTherefore, $c=3$.\n\nThe function is $f(x) = e^{3x}$.\n\nEvaluate $f(2)$:\n$f(2) = e^{3(2)} = e^6$." },
+                    { answer: "8/3", hint: "Use AM-GM inequality. How can you split 2x+3y to get x^2y in the product?", steps: "We want to maximize $x^2y$ subject to $x>0, y>0$ and $2x+3y=6$.\nUse the AM-GM inequality. To get $x^2y$ in the product, consider three terms whose sum is related to the constraint. Use the terms $x, x, 3y$.\n\nSum = $x+x+3y = 2x+3y = 6$.\nNumber of terms = 3.\nProduct = $x \cdot x \cdot (3y) = 3x^2y$.\n\nAM-GM states: $\\frac{Sum}{3} \ge \\sqrt[3]{Product}$.\n$\\frac{6}{3} \ge \\sqrt[3]{3x^2y}$\n$2 \ge \\sqrt[3]{3x^2y}$.\n\nCube both sides: $8 \ge 3x^2y$.\nIsolate $x^2y$: $x^2y \le \\frac{8}{3}$.\n\nEquality holds when the terms are equal: $x = 3y$.\nSubstitute into the constraint: $2(3y) + 3y = 6 \implies 9y = 6 \implies y = 2/3$.\nThen $x = 3(2/3) = 2$.\nSince $x=2, y=2/3$ are positive, equality is achievable.\nThe maximum value is $8/3$." },
+                    { answer: "2", hint: "Use the property that (m-n) divides (P(m)-P(n)) for polynomials with integer coefficients.", steps: "Property: If $P(x)$ has integer coefficients, then for distinct integers $m, n$, $m-n$ divides $P(m)-P(n)$.\n\nGiven $P(1)=5$, $P(4)=8$, $P(a)=6$ for integer $a$.\n\nApply the property with $m=a, n=1$ (assume $a \ne 1$ since $P(a)\ne P(1)$):\n$a-1 \mid P(a)-P(1)$\n$a-1 \mid 6-5$\n$a-1 \mid 1$.\nThis means $a-1$ must be either $1$ or $-1$.
+If $a-1 = 1$, then $a=2$.
+If $a-1 = -1$, then $a=0$.\n\nApply the property with $m=a, n=4$ (assume $a \ne 4$ since $P(a)\ne P(4)$):\n$a-4 \mid P(a)-P(4)$\n$a-4 \mid 6-8$\n$a-4 \mid -2$.\nThis means $a-4$ must be one of $1, -1, 2, -2$.\n\nCheck the possible values of $a$ (0 and 2) against the second condition:\nIf $a=0$, $a-4 = -4$. $-4$ does not divide $-2$. So $a=0$ is not possible.\nIf $a=2$, $a-4 = -2$. $-2$ divides $-2$. So $a=2$ is possible.\n\nGiven $a \ne 7, a \ne 11$, the only remaining possibility is $a=2$." }
+                ],
+                th: [
+                    { answer: "24", hint: "พิจารณารูปตัวประกอบ P(x) = (x-α)(x-β)(x-γ) และหาค่า P(-1)", steps: "เนื่องจาก $\\alpha, \\beta, \\gamma$ เป็นรากของพหุนาม $P(x)$ โดยทฤษฎีบทตัวประกอบ จะได้ว่า:\n$P(x) = (x-\\alpha)(x-\\beta)(x-\\gamma)$\n\nเราต้องการหาค่าของนิพจน์ $V = (\\alpha+1)(\\beta+1)(\\gamma+1)$\n\nลองพิจารณาค่าของพหุนาม $P(x)$ ที่ $x = -1$ โดยใช้รูปตัวประกอบ:\n$P(-1) = (-1-\\alpha)(-1-\\beta)(-1-\\gamma)$\n\nดึงตัวประกอบ $-1$ ออกมาจากแต่ละวงเล็บ:\n$P(-1) = [(-1)(1+\\alpha)][(-1)(1+\\beta)][(-1)(1+\\gamma)]$\n$P(-1) = (-1)^3 (1+\\alpha)(1+\\beta)(1+\\gamma)$\n\nสังเกตว่าผลคูณ $(1+\\alpha)(1+\\beta)(1+\\gamma)$ คือนิพจน์ $V$ ที่เราต้องการหา\nดังนั้น $P(-1) = -V$\nนั่นคือ $V = -P(-1)$\n\nต่อไป คำนวณค่า $P(-1)$ โดยใช้รูปพหุนามที่ให้มา $P(x) = x^3 - 6x^2 + 11x - 6$:\n$P(-1) = (-1)^3 - 6(-1)^2 + 11(-1) - 6$\n$P(-1) = -1 - 6(1) - 11 - 6$\n$P(-1) = -1 - 6 - 11 - 6 = -24$\n\nสุดท้าย แทนค่า $P(-1)$ กลับเข้าไปใน $V = -P(-1)$:\n$V = -(-24) = 24$" },
+                    { answer: "18", hint: "นี่คือสมการฟังก์ชันมาตรฐาน ฟังก์ชันรูปแบบใดสอดคล้องกับสมการนี้?", steps: "สมการฟังก์ชันที่ให้มาคือ $f(x+y) + f(x-y) = 2f(x) + 2f(y)$ ซึ่งเรียกว่า สมการฟังก์ชัน d'Alembert หรือสมการฟังก์ชันกำลังสอง\n\nเป็นที่ทราบกันว่า ถ้า $f$ เป็นฟังก์ชันต่อเนื่อง (หรือภายใต้เงื่อนไขที่อ่อนกว่า) ผลเฉลยทั่วไปของสมการนี้คือ $f(x) = cx^2$ สำหรับค่าคงที่ $c$ บางตัว\n(เราสามารถตรวจสอบได้: $c(x+y)^2 + c(x-y)^2 = c(x^2+2xy+y^2 + x^2-2xy+y^2) = c(2x^2+2y^2) = 2(cx^2) + 2(cy^2) = 2f(x)+2f(y)$ ซึ่งสอดคล้อง)\n\nเราได้รับเงื่อนไขเพิ่มเติมคือ $f(1)=2$ ซึ่งช่วยให้เราหาค่าคงที่ $c$ ได้\nแทน $x=1$ ลงใน $f(x)=cx^2$:\n$f(1) = c(1)^2 = c$\nเนื่องจาก $f(1)=2$ สรุปได้ว่า $c=2$\n\nดังนั้น ฟังก์ชันที่สอดคล้องเงื่อนไขทั้งหมดคือ $f(x) = 2x^2$\n\nโจทย์ต้องการหาค่า $f(3)$\nแทน $x=3$ ลงในฟังก์ชัน: $f(3) = 2(3^2) = 2(9) = 18$" },
+                    { answer: "3/2", hint: "ลองใช้อสมการ Cauchy-Schwarz ในรูปแบบ Engel", steps: "เราต้องการหาค่าต่ำสุดของ $S = \\frac{a^2}{b+c} + \\frac{b^2}{c+a} + \\frac{c^2}{a+b}$ โดยที่ $a,b,c$ เป็นจำนวนจริงบวก และ $a+b+c=3$\n\nนิพจน์นี้เหมาะสำหรับการใช้อสมการ Cauchy-Schwarz ในรูปแบบ Engel (หรือ Titu's Lemma)\nอสมการกล่าวว่า สำหรับจำนวนจริงบวก $x_1, \dots, x_n$ และ $y_1, \dots, y_n$:\n$\\frac{x_1^2}{y_1} + \dots + \\frac{x_n^2}{y_n} \\ge \\frac{(x_1+\dots+x_n)^2}{y_1+\dots+y_n}$\n\nให้ $x_1=a, x_2=b, x_3=c$ และ $y_1=b+c, y_2=c+a, y_3=a+b$. จะได้:\n$S \\ge \\frac{(a+b+c)^2}{(b+c)+(c+a)+(a+b)}$\n\nตัวส่วนคือ $(b+c)+(c+a)+(a+b) = 2(a+b+c)$\n\nดังนั้น $S \\ge \\frac{(a+b+c)^2}{2(a+b+c)}$\n\nเนื่องจาก $a+b+c=3$ ไม่เท่ากับศูนย์ เราสามารถลดรูปได้:\n$S \\ge \\frac{a+b+c}{2}$\n\nแทนค่า $a+b+c=3$:\n$S \\ge \\frac{3}{2}$\n\nนั่นคือ $3/2$ เป็นขอบเขตล่าง\nอสมการจะกลายเป็นสมการ (ได้ค่าต่ำสุด) ก็ต่อเมื่อ $\\frac{x_1}{y_1} = \dots = \\frac{x_n}{y_n}$\nในกรณีนี้คือ $\\frac{a}{b+c} = \\frac{b}{c+a} = \\frac{c}{a+b}$ ซึ่งเงื่อนไขนี้เป็นจริงเมื่อ $a=b=c$\n\nเนื่องจาก $a+b+c=3$ กรณีสมการคือ $a=b=c=1$\n\nตรวจสอบค่า $S$ ที่ $a=b=c=1$:\n$S = \\frac{1^2}{1+1} + \\frac{1^2}{1+1} + \\frac{1^2}{1+1} = \\frac{1}{2} + \\frac{1}{2} + \\frac{1}{2} = \\frac{3}{2}$\n\nดังนั้น ค่าต่ำสุดคือ $3/2$" },
+                    { answer: "1/4951", hint: "พิจารณาลำดับส่วนกลับ b_n = 1/a_n", steps: "ความสัมพันธ์เวียนเกิด $a_{n+1} = \\frac{a_n}{1+na_n}$ ดูซับซ้อน ลองพิจารณาลำดับส่วนกลับ $b_n = 1/a_n$\n\nจาก $a_{n+1} = \\frac{a_n}{1+na_n}$ จะได้ $\\frac{1}{a_{n+1}} = \\frac{1+na_n}{a_n}$\n\nแทนค่า $b_n$:\n$b_{n+1} = \\frac{1}{a_n} + \\frac{na_n}{a_n} = b_n + n$\n\nได้ความสัมพันธ์ที่ง่ายขึ้น $b_{n+1} - b_n = n$\n\nเราต้องการหา $b_{100}$ โดยใช้ผลรวม Telescoping:\n$b_{100} = b_1 + (b_2-b_1) + (b_3-b_2) + \dots + (b_{100}-b_{99})$\n$b_{100} = b_1 + \sum_{k=1}^{99} (b_{k+1}-b_k) = b_1 + \sum_{k=1}^{99} k$\n\nเรารู้ว่า $a_1=1$ ดังนั้น $b_1 = 1/a_1 = 1$\nผลรวม $\\sum_{k=1}^{99} k = \\frac{99(100)}{2} = 4950$\n\nดังนั้น $b_{100} = 1 + 4950 = 4951$\n\nสุดท้าย $a_{100} = \\frac{1}{b_{100}} = \\frac{1}{4951}$" },
+                    { answer: "39", hint: "ให้ y = x^2+1 แล้วเขียนนิพจน์ฝั่งขวาในเทอมของ y", steps: "เรามี $P(x^2+1) = x^4+5x^2+3$. ต้องการหา $P(5)$\nให้ $y = x^2+1$ เพื่อหา $P(y)$\nจาก $y = x^2+1$ จะได้ $x^2 = y-1$\nดังนั้น $x^4 = (x^2)^2 = (y-1)^2$\n\nแทนค่า $x^2$ และ $x^4$ ในสมการเดิม:\n$P(y) = (y-1)^2 + 5(y-1) + 3$\n\nกระจายและจัดรูป:\n$P(y) = (y^2 - 2y + 1) + (5y - 5) + 3$\n$P(y) = y^2 + 3y - 1$\n\nนี่คือรูปของพหุนาม $P$. หากต้องการ $P(5)$ ให้แทน $y=5$:\n$P(5) = 5^2 + 3(5) - 1 = 25 + 15 - 1 = 39$" },
+                    { answer: "15", hint: "กำจัดส่วนแล้วลองแยกตัวประกอบโดยใช้ SFFT (Simon's Favorite Factoring Trick)", steps: "เริ่มจาก $\\frac{1}{x} + \\frac{1}{y} = \\frac{1}{12}$\nคูณตลอดด้วย $12xy$:\n$12y + 12x = xy$\n\nจัดรูปใหม่: $xy - 12x - 12y = 0$\n\nใช้เทคนิค Simon's Favorite Factoring Trick โดยบวก $144$ ทั้งสองข้าง:\n$xy - 12x - 12y + 144 = 144$\n\nแยกตัวประกอบฝั่งซ้าย: $(x-12)(y-12) = 144$\n\nให้ $X=x-12$ และ $Y=y-12$. สมการคือ $XY=144$\nเนื่องจาก $x, y$ เป็นจำนวนเต็มบวก ($x \ge 1, y \ge 1$) ดังนั้น $X \ge -11, Y \ge -11$\nผลคูณ $XY=144$ เป็นบวก แสดงว่า $X, Y$ มีเครื่องหมายเหมือนกัน\nถ้า $X, Y$ เป็นลบทั้งคู่ จะทำให้ $x=X+12 \le 11$ และ $y=Y+12 \le 11$. แต่เนื่องจาก $XY=144$ ถ้า $X \le -12$ แล้ว $Y \ge -12$ ด้วย. กรณีเดียวคือ $X=Y=-12$ ซึ่งให้ $x=y=0$ ไม่ใช่จำนวนเต็มบวก\nดังนั้น $X, Y$ ต้องเป็นตัวประกอบบวกของ 144 ทั้งคู่\n\nจำนวนคำตอบ $(x,y)$ เท่ากับจำนวนตัวประกอบบวกของ 144\n$144 = 12^2 = (2^2 \cdot 3)^2 = 2^4 \cdot 3^2$\nจำนวนตัวประกอบบวกคือ $(4+1)(2+1) = 5 \times 3 = 15$\nมีทั้งหมด 15 คู่อันดับ" },
+                    { answer: "5", hint: "พิจารณาพหุนาม P(x) = x^5 - 1 และรากของมัน", steps: "$\\omega = e^{2\\pi i / 5}$ เป็นรากปฐมฐานที่ 5 ของ 1 หมายความว่า $\\omega^5 = 1$ และ $\\omega^k \ne 1$ สำหรับ $k=1,2,3,4$\nรากของสมการ $x^5 - 1 = 0$ คือ $1, \\omega, \\omega^2, \\omega^3, \\omega^4$\n\nดังนั้น $x^5 - 1 = (x-1)(x-\\omega)(x-\\omega^2)(x-\\omega^3)(x-\\omega^4)$\n\nพิจารณาพหุนาม $Q(x) = \\frac{x^5-1}{x-1} = x^4 + x^3 + x^2 + x + 1$\nจากรูปตัวประกอบ จะได้ $Q(x) = (x-\\omega)(x-\\omega^2)(x-\\omega^3)(x-\\omega^4)$\n\nนิพจน์ที่เราต้องการหาคือ $(1-\\omega)(1-\\omega^2)(1-\\omega^3)(1-\\omega^4)$\nซึ่งมีค่าเท่ากับ $Q(1)$\n\nแทนค่า $x=1$ ใน $Q(x) = x^4 + x^3 + x^2 + x + 1$:\n$Q(1) = 1 + 1 + 1 + 1 + 1 = 5$" },
+                    { answer: "e^6", hint: "ฟังก์ชันที่หาอนุพันธ์ได้ที่สอดคล้อง f(x+y)=f(x)f(y) มีรูปแบบทั่วไปอย่างไร?", steps: "สมการ $f(x+y) = f(x)f(y)$ สำหรับ $f$ ที่หาอนุพันธ์ได้ มีผลเฉลยทั่วไปในรูป $f(x) = e^{cx}$ (ไม่รวมผลเฉลย $f(x)=0$)\n\nหาอนุพันธ์ของ $f(x) = e^{cx}$:\n$f'(x) = c e^{cx}$\n\nใช้เงื่อนไข $f'(0)=3$:\n$f'(0) = c e^0 = c$. ดังนั้น $c=3$\n\nฟังก์ชันคือ $f(x) = e^{3x}$\n\nหาค่า $f(2)$: $f(2) = e^{3(2)} = e^6$" },
+                    { answer: "8/3", hint: "ใช้อสมการ AM-GM จะแยกพจน์ 2x+3y อย่างไรเพื่อให้ผลคูณเกิด x^2y?", steps: "ต้องการค่าสูงสุดของ $x^2y$ โดยที่ $x,y>0$ และ $2x+3y=6$\nใช้อสมการ AM-GM. เนื่องจากต้องการ $x^2y$ ในผลคูณ จึงใช้ 3 พจน์คือ $x, x, 3y$\n\nผลบวกคือ $x+x+3y = 2x+3y = 6$\nจำนวนพจน์คือ 3\nผลคูณคือ $x \cdot x \cdot (3y) = 3x^2y$\n\nจาก AM-GM: $\\frac{x+x+3y}{3} \ge \\sqrt[3]{x \cdot x \cdot (3y)}$\n$\\frac{6}{3} \ge \\sqrt[3]{3x^2y}$\n$2 \ge \\sqrt[3]{3x^2y}$\n\nยกกำลังสาม: $8 \ge 3x^2y$\n$x^2y \le \\frac{8}{3}$\n\nอสมการเป็นสมการเมื่อ $x=x=3y$, นั่นคือ $x=3y$\nแทนใน $2x+3y=6$:\n$2(3y) + 3y = 6 \implies 9y=6 \implies y=2/3$\n$x = 3(2/3) = 2$\nค่า $x=2, y=2/3$ เป็นบวกจริง ดังนั้นค่าสูงสุดคือ $8/3$" },
+                    { answer: "2", hint: "ใช้คุณสมบัติที่ว่า (m-n) หาร (P(m)-P(n)) ลงตัว สำหรับพหุนามที่มีสัมประสิทธิ์เป็นจำนวนเต็ม", steps: "คุณสมบัติสำคัญของพหุนาม $P(x)$ ที่มีสัมประสิทธิ์เป็นจำนวนเต็มคือ: สำหรับจำนวนเต็ม $m, n$ ใดๆ ที่ $m \ne n$, จะได้ว่า $m-n$ หาร $P(m)-P(n)$ ลงตัว\n\nเรามี $P(1)=5$, $P(4)=8$ และ $P(a)=6$ สำหรับจำนวนเต็ม $a$\n\nใช้คุณสมบัติกับคู่ $(a, 1)$ (เนื่องจาก $P(a)=6 \ne P(1)=5$ ดังนั้น $a \ne 1$):\n$a-1$ ต้องหาร $P(a)-P(1) = 6-5 = 1$ ลงตัว\nตัวหารจำนวนเต็มของ 1 คือ 1 และ -1\nดังนั้น $a-1=1$ หรือ $a-1=-1$\nถ้า $a-1=1 \implies a=2$\nถ้า $a-1=-1 \implies a=0$\n\nใช้คุณสมบัติกับคู่ $(a, 4)$ (เนื่องจาก $P(a)=6 \ne P(4)=8$ ดังนั้น $a \ne 4$):\n$a-4$ ต้องหาร $P(a)-P(4) = 6-8 = -2$ ลงตัว\nตัวหารจำนวนเต็มของ -2 คือ $1, -1, 2, -2$\n\nตรวจสอบค่า $a$ ที่เป็นไปได้ (0 หรือ 2) ว่าสอดคล้องเงื่อนไขที่สองหรือไม่:\nกรณี $a=0$: $a-4 = -4$. $-4$ ไม่ใช่ตัวหารของ $-2$\nกรณี $a=2$: $a-4 = -2$. $-2$ เป็นตัวหารของ $-2$\n\nดังนั้น ค่า $a$ ที่สอดคล้องเงื่อนไขทั้งหมดคือ $a=2$. (ซึ่ง $a \ne 7, a \ne 11$)" }
+                ]
+            }
+        };
 
-    // --- PASTE ALL HELPER FUNCTIONS AND INIT LOGIC HERE ---
-    // (Ensure formatTime, updateWelcomeMessage, renderSelectionScreen, renderProblems, etc. are included)
-    const initApp = () => { console.log("Initializing App..."); try { Object.keys(allSolutions).forEach(setId => { if (!allSolutions[setId] || !allProblems[setId]) return; if (allSolutions[setId].th && allSolutions[setId].en) { allSolutions[setId].th.forEach((sol_th, i) => { const sol_en = allSolutions[setId].en[i]; const prob_th = allProblems[setId].th?.[i]; if (sol_en) { sol_th.answer = sol_en.answer; sol_th.hint = sol_en.hint; } if (prob_th) { sol_th.title = prob_th.title; } }); } if (allSolutions[setId].en && allProblems[setId].en) { allSolutions[setId].en.forEach((sol_en, i) => { const prob_en = allProblems[setId].en[i]; if (prob_en) { sol_en.title = prob_en.title; } }); } }); if (loginStuff.loginBtn) { loginStuff.loginBtn.addEventListener('click', loginAction); } else { console.error("Login button not found during init."); } if (submitBtn) { submitBtn.addEventListener('click', () => { if (confirm(currentLang === 'en' ? 'Are you sure you want to submit?' : 'คุณแน่ใจหรือไม่ว่าต้องการส่งคำตอบ?')) { submitTest(); } }); } else { console.error("Submit button not found during init."); } if (backToSelectionBtn) { backToSelectionBtn.addEventListener('click', () => { renderSelectionScreen(); showScreen('selection'); }); } else { console.error("Back button not found during init."); } logoutBtns.forEach((btn, index) => { if(btn) { btn.addEventListener('click', logoutAction); } else { console.warn(`Logout button at index ${index} not found during init.`); } }); langToggles.forEach((btn, index) => { if(btn) { btn.addEventListener('click', () => setLanguage(currentLang === 'en' ? 'th' : 'en')); } else { console.warn(`Lang toggle button at index ${index} not found during init.`); } }); let savedUser = null; try { savedUser = localStorage.getItem('loggedInUser'); } catch(e) { console.warn("localStorage unavailable:", e); } if (savedUser && credentials[savedUser]) { console.log(`Found logged in user: ${savedUser}`); currentUser = savedUser; showScreen('selection'); renderSelectionScreen(); } else { console.log("No logged in user found or invalid, showing login."); showScreen('login'); } setLanguage('en'); console.log("App Initialized Successfully."); } catch (error) { console.error("CRITICAL Error during app initialization:", error); const appDiv = getElem('app'); if(appDiv) appDiv.innerHTML = '<div style="color: red; text-align: center; padding: 40px; font-size: 1.2em;">Initialization Error! Please check the console (F12) for details and ensure all HTML elements exist.</div>'; if(screens.login) screens.login.classList.add('active'); else document.body.innerHTML = '<p style="color:red;">Fatal Error: Cannot load UI.</p>'; } };
+
+    // --- Core Functions --- (Copied from previous correct response)
     const showScreen = (screenId) => { console.log(`Attempting to show screen: ${screenId}`); try { const currentLoginCard = screens.login ? screens.login.querySelector('.card') : null; if(currentLoginCard) currentLoginCard.classList.remove('authenticating'); Object.values(screens).forEach(screen => { if (screen) screen.classList.remove('active'); }); const targetScreen = screens[screenId]; if (targetScreen) { targetScreen.classList.add('active'); console.log(`Screen ${screenId} activated.`); setTimeout(renderMath, 50); } else { console.error(`Screen "${screenId}" element not found.`); if(screenId !== 'login' && screens.login && !screens.login.classList.contains('active')) { console.warn("Falling back to login screen."); showScreen('login'); } } } catch (error) { console.error(`Error in showScreen('${screenId}'):`, error); } };
     const renderMath = () => { if (typeof renderMathInElement === 'function') { try { const mathContainers = document.querySelectorAll('.screen.active .problem-statement, .screen.active .solution-statement, .screen.active #score-display'); if (mathContainers.length > 0) { console.log("Rendering Math..."); mathContainers.forEach(container => { renderMathInElement(container, { delimiters: [ {left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false} ], throwOnError: false }); }); } } catch (error) { console.error("KaTeX rendering failed:", error); } } };
     const formatTime = (seconds) => { if (isNaN(seconds) || seconds < 0) return "00:00:00"; const h = Math.floor(seconds / 3600); const m = Math.floor((seconds % 3600) / 60); const s = Math.floor(seconds % 60); return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`; };
