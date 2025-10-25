@@ -102,7 +102,9 @@ main { padding: 2rem; background-color: var(--card-bg); border-radius: 0 0 var(-
 #back-to-selection-btn { width: 100%; background-color: var(--secondary-text); margin-top: 1rem; border-radius: var(--border-radius-button); }
 #back-to-selection-btn:hover { background-color: var(--primary-text); }
 hr { border: none; border-top: 1px solid var(--border-color); margin: 2rem 0; }
-.katex { font-size: 1.2em !important; }
+.katex { font-size: 1.1em !important; /* Slightly smaller KaTeX */ }
+.katex-display { font-size: 1.2em !important; /* Keep display math larger */ }
+
 
 /* --- Hint Button --- */
 .hint-btn {
