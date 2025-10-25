@@ -1,8 +1,43 @@
-// ===== SCRIPT.JS (FINAL ROBUST INIT v3 - ALGEBRA SET 1 + HINTS + DIFF + 1.5 HOURS) =====
+// ===== SCRIPT.JS (FINAL ROBUST INIT v4 - VISIBLE ERROR HANDLER) =====
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Error Boundary for Initialization ---
+
+    // --- Visible Error Handler ---
+    // ฟังก์ชันนี้จะแสดง Error ขึ้นมาบนหน้าจอโดยตรง
+    // เนื่องจากเราไม่สามารถใช้ F12 บนมือถือได้
+    const showFatalError = (error, stage) => {
+        console.error(`FATAL ERROR during [${stage}]:`, error);
+        
+        // พยายามหา <div id="app"> แต่ถ้าไม่เจอก็จะเขียนลง <body> แทน
+        const appDiv = document.getElementById('app');
+        
+        // สร้างข้อความ Error เพื่อแสดงผล
+        const message = `
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #fff0f0; border: 2px solid red; color: #a00; padding: 15px; margin: 20px; text-align: left; font-size: 14px; line-height: 1.5;">
+                <h2 style="color: red; margin-top: 0;">Application Error! (เกิดข้อผิดพลาด)</h2>
+                <p style="color: #000;">กรุณาแคปหน้าจอนี้ส่งให้ผู้พัฒนาครับ</p>
+                <hr style="border: 0; border-top: 1px solid #ffcccc;">
+                <p style="color: #333; margin-bottom: 0;"><strong>Stage (ขั้นตอน):</strong> ${stage}</p>
+                <p style="color: #333; margin-top: 5px;"><strong>Error (ข้อผิดพลาด):</strong> ${error.message}</p>
+                <pre style="white-space: pre-wrap; word-wrap: break-word; background: #fff8f8; padding: 10px; border-radius: 4px; border: 1px solid #ffdddd; color: #500; font-family: 'Courier New', Courier, monospace; font-size: 12px;"><strong>Stack (ตำแหน่ง):</strong>\n${error.stack || 'No stack trace'}</pre>
+            </div>
+        `;
+        
+        // แสดงผล Error
+        if (appDiv) {
+            appDiv.innerHTML = message;
+        } else {
+            // ถ้า <div id="app"> ไม่มีจริงๆ ให้เขียนทับ <body> ไปเลย
+            document.body.style.backgroundColor = '#fff0f0';
+            document.body.innerHTML = message;
+        }
+    };
+
+    // --- Main Execution Block ---
+    // เราจะใช้ try...catch *เพียงบล็อกเดียว* ครอบทุกอย่าง
+    // ถ้ามีอะไรพัง (ตั้งแต่การกำหนดตัวแปร จนถึงการรันฟังก์ชัน)
+    // มันจะถูกจับโดย 'catch' ด้านล่างทันที
     try {
-        console.log("DOM Loaded. Initializing script...");
+        console.log("DOM Loaded. Initializing script v4...");
 
         // --- DOM Elements ---
         const getElem = (id) => document.getElementById(id);
@@ -84,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const allSolutions = {
              'alg1': {
                 en: [
-                    { answer: "24", hint: "Consider the factored form P(x) = (x-α)(x-β)(x-γ) and evaluate P(-1).", steps: "Since $\\alpha, \\beta, \\gamma$ are the roots of the cubic polynomial $P(x)$, by the Factor Theorem, we can express $P(x)$ in its factored form:\n$P(x) = (x-\\alpha)(x-\\beta)(x-\\gamma)$.\n\nThe expression we want to evaluate is $V = (\\alpha+1)(\\beta+1)(\\gamma+1)$.\n\nLet's evaluate the polynomial $P(x)$ at $x = -1$. Using the factored form:\n$P(-1) = (-1-\\alpha)(-1-\\beta)(-1-\\gamma)$.\n\nWe can factor out -1 from each term:\n$P(-1) = [(-1)(1+\\alpha)][(-1)(1+\\beta)][(-1)(1+\\gamma)]$\n$P(-1) = (-1)^3 (1+\\alpha)(1+\\beta)(1+\\gamma)$.\n\nRecognizing that $V = (1+\\alpha)(1+\\beta)(1+\\gamma)$, we have $P(-1) = -V$.\n\nRearranging this gives us the value we want: $V = -P(-1)$.\n\nNow, we calculate $P(-1)$ using the given polynomial form $P(x) = x^3 - 6x^2 + 11x - 6$:\n$P(-1) = (-1)^3 - 6(-1)^2 + 11(-1) - 6$\n$P(-1) = -1 - 6(1) - 11 - 6$\n$P(-1) = -1 - 6 - 11 - 6 = -24$.\n\nFinally, substitute the value of $P(-1)$ back into $V = -P(-1)$:\n$V = -(-24) = 24$." },
+                    { answer: "24", hint: "Consider the factored form P(x) = (x-α)(x-β)(x-γ) and evaluate P(-1).", steps: "Since $\\alpha, \\beta, \\gamma$ are the roots of the cubic polynomial $P(x)$, by the Factor Theorem, we can express $P(x)$ in its factored form:\n$P(x) = (x-\\alpha)(x-\\beta)(x-\\gamma)$.\n\nThe expression we want to evaluate is $V = (\\alpha+1)(\\beta+1)(\\gamma+1)$.\n\nLet's evaluate the polynomial $P(x)$ at $x = -1$. Using the factored form:\n$P(-1) = (-1-\\alpha)(-1-\\beta)(-1-\\gamma)$.\n\nWe can factor out -1 from each term:\n$P(-1) = [(-1)(1+\\alpha)][(-1)(1+\\beta)][(-1)(1+\\gamma)]$\n$P(-1) = (-1)^3 (1+\\alpha)(1+\\beta)(1+\\gamma)$.\n\nRecognizing that $V = (1+\\alpha)(1+\\beta)(1+\\gamma)$, we have $P(-1) = -V$.\n\nRearranging this gives us the value we want: $V = -P(-1)$.\n\nNow, we calculate $P(-1)$ using the given polynomial form $P(x) = x^3 - 6x^2 + 11x - 6$:\n$P(-1) = (-1)^3 - 6(-1)^2 + 11(-1) - 6$\n$P(-1) = -1 - 6(1) - 11 - 6 = -24$.\n\nFinally, substitute the value of $P(-1)$ back into $V = -P(-1)$:\n$V = -(-24) = 24$." },
                     { answer: "18", hint: "This is a standard functional equation. What kind of function satisfies it?", steps: "The given functional equation is $f(x+y) + f(x-y) = 2f(x) + 2f(y)$. This is known as d'Alembert's functional equation or the quadratic functional equation.\n\nIt is a standard result that if $f$ is continuous (or satisfies weaker conditions), the general solution is known to be of the form $f(x) = cx^2$ for some constant $c$.\n(Verification: $c(x+y)^2 + c(x-y)^2 = c(x^2+2xy+y^2 + x^2-2xy+y^2) = c(2x^2+2y^2) = 2(cx^2) + 2(cy^2) = 2f(x)+2f(y)$).\n\nWe are given the condition $f(1)=2$. This allows us to determine the specific value of the constant $c$.\nSubstitute $x=1$ into the general solution $f(x)=cx^2$:\n$f(1) = c(1)^2 = c$.\nSince $f(1)=2$, we must have $c=2$.\n\nTherefore, the unique function satisfying both conditions is $f(x) = 2x^2$.\n\nThe problem asks for the value of $f(3)$.\nSubstitute $x=3$ into the function: $f(3) = 2(3^2) = 2(9) = 18$." },
                     { answer: "3/2", hint: "Try applying the Engel form of Cauchy-Schwarz.", steps: "We want to find the minimum value of the expression $S = \\frac{a^2}{b+c} + \\frac{b^2}{c+a} + \\frac{c^2}{a+b}$ given $a,b,c > 0$ and $a+b+c=3$.\n\nThis form is suitable for applying the Cauchy-Schwarz inequality in Engel form (also known as Titu's Lemma).\nThe Engel form states that for positive real numbers $x_1, \dots, x_n$ and $y_1, \dots, y_n$:\n$\\frac{x_1^2}{y_1} + \frac{x_2^2}{y_2} + \dots + \\frac{x_n^2}{y_n} \\ge \\frac{(x_1+x_2+\dots+x_n)^2}{y_1+y_2+\dots+y_n}$.\n\nLet $x_1=a, x_2=b, x_3=c$ and $y_1=b+c, y_2=c+a, y_3=a+b$. Applying the inequality:\n$S \\ge \\frac{(a+b+c)^2}{(b+c)+(c+a)+(a+b)}$.\n\nThe denominator simplifies to $2a+2b+2c = 2(a+b+c)$.\n\nThe inequality becomes: $S \\ge \\frac{(a+b+c)^2}{2(a+b+c)}$.\n\nSince $a+b+c=3$ (which is non-zero), we can simplify: $S \\ge \\frac{a+b+c}{2}$.\n\nSubstitute the given sum $a+b+c=3$: $S \\ge \\frac{3}{2}$.\n\nThis establishes $3/2$ as a lower bound.\nEquality holds in the Engel form if $\\frac{x_1}{y_1} = \\frac{x_2}{y_2} = \\frac{x_3}{y_3}$.\nIn our case, $\\frac{a}{b+c} = \\frac{b}{c+a} = \\frac{c}{a+b}$. This condition is met when $a=b=c$.\n\nGiven $a+b+c=3$, the equality case occurs when $a=b=c=1$.\nLet's check the value of S when $a=b=c=1$:\n$S = \\frac{1^2}{1+1} + \\frac{1^2}{1+1} + \\frac{1^2}{1+1} = \\frac{1}{2} + \\frac{1}{2} + \\frac{1}{2} = \\frac{3}{2}$.\n\nSince the lower bound $3/2$ is achieved, it is the minimum value." },
                     { answer: "1/4951", hint: "Consider the reciprocal sequence b_n = 1/a_n.", steps: "The recurrence $a_{n+1} = \\frac{a_n}{1+na_n}$ suggests looking at the reciprocals.\nLet $b_n = 1/a_n$. Then $a_n = 1/b_n$.\nSubstitute this into the recurrence relation:\n$\\frac{1}{b_{n+1}} = \\frac{1/b_n}{1+n(1/b_n)} = \\frac{1/b_n}{(b_n+n)/b_n} = \\frac{1}{b_n + n}$.\n\nTaking the reciprocal gives the recurrence for $b_n$: $b_{n+1} = b_n + n$.\n\nThis means the difference between consecutive terms is $b_{k+1} - b_k = k$.\nWe want to find $b_{100}$. Use a telescoping sum:\n$b_{100} = b_1 + \sum_{k=1}^{99} (b_{k+1}-b_k) = b_1 + \sum_{k=1}^{99} k$.\n\nWe know $a_1=1$, so $b_1 = 1/a_1 = 1$.\nThe sum is $\\sum_{k=1}^{99} k = \\frac{99(100)}{2} = 4950$.\n\nSubstitute these values back: $b_{100} = 1 + 4950 = 4951$.\n\nFinally, $a_{100} = \\frac{1}{b_{100}} = \\frac{1}{4951}$." },
@@ -98,7 +133,7 @@ If $a-1 = 1$, then $a=2$.
 If $a-1 = -1$, then $a=0$.\n\nApply the property with $m=a, n=4$ (assume $a \ne 4$ since $P(a)\ne P(4)$):\n$a-4 \mid P(a)-P(4)$\n$a-4 \mid 6-8$\n$a-4 \mid -2$.\nThis means $a-4$ must be one of $1, -1, 2, -2$.\n\nCheck the possible values of $a$ (0 and 2) against the second condition:\nIf $a=0$, $a-4 = -4$. $-4$ does not divide $-2$. So $a=0$ is not possible.\nIf $a=2$, $a-4 = -2$. $-2$ divides $-2$. So $a=2$ is possible.\n\nGiven $a \ne 7, a \ne 11$, the only remaining possibility is $a=2$." }
                 ],
                 th: [
-                    { answer: "24", hint: "พิจารณารูปตัวประกอบ P(x) = (x-α)(x-β)(x-γ) และหาค่า P(-1)", steps: "เนื่องจาก $\\alpha, \\beta, \\gamma$ เป็นรากของพหุนาม $P(x)$ โดยทฤษฎีบทตัวประกอบ จะได้ว่า:\n$P(x) = (x-\\alpha)(x-\\beta)(x-\\gamma)$\n\nเราต้องการหาค่าของนิพจน์ $V = (\\alpha+1)(\\beta+1)(\\gamma+1)$\n\nลองพิจารณาค่าของพหุนาม $P(x)$ ที่ $x = -1$ โดยใช้รูปตัวประกอบ:\n$P(-1) = (-1-\\alpha)(-1-\\beta)(-1-\\gamma)$\n\nดึงตัวประกอบ $-1$ ออกมาจากแต่ละวงเล็บ:\n$P(-1) = [(-1)(1+\\alpha)][(-1)(1+\\beta)][(-1)(1+\\gamma)]$\n$P(-1) = (-1)^3 (1+\\alpha)(1+\\beta)(1+\\gamma)$\n\nสังเกตว่าผลคูณ $(1+\\alpha)(1+\\beta)(1+\\gamma)$ คือนิพจน์ $V$ ที่เราต้องการหา\nดังนั้น $P(-1) = -V$\nนั่นคือ $V = -P(-1)$\n\nต่อไป คำนวณค่า $P(-1)$ โดยใช้รูปพหุนามที่ให้มา $P(x) = x^3 - 6x^2 + 11x - 6$:\n$P(-1) = (-1)^3 - 6(-1)^2 + 11(-1) - 6$\n$P(-1) = -1 - 6(1) - 11 - 6$\n$P(-1) = -1 - 6 - 11 - 6 = -24$\n\nสุดท้าย แทนค่า $P(-1)$ กลับเข้าไปใน $V = -P(-1)$:\n$V = -(-24) = 24$" },
+                    { answer: "24", hint: "พิจารณารูปตัวประกอบ P(x) = (x-α)(x-β)(x-γ) และหาค่า P(-1)", steps: "เนื่องจาก $\\alpha, \\beta, \\gamma$ เป็นรากของพหุนาม $P(x)$ โดยทฤษฎีบทตัวประกอบ จะได้ว่า:\n$P(x) = (x-\\alpha)(x-\\beta)(x-\\gamma)$\n\nเราต้องการหาค่าของนิพจน์ $V = (\\alpha+1)(\\beta+1)(\\gamma+1)$\n\nลองพิจารณาค่าของพหุนาม $P(x)$ ที่ $x = -1$ โดยใช้รูปตัวประกอบ:\n$P(-1) = (-1-\\alpha)(-1-\\beta)(-1-\\gamma)$\n\nดึงตัวประกอบ $-1$ ออกมาจากแต่ละวงเล็บ:\n$P(-1) = [(-1)(1+\\alpha)][(-1)(1+\\beta)][(-1)(1+\\gamma)]$\n$P(-1) = (-1)^3 (1+\\alpha)(1+\\beta)(1+\\gamma)$\n\nสังเกตว่าผลคูณ $(1+\\alpha)(1+\\beta)(1+\\gamma)$ คือนิพจน์ $V$ ที่เราต้องการหา\nดังนั้น $P(-1) = -V$\nนั่นคือ $V = -P(-1)$\n\nต่อไป คำนวณค่า $P(-1)$ โดยใช้รูปพหุนามที่ให้มา $P(x) = x^3 - 6x^2 + 11x - 6$:\n$P(-1) = (-1)^3 - 6(-1)^2 + 11(-1) - 6$\n$P(-1) = -1 - 6(1) - 11 - 6 = -24$\n\nสุดท้าย แทนค่า $P(-1)$ กลับเข้าไปใน $V = -P(-1)$:\n$V = -(-24) = 24$" },
                     { answer: "18", hint: "นี่คือสมการฟังก์ชันมาตรฐาน ฟังก์ชันรูปแบบใดสอดคล้องกับสมการนี้?", steps: "สมการฟังก์ชันที่ให้มาคือ $f(x+y) + f(x-y) = 2f(x) + 2f(y)$ ซึ่งเรียกว่า สมการฟังก์ชัน d'Alembert หรือสมการฟังก์ชันกำลังสอง\n\nเป็นที่ทราบกันว่า ถ้า $f$ เป็นฟังก์ชันต่อเนื่อง (หรือภายใต้เงื่อนไขที่อ่อนกว่า) ผลเฉลยทั่วไปของสมการนี้คือ $f(x) = cx^2$ สำหรับค่าคงที่ $c$ บางตัว\n(เราสามารถตรวจสอบได้: $c(x+y)^2 + c(x-y)^2 = c(x^2+2xy+y^2 + x^2-2xy+y^2) = c(2x^2+2y^2) = 2(cx^2) + 2(cy^2) = 2f(x)+2f(y)$ ซึ่งสอดคล้อง)\n\nเราได้รับเงื่อนไขเพิ่มเติมคือ $f(1)=2$ ซึ่งช่วยให้เราหาค่าคงที่ $c$ ได้\nแทน $x=1$ ลงใน $f(x)=cx^2$:\n$f(1) = c(1)^2 = c$\nเนื่องจาก $f(1)=2$ สรุปได้ว่า $c=2$\n\nดังนั้น ฟังก์ชันที่สอดคล้องเงื่อนไขทั้งหมดคือ $f(x) = 2x^2$\n\nโจทย์ต้องการหาค่า $f(3)$\nแทน $x=3$ ลงในฟังก์ชัน: $f(3) = 2(3^2) = 2(9) = 18$" },
                     { answer: "3/2", hint: "ลองใช้อสมการ Cauchy-Schwarz ในรูปแบบ Engel", steps: "เราต้องการหาค่าต่ำสุดของ $S = \\frac{a^2}{b+c} + \\frac{b^2}{c+a} + \\frac{c^2}{a+b}$ โดยที่ $a,b,c$ เป็นจำนวนจริงบวก และ $a+b+c=3$\n\nนิพจน์นี้เหมาะสำหรับการใช้อสมการ Cauchy-Schwarz ในรูปแบบ Engel (หรือ Titu's Lemma)\nอสมการกล่าวว่า สำหรับจำนวนจริงบวก $x_1, \dots, x_n$ และ $y_1, \dots, y_n$:\n$\\frac{x_1^2}{y_1} + \dots + \\frac{x_n^2}{y_n} \\ge \\frac{(x_1+\dots+x_n)^2}{y_1+\dots+y_n}$\n\nให้ $x_1=a, x_2=b, x_3=c$ และ $y_1=b+c, y_2=c+a, y_3=a+b$. จะได้:\n$S \\ge \\frac{(a+b+c)^2}{(b+c)+(c+a)+(a+b)}$\n\nตัวส่วนคือ $(b+c)+(c+a)+(a+b) = 2(a+b+c)$\n\nดังนั้น $S \\ge \\frac{(a+b+c)^2}{2(a+b+c)}$\n\nเนื่องจาก $a+b+c=3$ ไม่เท่ากับศูนย์ เราสามารถลดรูปได้:\n$S \\ge \\frac{a+b+c}{2}$\n\nแทนค่า $a+b+c=3$:\n$S \\ge \\frac{3}{2}$\n\nนั่นคือ $3/2$ เป็นขอบเขตล่าง\nอสมการจะกลายเป็นสมการ (ได้ค่าต่ำสุด) ก็ต่อเมื่อ $\\frac{x_1}{y_1} = \dots = \\frac{x_n}{y_n}$\nในกรณีนี้คือ $\\frac{a}{b+c} = \\frac{b}{c+a} = \\frac{c}{a+b}$ ซึ่งเงื่อนไขนี้เป็นจริงเมื่อ $a=b=c$\n\nเนื่องจาก $a+b+c=3$ กรณีสมการคือ $a=b=c=1$\n\nตรวจสอบค่า $S$ ที่ $a=b=c=1$:\n$S = \\frac{1^2}{1+1} + \\frac{1^2}{1+1} + \\frac{1^2}{1+1} = \\frac{1}{2} + \\frac{1}{2} + \\frac{1}{2} = \\frac{3}{2}$\n\nดังนั้น ค่าต่ำสุดคือ $3/2$" },
                     { answer: "1/4951", hint: "พิจารณาลำดับส่วนกลับ b_n = 1/a_n", steps: "ความสัมพันธ์เวียนเกิด $a_{n+1} = \\frac{a_n}{1+na_n}$ ดูซับซ้อน ลองพิจารณาลำดับส่วนกลับ $b_n = 1/a_n$\n\nจาก $a_{n+1} = \\frac{a_n}{1+na_n}$ จะได้ $\\frac{1}{a_{n+1}} = \\frac{1+na_n}{a_n}$\n\nแทนค่า $b_n$:\n$b_{n+1} = \\frac{1}{a_n} + \\frac{na_n}{a_n} = b_n + n$\n\nได้ความสัมพันธ์ที่ง่ายขึ้น $b_{n+1} - b_n = n$\n\nเราต้องการหา $b_{100}$ โดยใช้ผลรวม Telescoping:\n$b_{100} = b_1 + (b_2-b_1) + (b_3-b_2) + \dots + (b_{100}-b_{99})$\n$b_{100} = b_1 + \sum_{k=1}^{99} (b_{k+1}-b_k) = b_1 + \sum_{k=1}^{99} k$\n\nเรารู้ว่า $a_1=1$ ดังนั้น $b_1 = 1/a_1 = 1$\nผลรวม $\\sum_{k=1}^{99} k = \\frac{99(100)}{2} = 4950$\n\nดังนั้น $b_{100} = 1 + 4950 = 4951$\n\nสุดท้าย $a_{100} = \\frac{1}{b_{100}} = \\frac{1}{4951}$" },
@@ -113,28 +148,455 @@ If $a-1 = -1$, then $a=0$.\n\nApply the property with $m=a, n=4$ (assume $a \ne 
         };
 
 
-    // --- Core Functions --- (Copied from previous correct response)
-    const showScreen = (screenId) => { console.log(`Attempting to show screen: ${screenId}`); try { const currentLoginCard = screens.login ? screens.login.querySelector('.card') : null; if(currentLoginCard) currentLoginCard.classList.remove('authenticating'); Object.values(screens).forEach(screen => { if (screen) screen.classList.remove('active'); }); const targetScreen = screens[screenId]; if (targetScreen) { targetScreen.classList.add('active'); console.log(`Screen ${screenId} activated.`); setTimeout(renderMath, 50); } else { console.error(`Screen "${screenId}" element not found.`); if(screenId !== 'login' && screens.login && !screens.login.classList.contains('active')) { console.warn("Falling back to login screen."); showScreen('login'); } } } catch (error) { console.error(`Error in showScreen('${screenId}'):`, error); } };
-    const renderMath = () => { if (typeof renderMathInElement === 'function') { try { const mathContainers = document.querySelectorAll('.screen.active .problem-statement, .screen.active .solution-statement, .screen.active #score-display'); if (mathContainers.length > 0) { console.log("Rendering Math..."); mathContainers.forEach(container => { renderMathInElement(container, { delimiters: [ {left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false} ], throwOnError: false }); }); } } catch (error) { console.error("KaTeX rendering failed:", error); } } };
-    const formatTime = (seconds) => { if (isNaN(seconds) || seconds < 0) return "00:00:00"; const h = Math.floor(seconds / 3600); const m = Math.floor((seconds % 3600) / 60); const s = Math.floor(seconds % 60); return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`; };
-    const updateWelcomeMessage = () => { welcomeMessages.forEach(msg => { if(msg) { if (currentUser) { msg.textContent = currentLang === 'en' ? `Welcome, ${currentUser}` : `ยินดีต้อนรับ, ${currentUser}`; } else { msg.textContent = ''; } } }); };
-    const renderSelectionScreen = () => { console.log("Rendering selection screen..."); try { if (!examListContainer) { console.error("Exam list container not found."); return; } examListContainer.innerHTML = ''; if (Object.keys(examSets).length === 0) { examListContainer.innerHTML = `<p>${currentLang === 'en' ? 'No exam sets available.' : 'ไม่มีชุดข้อสอบ'}</p>`; return; } Object.keys(examSets).forEach(setId => { const setInfo = examSets[setId]?.[currentLang]; if (!setInfo) { console.warn(`Missing language info for set "${setId}", lang "${currentLang}"`); return; } const setName = setInfo.name; const difficultyText = setInfo.difficulty ? (currentLang === 'en' ? `Difficulty: ${setInfo.difficulty}` : `ความยาก: ${setInfo.difficulty}`) : ''; const card = document.createElement('div'); card.className = 'exam-card'; const numQuestions = (allProblems[setId]?.[currentLang] || []).length; const detailsText = currentLang === 'en' ? `${numQuestions} Questions` : `${numQuestions} ข้อ`; card.innerHTML = ` <div> <h2>${setName}</h2> <p class="exam-details">${detailsText}${difficultyText ? ` - ${difficultyText}` : ''}</p> </div> <button class="start-btn" data-set-id="${setId}">${currentLang === 'en' ? 'Start' : 'เริ่มทำ'}</button> `; examListContainer.appendChild(card); }); examListContainer.querySelectorAll('.start-btn').forEach(button => { button.addEventListener('click', (e) => { currentSetId = e.target.getAttribute('data-set-id'); if (!currentSetId || !examSets[currentSetId]) { console.error("Invalid set ID clicked:", currentSetId); return; } const titleElement = getElem('test-title'); if (titleElement) { titleElement.textContent = examSets[currentSetId][currentLang].name; } else { console.error("Test title element not found."); } if (!timerDisplay) { console.error("Timer display element not found."); return; } showScreen('test'); renderProblems(); startTimer(); }); }); updateWelcomeMessage(); renderMath(); } catch (error) { console.error("Error in renderSelectionScreen:", error); } };
-    const renderProblems = () => { console.log("Rendering problems for set:", currentSetId); try { if (!problemContainer) { console.error("Problem container not found."); return; } problemContainer.innerHTML = ''; if (!currentSetId || !allProblems[currentSetId]?.[currentLang]) { problemContainer.innerHTML = `<p>${currentLang === 'en' ? 'Error: Problems not available.' : 'ข้อผิดพลาด: ไม่พบชุดข้อสอบ'}</p>`; console.error("Problem data missing for set:", currentSetId, " lang:", currentLang); return; } allProblems[currentSetId][currentLang].forEach((p, index) => { const card = document.createElement('div'); card.className = 'problem-card'; const hintButtonText = currentLang === 'en' ? 'Hint' : 'คำใบ้'; card.innerHTML = ` <h2>${p.title || `Problem ${index + 1}`}</h2> <div class="problem-statement">${p.statement || ''}</div> <input type="text" class="answer-input" id="answer-${index}" placeholder="${currentLang === 'en' ? 'Your answer' : 'คำตอบของคุณ'}"> <button class="hint-btn" data-problem-index="${index}">${hintButtonText}</button> `; problemContainer.appendChild(card); }); problemContainer.querySelectorAll('.hint-btn').forEach(button => { button.addEventListener('click', handleHintClick); }); setTimeout(renderMath, 50); } catch(error) { console.error("Error in renderProblems:", error); } };
-    const handleHintClick = (event) => { try { const button = event.target; const problemIndex = parseInt(button.getAttribute('data-problem-index'), 10); if (!isNaN(problemIndex)) { showHint(currentSetId, currentLang, problemIndex); } else { console.error("Invalid problem index on hint button:", button.getAttribute('data-problem-index')); } } catch (error) { console.error("Error handling hint click:", error); } };
-    const showHint = (setId, lang, index) => { try { const hintText = allSolutions[setId]?.[lang]?.[index]?.hint; const alertTitle = lang === 'en' ? 'Hint' : 'คำใบ้'; if (hintText) { alert(`${alertTitle}:\n${hintText}`); } else { alert(lang === 'en' ? 'No hint available for this problem.' : 'ไม่มีคำใบ้สำหรับข้อนี้'); } } catch (error) { console.error("Error showing hint:", error); } };
-    const startTimer = () => { console.log("Starting timer..."); try { if(timerInterval) clearInterval(timerInterval); let timeLeft = DURATION; if (!timerDisplay) { console.error("Timer display element not found. Cannot start timer."); return; } timerDisplay.textContent = formatTime(timeLeft); timerDisplay.classList.remove('warning', 'danger'); timerInterval = setInterval(() => { timeLeft--; if (timerDisplay) { timerDisplay.textContent = formatTime(timeLeft); timerDisplay.classList.toggle('warning', timeLeft < 600 && timeLeft >= 60); timerDisplay.classList.toggle('danger', timeLeft < 60); } if (timeLeft <= 0) { console.log("Time's up!"); clearInterval(timerInterval); alert(currentLang === 'en' ? "Time's up! Submitting automatically." : "หมดเวลา! กำลังส่งคำตอบอัตโนมัติ"); submitTest(); } }, 1000); } catch(error) { console.error("Error starting timer:", error); } };
-    const submitTest = () => { console.log("Submitting test..."); try { if(!currentSetId || !allSolutions[currentSetId]?.en) { console.error("Cannot submit: currentSetId or solutions missing."); alert(currentLang === 'en' ? "Error submitting test. Data missing." : "เกิดข้อผิดพลาดในการส่ง ไม่พบข้อมูล"); return; } if(timerInterval) clearInterval(timerInterval); if (currentUser && currentUser !== 'JJ') { try { localStorage.setItem(`test_completed_${currentUser}_${currentSetId}`, 'true'); } catch (e) { console.warn("Could not save completion status to localStorage:", e); } } let score = 0; const solutionsForSet = allSolutions[currentSetId].en; solutionsForSet.forEach((sol, i) => { const userInputEl = getElem(`answer-${i}`); if(userInputEl && sol.answer !== undefined && userInputEl.value.trim() === sol.answer) { score++; } else if (!userInputEl) { console.warn(`Answer input for index ${i} not found.`); } }); lastScore = score; displayScore(score); renderSolutions(); showScreen('solution'); } catch (error) { console.error("Error submitting test:", error); alert(currentLang === 'en' ? "An error occurred during submission." : "เกิดข้อผิดพลาดระหว่างการส่งคำตอบ"); } };
-    const displayScore = (score) => { try { const problemsForSet = allProblems[currentSetId]?.[currentLang]; const total = problemsForSet ? problemsForSet.length : 0; const scoreText = currentLang === 'en' ? `Your Score: ${score} / ${total}` : `คะแนนของคุณ: ${score} / ${total}`; if (scoreDisplay) { scoreDisplay.textContent = scoreText; } else { console.error("Score display element not found."); } } catch (error) { console.error("Error displaying score:", error); } };
-    const renderSolutions = () => { console.log("Rendering solutions..."); try { if (!solutionList) { console.error("Solution list container not found."); return; } solutionList.innerHTML = ''; if (currentSetId && allSolutions[currentSetId]?.[currentLang] && allProblems[currentSetId]?.[currentLang]) { const solutions = allSolutions[currentSetId][currentLang]; const problems = allProblems[currentSetId][currentLang]; solutions.forEach((s, index) => { const card = document.createElement('div'); card.className = 'solution-card'; const formattedSteps = (s.steps || '') .replace(/\n\n/g, '<br><br>') .replace(/\n/g, '<br>'); const problemTitle = problems[index]?.title || `Problem ${index + 1}`; const problemStatement = problems[index]?.statement || ''; const answerText = s.answer !== undefined ? s.answer : 'N/A'; card.innerHTML = ` <h2>${problemTitle}</h2> <div class="problem-statement">${problemStatement}</div> <hr> <p><strong>${currentLang === 'en' ? 'Answer' : 'คำตอบ'}: ${answerText}</strong></p> <div class="solution-statement">${formattedSteps || (currentLang === 'en' ? 'No steps available.' : 'ไม่มีขั้นตอนวิธีทำ')}</div>`; solutionList.appendChild(card); }); } else { solutionList.innerHTML = `<p>${currentLang === 'en' ? 'Solutions are currently unavailable.' : 'ไม่สามารถแสดงเฉลยได้ในขณะนี้'}</p>`; console.error("Could not render solutions: Data missing for set", currentSetId, " lang", currentLang); } updateWelcomeMessage(); setTimeout(renderMath, 50); } catch (error) { console.error("Error rendering solutions:", error); } };
-    const setLanguage = (lang) => { console.log("Setting language to:", lang); if (lang !== 'en' && lang !== 'th') { console.warn("Unsupported language:", lang); return; } currentLang = lang; try { const loginTitle = getElem('login-title'); if(loginTitle) loginTitle.textContent = lang === 'en' ? 'Mathematics Exam' : 'แบบทดสอบคณิตศาสตร์'; if(loginStuff.usernameInput) loginStuff.usernameInput.placeholder = lang === 'en' ? 'Username' : 'ชื่อผู้ใช้'; if(loginStuff.passwordInput) loginStuff.passwordInput.placeholder = lang === 'en' ? 'Password' : 'รหัสผ่าน'; if(loginStuff.loginBtn) loginStuff.loginBtn.textContent = lang === 'en' ? 'Login' : 'เข้าสู่ระบบ'; const selTitle = getElem('selection-title'); if(selTitle) selTitle.textContent = lang === 'en' ? 'Select Exam' : 'เลือกชุดข้อสอบ'; const timerLabel = getElem('timer-label'); if(timerLabel) timerLabel.textContent = lang === 'en' ? 'Time Left:' : 'เวลาที่เหลือ:'; if(submitBtn) submitBtn.textContent = lang === 'en' ? 'Submit' : 'ส่งคำตอบ'; const solTitle = getElem('solution-title'); if(solTitle) solTitle.textContent = lang === 'en' ? 'Results & Solutions' : 'ผลลัพธ์และเฉลย'; if(backToSelectionBtn) backToSelectionBtn.textContent = lang === 'en' ? 'Select Another Exam' : 'เลือกข้อสอบอื่น'; const loadingText = getElem('loading-text'); if(loadingText) loadingText.textContent = lang === 'en' ? 'Verifying...' : 'กำลังตรวจสอบ...'; logoutBtns.forEach(btn => { if(btn) btn.textContent = lang === 'en' ? 'Logout' : 'ออกจากระบบ'; }); updateWelcomeMessage(); if (screens.selection && screens.selection.classList.contains('active')) { renderSelectionScreen(); } else if (screens.test && screens.test.classList.contains('active')) { const titleElement = getElem('test-title'); if (titleElement && currentSetId && examSets[currentSetId]) { titleElement.textContent = examSets[currentSetId][currentLang].name; } renderProblems(); } else if (screens.solution && screens.solution.classList.contains('active')) { if (lastScore !== null) displayScore(lastScore); renderSolutions(); } } catch (error) { console.error("Error setting language:", error); } };
-    const loginAction = () => { try { const currentLoginCard = screens.login ? screens.login.querySelector('.card') : null; if (currentLoginCard) currentLoginCard.classList.add('authenticating'); if (loginStuff.errorMsg) loginStuff.errorMsg.textContent = ''; console.log("Login attempt..."); setTimeout(() => { const username = loginStuff.usernameInput ? loginStuff.usernameInput.value.trim() : ''; const password = loginStuff.passwordInput ? loginStuff.passwordInput.value.trim() : ''; if (credentials[username] && credentials[username] === password) { console.log("Login successful for:", username); currentUser = username; try { localStorage.setItem('loggedInUser', username); } catch (e) { console.warn("localStorage unavailable:", e); } showScreen('selection'); renderSelectionScreen(); } else { console.log("Login failed."); if(loginStuff.errorMsg) loginStuff.errorMsg.textContent = currentLang === 'en' ? 'Invalid username or password. Note: It is case-sensitive.' : 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง (โปรดระวังตัวพิมพ์เล็ก-ใหญ่)'; if (currentLoginCard) currentLoginCard.classList.remove('authenticating'); } }, 50); } catch(error) { console.error("Error during login:", error); if(loginStuff.errorMsg) loginStuff.errorMsg.textContent = currentLang === 'en' ? 'Login error occurred.' : 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ'; const currentLoginCard = screens.login ? screens.login.querySelector('.card') : null; if (currentLoginCard) currentLoginCard.classList.remove('authenticating'); } };
-    const logoutAction = () => { console.log("Logout action"); try { currentUser = null; lastScore = null; currentSetId = null; try { localStorage.removeItem('loggedInUser'); } catch (e) { console.warn("localStorage unavailable:", e); } if(loginStuff.usernameInput) loginStuff.usernameInput.value = ''; if(loginStuff.passwordInput) loginStuff.passwordInput.value = ''; if(timerInterval) clearInterval(timerInterval); showScreen('login'); } catch(error) { console.error("Error during logout:", error); } };
+        // --- Core Functions ---
+        // (ฟังก์ชันทั้งหมดจาก v3 ถูกคัดลอกมาที่นี่ โดยไม่มี try...catch ภายใน)
 
-    // --- Initialize App ---
-    const initApp = () => { console.log("Initializing App..."); try { Object.keys(allSolutions).forEach(setId => { if (!allSolutions[setId] || !allProblems[setId]) return; if (allSolutions[setId].th && allSolutions[setId].en) { allSolutions[setId].th.forEach((sol_th, i) => { const sol_en = allSolutions[setId].en[i]; const prob_th = allProblems[setId].th?.[i]; if (sol_en) { sol_th.answer = sol_en.answer; sol_th.hint = sol_en.hint; } if (prob_th) { sol_th.title = prob_th.title; } }); } if (allSolutions[setId].en && allProblems[setId].en) { allSolutions[setId].en.forEach((sol_en, i) => { const prob_en = allProblems[setId].en[i]; if (prob_en) { sol_en.title = prob_en.title; } }); } }); if (loginStuff.loginBtn) { loginStuff.loginBtn.addEventListener('click', loginAction); } else { console.error("Login button not found during init."); } if (submitBtn) { submitBtn.addEventListener('click', () => { if (confirm(currentLang === 'en' ? 'Are you sure you want to submit?' : 'คุณแน่ใจหรือไม่ว่าต้องการส่งคำตอบ?')) { submitTest(); } }); } else { console.error("Submit button not found during init."); } if (backToSelectionBtn) { backToSelectionBtn.addEventListener('click', () => { renderSelectionScreen(); showScreen('selection'); }); } else { console.error("Back button not found during init."); } logoutBtns.forEach((btn, index) => { if(btn) { btn.addEventListener('click', logoutAction); } else { console.warn(`Logout button at index ${index} not found during init.`); } }); langToggles.forEach((btn, index) => { if(btn) { btn.addEventListener('click', () => setLanguage(currentLang === 'en' ? 'th' : 'en')); } else { console.warn(`Lang toggle button at index ${index} not found during init.`); } }); let savedUser = null; try { savedUser = localStorage.getItem('loggedInUser'); } catch(e) { console.warn("localStorage unavailable:", e); } if (savedUser && credentials[savedUser]) { console.log(`Found logged in user: ${savedUser}`); currentUser = savedUser; showScreen('selection'); renderSelectionScreen(); } else { console.log("No logged in user found or invalid, showing login."); showScreen('login'); } setLanguage('en'); console.log("App Initialized Successfully."); } catch (error) { console.error("CRITICAL Error during app initialization:", error); const appDiv = getElem('app'); if(appDiv) appDiv.innerHTML = '<div style="color: red; text-align: center; padding: 40px; font-size: 1.2em;">Initialization Error! Please check the console (F12) for details and ensure all HTML elements exist.</div>'; if(screens.login) screens.login.classList.add('active'); else document.body.innerHTML = '<p style="color:red;">Fatal Error: Cannot load UI.</p>'; } };
+        const showScreen = (screenId) => {
+            console.log(`Attempting to show screen: ${screenId}`);
+            const currentLoginCard = screens.login ? screens.login.querySelector('.card') : null;
+            if (currentLoginCard) currentLoginCard.classList.remove('authenticating');
+            
+            Object.values(screens).forEach(screen => {
+                if (screen) screen.classList.remove('active');
+            });
+            
+            const targetScreen = screens[screenId];
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+                console.log(`Screen ${screenId} activated.`);
+                setTimeout(renderMath, 50);
+            } else {
+                console.error(`Screen "${screenId}" element not found.`);
+                if (screenId !== 'login' && screens.login && !screens.login.classList.contains('active')) {
+                    console.warn("Falling back to login screen.");
+                    showScreen('login');
+                }
+            }
+        };
 
-    // --- Start App ---
-    try { initApp(); }
-    catch(err) { console.error("FATAL ERROR ON INITIAL SCRIPT EXECUTION:", err); const appDiv = getElem('app'); if(appDiv) appDiv.innerHTML = '<div style="color: red; text-align: center; padding: 40px; font-size: 1.2em;">Fatal Error Loading Script. Check Console (F12).</div>'; else document.body.innerHTML = '<p style="color:red;">Fatal Error: Cannot load UI.</p>'; }
+        const renderMath = () => {
+            if (typeof renderMathInElement === 'function') {
+                const mathContainers = document.querySelectorAll('.screen.active .problem-statement, .screen.active .solution-statement, .screen.active #score-display');
+                if (mathContainers.length > 0) {
+                    console.log("Rendering Math...");
+                    mathContainers.forEach(container => {
+                        renderMathInElement(container, {
+                            delimiters: [
+                                {left: '$$', right: '$$', display: true},
+                                {left: '$', right: '$', display: false}
+                            ],
+                            throwOnError: false
+                        });
+                    });
+                }
+            } else {
+                console.warn("renderMathInElement function not found. KaTeX might be missing.");
+            }
+        };
 
-}); // End DOMContentLoaded
+        const formatTime = (seconds) => {
+            if (isNaN(seconds) || seconds < 0) return "00:00:00";
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = Math.floor(seconds % 60);
+            return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        };
+
+        const updateWelcomeMessage = () => {
+            welcomeMessages.forEach(msg => {
+                if (msg) {
+                    if (currentUser) {
+                        msg.textContent = currentLang === 'en' ? `Welcome, ${currentUser}` : `ยินดีต้อนรับ, ${currentUser}`;
+                    } else {
+                        msg.textContent = '';
+                    }
+                }
+            });
+        };
+
+        const renderSelectionScreen = () => {
+            console.log("Rendering selection screen...");
+            if (!examListContainer) throw new Error("renderSelectionScreen: 'exam-list-container' element not found.");
+            
+            examListContainer.innerHTML = '';
+            if (Object.keys(examSets).length === 0) {
+                examListContainer.innerHTML = `<p>${currentLang === 'en' ? 'No exam sets available.' : 'ไม่มีชุดข้อสอบ'}</p>`;
+                return;
+            }
+            
+            Object.keys(examSets).forEach(setId => {
+                const setInfo = examSets[setId]?.[currentLang];
+                if (!setInfo) {
+                    console.warn(`Missing language info for set "${setId}", lang "${currentLang}"`);
+                    return;
+                }
+                const setName = setInfo.name;
+                const difficultyText = setInfo.difficulty ? (currentLang === 'en' ? `Difficulty: ${setInfo.difficulty}` : `ความยาก: ${setInfo.difficulty}`) : '';
+                const card = document.createElement('div');
+                card.className = 'exam-card';
+                const numQuestions = (allProblems[setId]?.[currentLang] || []).length;
+                const detailsText = currentLang === 'en' ? `${numQuestions} Questions` : `${numQuestions} ข้อ`;
+                
+                card.innerHTML = `
+                    <div>
+                        <h2>${setName}</h2>
+                        <p class="exam-details">${detailsText}${difficultyText ? ` - ${difficultyText}` : ''}</p>
+                    </div>
+                    <button class="start-btn" data-set-id="${setId}">${currentLang === 'en' ? 'Start' : 'เริ่มทำ'}</button>
+                `;
+                examListContainer.appendChild(card);
+            });
+            
+            examListContainer.querySelectorAll('.start-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    currentSetId = e.target.getAttribute('data-set-id');
+                    if (!currentSetId || !examSets[currentSetId]) throw new Error("Invalid set ID clicked: " + currentSetId);
+                    
+                    const titleElement = getElem('test-title');
+                    if (titleElement) {
+                        titleElement.textContent = examSets[currentSetId][currentLang].name;
+                    } else {
+                        console.error("Test title element not found.");
+                    }
+                    if (!timerDisplay) throw new Error("Timer display element not found.");
+                    
+                    showScreen('test');
+                    renderProblems();
+                    startTimer();
+                });
+            });
+            
+            updateWelcomeMessage();
+            renderMath();
+        };
+
+        const renderProblems = () => {
+            console.log("Rendering problems for set:", currentSetId);
+            if (!problemContainer) throw new Error("renderProblems: 'problem-container' element not found.");
+            
+            problemContainer.innerHTML = '';
+            if (!currentSetId || !allProblems[currentSetId]?.[currentLang]) {
+                problemContainer.innerHTML = `<p>${currentLang === 'en' ? 'Error: Problems not available.' : 'ข้อผิดพลาด: ไม่พบชุดข้อสอบ'}</p>`;
+                console.error("Problem data missing for set:", currentSetId, " lang:", currentLang);
+                return;
+            }
+            
+            allProblems[currentSetId][currentLang].forEach((p, index) => {
+                const card = document.createElement('div');
+                card.className = 'problem-card';
+                const hintButtonText = currentLang === 'en' ? 'Hint' : 'คำใบ้';
+                card.innerHTML = `
+                    <h2>${p.title || `Problem ${index + 1}`}</h2>
+                    <div class="problem-statement">${p.statement || ''}</div>
+                    <input type="text" class="answer-input" id="answer-${index}" placeholder="${currentLang === 'en' ? 'Your answer' : 'คำตอบของคุณ'}">
+                    <button class="hint-btn" data-problem-index="${index}">${hintButtonText}</button>
+                `;
+                problemContainer.appendChild(card);
+            });
+            
+            problemContainer.querySelectorAll('.hint-btn').forEach(button => {
+                button.addEventListener('click', handleHintClick);
+            });
+            
+            setTimeout(renderMath, 50);
+        };
+
+        const handleHintClick = (event) => {
+            const button = event.target;
+            const problemIndex = parseInt(button.getAttribute('data-problem-index'), 10);
+            if (!isNaN(problemIndex)) {
+                showHint(currentSetId, currentLang, problemIndex);
+            } else {
+                console.error("Invalid problem index on hint button:", button.getAttribute('data-problem-index'));
+            }
+        };
+
+        const showHint = (setId, lang, index) => {
+            const hintText = allSolutions[setId]?.[lang]?.[index]?.hint;
+            const alertTitle = lang === 'en' ? 'Hint' : 'คำใบ้';
+            if (hintText) {
+                alert(`${alertTitle}:\n${hintText}`);
+            } else {
+                alert(lang === 'en' ? 'No hint available for this problem.' : 'ไม่มีคำใบ้สำหรับข้อนี้');
+            }
+        };
+
+        const startTimer = () => {
+            console.log("Starting timer...");
+            if (timerInterval) clearInterval(timerInterval);
+            let timeLeft = DURATION;
+            if (!timerDisplay) throw new Error("startTimer: 'timer' display element not found.");
+            
+            timerDisplay.textContent = formatTime(timeLeft);
+            timerDisplay.classList.remove('warning', 'danger');
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                if (timerDisplay) {
+                    timerDisplay.textContent = formatTime(timeLeft);
+                    timerDisplay.classList.toggle('warning', timeLeft < 600 && timeLeft >= 60);
+                    timerDisplay.classList.toggle('danger', timeLeft < 60);
+                }
+                if (timeLeft <= 0) {
+                    console.log("Time's up!");
+                    clearInterval(timerInterval);
+                    alert(currentLang === 'en' ? "Time's up! Submitting automatically." : "หมดเวลา! กำลังส่งคำตอบอัตโนมัติ");
+                    submitTest();
+                }
+            }, 1000);
+        };
+
+        const submitTest = () => {
+            console.log("Submitting test...");
+            if (!currentSetId || !allSolutions[currentSetId]?.en) {
+                console.error("Cannot submit: currentSetId or solutions missing.");
+                alert(currentLang === 'en' ? "Error submitting test. Data missing." : "เกิดข้อผิดพลาดในการส่ง ไม่พบข้อมูล");
+                return;
+            }
+            if (timerInterval) clearInterval(timerInterval);
+            
+            if (currentUser && currentUser !== 'JJ') {
+                try {
+                    localStorage.setItem(`test_completed_${currentUser}_${currentSetId}`, 'true');
+                } catch (e) {
+                    console.warn("Could not save completion status to localStorage:", e);
+                }
+            }
+            
+            let score = 0;
+            const solutionsForSet = allSolutions[currentSetId].en;
+            solutionsForSet.forEach((sol, i) => {
+                const userInputEl = getElem(`answer-${i}`);
+                if (userInputEl && sol.answer !== undefined && userInputEl.value.trim() === sol.answer) {
+                    score++;
+                } else if (!userInputEl) {
+                    console.warn(`Answer input for index ${i} not found.`);
+                }
+            });
+            
+            lastScore = score;
+            displayScore(score);
+            renderSolutions();
+            showScreen('solution');
+        };
+
+        const displayScore = (score) => {
+            const problemsForSet = allProblems[currentSetId]?.[currentLang];
+            const total = problemsForSet ? problemsForSet.length : 0;
+            const scoreText = currentLang === 'en' ? `Your Score: ${score} / ${total}` : `คะแนนของคุณ: ${score} / ${total}`;
+            if (scoreDisplay) {
+                scoreDisplay.textContent = scoreText;
+            } else {
+                console.error("Score display element not found.");
+            }
+        };
+
+        const renderSolutions = () => {
+            console.log("Rendering solutions...");
+            if (!solutionList) throw new Error("renderSolutions: 'solution-list' element not found.");
+            
+            solutionList.innerHTML = '';
+            if (currentSetId && allSolutions[currentSetId]?.[currentLang] && allProblems[currentSetId]?.[currentLang]) {
+                const solutions = allSolutions[currentSetId][currentLang];
+                const problems = allProblems[currentSetId][currentLang];
+                solutions.forEach((s, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'solution-card';
+                    const formattedSteps = (s.steps || '')
+                        .replace(/\n\n/g, '<br><br>')
+                        .replace(/\n/g, '<br>');
+                    const problemTitle = problems[index]?.title || `Problem ${index + 1}`;
+                    const problemStatement = problems[index]?.statement || '';
+                    const answerText = s.answer !== undefined ? s.answer : 'N/A';
+                    
+                    card.innerHTML = `
+                        <h2>${problemTitle}</h2>
+                        <div class="problem-statement">${problemStatement}</div>
+                        <hr>
+                        <p><strong>${currentLang === 'en' ? 'Answer' : 'คำตอบ'}: ${answerText}</strong></p>
+                        <div class="solution-statement">${formattedSteps || (currentLang === 'en' ? 'No steps available.' : 'ไม่มีขั้นตอนวิธีทำ')}</div>`;
+                    solutionList.appendChild(card);
+                });
+            } else {
+                solutionList.innerHTML = `<p>${currentLang === 'en' ? 'Solutions are currently unavailable.' : 'ไม่สามารถแสดงเฉลยได้ในขณะนี้'}</p>`;
+                console.error("Could not render solutions: Data missing for set", currentSetId, " lang", currentLang);
+            }
+            
+            updateWelcomeMessage();
+            setTimeout(renderMath, 50);
+        };
+
+        const setLanguage = (lang) => {
+            console.log("Setting language to:", lang);
+            if (lang !== 'en' && lang !== 'th') {
+                console.warn("Unsupported language:", lang);
+                return;
+            }
+            currentLang = lang;
+            
+            const loginTitle = getElem('login-title');
+            if (loginTitle) loginTitle.textContent = lang === 'en' ? 'Mathematics Exam' : 'แบบทดสอบคณิตศาสตร์';
+            if (loginStuff.usernameInput) loginStuff.usernameInput.placeholder = lang === 'en' ? 'Username' : 'ชื่อผู้ใช้';
+            if (loginStuff.passwordInput) loginStuff.passwordInput.placeholder = lang === 'en' ? 'Password' : 'รหัสผ่าน';
+            if (loginStuff.loginBtn) loginStuff.loginBtn.textContent = lang === 'en' ? 'Login' : 'เข้าสู่ระบบ';
+            
+            const selTitle = getElem('selection-title');
+            if (selTitle) selTitle.textContent = lang === 'en' ? 'Select Exam' : 'เลือกชุดข้อสอบ';
+            
+            const timerLabel = getElem('timer-label');
+            if (timerLabel) timerLabel.textContent = lang === 'en' ? 'Time Left:' : 'เวลาที่เหลือ:';
+            
+            if (submitBtn) submitBtn.textContent = lang === 'en' ? 'Submit' : 'ส่งคำตอบ';
+            
+            const solTitle = getElem('solution-title');
+            if (solTitle) solTitle.textContent = lang === 'en' ? 'Results & Solutions' : 'ผลลัพธ์และเฉลย';
+            
+            if (backToSelectionBtn) backToSelectionBtn.textContent = lang === 'en' ? 'Select Another Exam' : 'เลือกข้อสอบอื่น';
+            
+            const loadingText = getElem('loading-text');
+            if (loadingText) loadingText.textContent = lang === 'en' ? 'Verifying...' : 'กำลังตรวจสอบ...';
+            
+            logoutBtns.forEach(btn => {
+                if (btn) btn.textContent = lang === 'en' ? 'Logout' : 'ออกจากระบบ';
+            });
+            
+            updateWelcomeMessage();
+            
+            if (screens.selection && screens.selection.classList.contains('active')) {
+                renderSelectionScreen();
+            } else if (screens.test && screens.test.classList.contains('active')) {
+                const titleElement = getElem('test-title');
+                if (titleElement && currentSetId && examSets[currentSetId]) {
+                    titleElement.textContent = examSets[currentSetId][currentLang].name;
+                }
+                renderProblems();
+            } else if (screens.solution && screens.solution.classList.contains('active')) {
+                if (lastScore !== null) displayScore(lastScore);
+                renderSolutions();
+            }
+        };
+
+        const loginAction = () => {
+            const currentLoginCard = screens.login ? screens.login.querySelector('.card') : null;
+            if (currentLoginCard) currentLoginCard.classList.add('authenticating');
+            if (loginStuff.errorMsg) loginStuff.errorMsg.textContent = '';
+            
+            console.log("Login attempt...");
+            
+            setTimeout(() => {
+                const username = loginStuff.usernameInput ? loginStuff.usernameInput.value.trim() : '';
+                const password = loginStuff.passwordInput ? loginStuff.passwordInput.value.trim() : '';
+                
+                if (credentials[username] && credentials[username] === password) {
+                    console.log("Login successful for:", username);
+                    currentUser = username;
+                    try {
+                        localStorage.setItem('loggedInUser', username);
+                    } catch (e) {
+                        console.warn("localStorage unavailable:", e);
+                    }
+                    showScreen('selection');
+                    renderSelectionScreen();
+                } else {
+                    console.log("Login failed.");
+                    if (loginStuff.errorMsg) loginStuff.errorMsg.textContent = currentLang === 'en' ? 'Invalid username or password. Note: It is case-sensitive.' : 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง (โปรดระวังตัวพิมพ์เล็ก-ใหญ่)';
+                    if (currentLoginCard) currentLoginCard.classList.remove('authenticating');
+                }
+            }, 50);
+        };
+
+        const logoutAction = () => {
+            console.log("Logout action");
+            currentUser = null;
+            lastScore = null;
+            currentSetId = null;
+            try {
+                localStorage.removeItem('loggedInUser');
+            } catch (e) {
+                console.warn("localStorage unavailable:", e);
+            }
+            if (loginStuff.usernameInput) loginStuff.usernameInput.value = '';
+            if (loginStuff.passwordInput) loginStuff.passwordInput.value = '';
+            if (timerInterval) clearInterval(timerInterval);
+            showScreen('login');
+        };
+
+        // --- Initialize App ---
+        // (ฟังก์ชันนี้จะถูกเรียกจากด้านล่าง)
+        const initApp = () => {
+            console.log("Initializing App...");
+            
+            // ตรวจสอบความสมบูรณ์ของข้อมูล (คัดลอก answer/hint/title ไปมาระหว่าง en/th)
+            Object.keys(allSolutions).forEach(setId => {
+                if (!allSolutions[setId] || !allProblems[setId]) return;
+                
+                // ซิงค์ th solutions จาก en
+                if (allSolutions[setId].th && allSolutions[setId].en) {
+                    allSolutions[setId].th.forEach((sol_th, i) => {
+                        const sol_en = allSolutions[setId].en[i];
+                        const prob_th = allProblems[setId].th?.[i];
+                        if (sol_en) {
+                            sol_th.answer = sol_en.answer; // ตรวจสอบว่าคำตอบตรงกัน
+                            sol_th.hint = sol_en.hint;     // ตรวจสอบว่าคำใบ้ตรงกัน
+                        }
+                        if (prob_th) {
+                            sol_th.title = prob_th.title; // เอา title จาก problem มาใส่
+                        }
+                    });
+                }
+                
+                // ซิงค์ en solutions (แค่ title)
+                if (allSolutions[setId].en && allProblems[setId].en) {
+                    allSolutions[setId].en.forEach((sol_en, i) => {
+                        const prob_en = allProblems[setId].en[i];
+                        if (prob_en) {
+                            sol_en.title = prob_en.title;
+                        }
+                    });
+                }
+            });
+
+            // ผูก Event Listeners กับปุ่มต่างๆ
+            // เราต้องตรวจสอบก่อนว่าปุ่มมีอยู่จริงหรือไม่
+            
+            if (loginStuff.loginBtn) {
+                loginStuff.loginBtn.addEventListener('click', loginAction);
+            } else {
+                // ถ้าหาปุ่ม login ไม่เจอ นี่คือ Error ร้ายแรง (สำหรับหน้า login)
+                // แต่เราจะปล่อยให้มันทำงานต่อ เผื่อว่าเราล็อกอินค้างไว้
+                console.warn("Login button not found during init.");
+            }
+            
+            if (submitBtn) {
+                submitBtn.addEventListener('click', () => {
+                    if (confirm(currentLang === 'en' ? 'Are you sure you want to submit?' : 'คุณแน่ใจหรือไม่ว่าต้องการส่งคำตอบ?')) {
+                        submitTest();
+                    }
+                });
+            } else {
+                console.warn("Submit button not found during init.");
+            }
+            
+            if (backToSelectionBtn) {
+                backToSelectionBtn.addEventListener('click', () => {
+                    renderSelectionScreen();
+                    showScreen('selection');
+                });
+            } else {
+                console.warn("Back button not found during init.");
+            }
+            
+            logoutBtns.forEach((btn, index) => {
+                if (btn) {
+                    btn.addEventListener('click', logoutAction);
+                } else {
+                    console.warn(`Logout button at index ${index} not found during init.`);
+                }
+            });
+            
+            langToggles.forEach((btn, index) => {
+                if (btn) {
+                    btn.addEventListener('click', () => setLanguage(currentLang === 'en' ? 'th' : 'en'));
+                } else {
+                    console.warn(`Lang toggle button at index ${index} not found during init.`);
+                }
