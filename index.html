@@ -1,30 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basic HTML Test</title>
-    <style>
-        body { font-family: sans-serif; padding: 20px; background-color: lightyellow; }
-        h1 { color: blue; }
-    </style>
+    <title>Basic HTML + CSS Test</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="app" style="padding: 20px;"> <h1 id="login-title">Basic HTML + CSS Test Page</h1>
 
-    <h1>Basic HTML Test Page</h1>
+        <p>If you see this text styled (e.g., Poppins font, different background color), then the CSS file is loading correctly.</p>
 
-    <p>If you can see this text, then the basic HTML file is being served correctly by GitHub Pages.</p>
+        <p class="secondary-text">This text should be a secondary color if CSS works.</p>
 
-    <p>The problem might be with loading CSS or JavaScript files, or with the JavaScript code itself.</p>
+        <button id="login-btn" style="width: auto; display: inline-block; padding: 10px 20px;">Test Button Style</button>
 
-    <hr>
+        <hr>
 
-    <p>Next steps:</p>
-    <ol>
-        <li>Ensure `style.css` and `script.js` are in the same folder as this `index.html` file on GitHub.</li>
-        <li>Check the file names in the `<link>` and `<script>` tags when you add them back.</li>
-    </ol>
+        <p>Next steps depend on whether styling is applied:</p>
+        <ul>
+            <li>**If styled:** The problem is likely in `script.js`.</li>
+            <li>**If NOT styled (or white screen):** The problem is with loading `style.css` (check name/location) or severe CSS errors.</li>
+        </ul>
 
-</body>
+    </div>
+    </body>
 </html>
