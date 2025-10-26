@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic HTML + CSS Test</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app" style="padding: 20px;"> <h1 id="login-title">Basic HTML + CSS Test Page</h1>
+
+        <p>If you see this text styled (e.g., Poppins font, different background color), then the CSS file is loading correctly.</p>
+
+        <p class="secondary-text" style="color: var(--secondary-text);">This text should be a secondary color if CSS works.</p>
+
+        <button id="login-btn" style="width: auto; display: inline-block; padding: 10px 20px; background-color: var(--accent-color); color: white; border: none; border-radius: var(--border-radius-button);">Test Button Style</button>
+
+        <hr>
+
+        <p>Next steps depend on whether styling is applied:</p>
+        <ul>
+            <li>**If styled:** The problem is likely in `script.js`.</li>
+            <li>**If NOT styled (or white screen):** The problem is with loading `style.css` (check name/location) or severe CSS errors.</li>
+        </ul>
+
+    </div>
+    </body>
+</html>
