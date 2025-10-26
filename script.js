@@ -7,7 +7,18 @@ window.onerror = function(message, source, lineno, colno, error) {
         if (document.body.dataset.onerrorExecuted) return;
         document.body.dataset.onerrorExecuted = 'true'; // Mark as executed
 
-        document.body.innerHTML = `<div style="padding: 20px; color: #D32F2F; background-color: #FFEBEE; border: 1px solid #FFCDD2; font-family: sans-serif; margin: 10px; border-radius: 8px;">
+        // Try to get the dedicated error div
+        let errorDiv = document.getElementById('error-display');
+        if (!errorDiv) { // If it doesn't exist (HTML structure issue?), create it
+            errorDiv = document.createElement('div');
+            errorDiv.id = 'error-display';
+            // Apply basic styles directly for fallback
+            errorDiv.style.cssText = "padding: 20px; color: #D32F2F; background-color: #FFEBEE; border: 1px solid #FFCDD2; font-family: sans-serif; margin: 10px; border-radius: 8px; position: fixed; top: 10px; left: 10px; right: 10px; z-index: 9999;";
+            document.body.prepend(errorDiv); // Add to top of body
+        }
+
+        errorDiv.style.display = 'block'; // Make sure it's visible
+        errorDiv.innerHTML = `
             <h2 style="margin-top: 0; color: #B71C1C;">JavaScript Error!</h2>
             <p>An error occurred, preventing the page from loading correctly.</p>
             <p style="font-weight: bold; margin-bottom: 5px;">Details:</p>
@@ -18,9 +29,10 @@ window.onerror = function(message, source, lineno, colno, error) {
             </ul>
             ${error && error.stack ? `<pre style="white-space: pre-wrap; word-wrap: break-word; background-color: #FFCDD2; padding: 10px; border-radius: 4px; font-size: 0.9em; max-height: 200px; overflow-y: auto;">${error.stack}</pre>` : ''}
             <p style="margin-top: 15px;">Please take a screenshot of this error and report it.</p>
-        </div>`;
+        `;
     } catch (e) {
-        alert(`FATAL JS ERROR:\nMessage: ${message}\nLine: ${lineno}`);
+        // Absolute fallback if modifying body/DOM fails
+        alert(`FATAL JS ERROR:\nMessage: ${message}\nLine: ${lineno}\n(Display Error Failed: ${e.message})`);
     }
     return true; // Prevent default
 };
@@ -33,6 +45,7 @@ try { // Wrap the entire script execution
         // --- DOM Elements ---
         const getElem = (id) => document.getElementById(id);
 
+        // Fetch elements but check for critical ones later in initApp
         const screens = {
             login: getElem('login-screen'),
             selection: getElem('selection-screen'),
@@ -71,7 +84,7 @@ try { // Wrap the entire script execution
         };
 
         // --- Data ---
-        // Wrap data definition in try-catch in case of syntax error
+        // Wrap data definition in try-catch in case of syntax error DURING PARSING
         let examSets, allProblems, allSolutions;
         try {
              examSets = {
