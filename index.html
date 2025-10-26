@@ -3,29 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basic HTML + CSS Test</title>
+    <title>Mathematics Exam - JS Test</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-</head>
+    </head>
 <body>
-    <div id="app" style="padding: 20px;"> <h1 id="login-title">Basic HTML + CSS Test Page</h1>
+    <div id="app">
+        <div id="error-display" style="color: red; padding: 20px; border: 1px solid red; margin: 10px; display: none; background-color: #ffebee; position: fixed; top: 10px; left: 10px; right: 10px; z-index: 9999;"></div>
 
-        <p>If you see this text styled (e.g., Poppins font, different background color), then the CSS file is loading correctly.</p>
+        <div id="login-screen" class="screen">
+            <div class="login-container">
+                <div class="card zoom-in">
+                    <h1 id="login-title">Mathematics Exam</h1>
+                    <p id="login-subtitle">Mock Test</p>
+                    <div id="login-form">
+                        <div class="form-group">
+                            <input type="text" id="username" placeholder="Username" autocomplete="username">
+                            <input type="password" id="password" placeholder="Password" autocomplete="current-password">
+                        </div>
+                        <button id="login-btn">Login</button>
+                    </div>
+                    <div id="loading-indicator" class="hidden">
+                        <div class="spinner"></div>
+                        <span id="loading-text">Verifying...</span>
+                    </div>
+                    <p id="login-error" class="error-message"></p>
+                    <div class="lang-toggle-container">
+                        <button id="lang-toggle-login" class="lang-toggle">EN / TH</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <p class="secondary-text">This text should be a secondary color if CSS works.</p>
-
-        <button id="login-btn" style="width: auto; display: inline-block; padding: 10px 20px;">Test Button Style</button>
-
-        <hr>
-
-        <p>Next steps depend on whether styling is applied:</p>
-        <ul>
-            <li>**If styled:** The problem is likely in `script.js`.</li>
-            <li>**If NOT styled (or white screen):** The problem is with loading `style.css` (check name/location) or severe CSS errors.</li>
-        </ul>
+        <div id="selection-screen" class="screen" style="border: 2px dashed blue; padding: 20px;">Selection Screen Placeholder (Should be hidden)</div>
+        <div id="test-screen" class="screen" style="border: 2px dashed blue; padding: 20px;">Test Screen Placeholder (Should be hidden)</div>
+        <div id="solution-screen" class="screen" style="border: 2px dashed blue; padding: 20px;">Solution Screen Placeholder (Should be hidden)</div>
 
     </div>
-    </body>
+
+    <script src="script.js"></script>
+</body>
 </html>
